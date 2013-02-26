@@ -42,6 +42,10 @@
 #ifndef QWINFUNCTIONS_H
 #define QWINFUNCTIONS_H
 
+#if 0
+#pragma qt_class(QtWinFunctions)
+#endif
+
 #include <QtWinExtras/qtwinextrasglobal.h>
 #include <QtCore/qt_windows.h>
 
