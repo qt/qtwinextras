@@ -46,7 +46,7 @@
 #pragma qt_class(QtWinFunctions)
 #endif
 
-#include <QtWinExtras/qtwinextrasglobal.h>
+#include <QtWinExtras/qwinextrasglobal.h>
 #include <QtCore/qt_windows.h>
 
 QT_BEGIN_NAMESPACE
@@ -65,12 +65,12 @@ enum HBitmapFormat
     HBitmapAlpha
 };
 
-HBITMAP QTWINEXTRAS_EXPORT createWinIconMask(const QBitmap &bitmap);
-HBITMAP QTWINEXTRAS_EXPORT toWinHBITMAP(const QPixmap &p, HBitmapFormat format = HBitmapNoAlpha);
-QPixmap QTWINEXTRAS_EXPORT fromWinHBITMAP(HBITMAP bitmap, HBitmapFormat format = HBitmapNoAlpha);
-HICON QTWINEXTRAS_EXPORT toWinHICON(const QPixmap &p);
-QImage QTWINEXTRAS_EXPORT imageFromWinHBITMAP(HDC hdc, HBITMAP bitmap, int w, int h);
-QPixmap QTWINEXTRAS_EXPORT fromWinHICON(HICON icon);
+HBITMAP Q_WINEXTRAS_EXPORT createWinIconMask(const QBitmap &bitmap);
+HBITMAP Q_WINEXTRAS_EXPORT toWinHBITMAP(const QPixmap &p, HBitmapFormat format = HBitmapNoAlpha);
+QPixmap Q_WINEXTRAS_EXPORT fromWinHBITMAP(HBITMAP bitmap, HBitmapFormat format = HBitmapNoAlpha);
+HICON Q_WINEXTRAS_EXPORT toWinHICON(const QPixmap &p);
+QImage Q_WINEXTRAS_EXPORT imageFromWinHBITMAP(HDC hdc, HBITMAP bitmap, int w, int h);
+QPixmap Q_WINEXTRAS_EXPORT fromWinHICON(HICON icon);
 
 }
 

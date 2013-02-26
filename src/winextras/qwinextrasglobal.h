@@ -39,19 +39,19 @@
  **
  ****************************************************************************/
 
-#ifndef QTWINEXTRAS_GLOBAL_H
-#define QTWINEXTRAS_GLOBAL_H
+#ifndef QWINEXTRASGLOBAL_H
+#define QWINEXTRASGLOBAL_H
 
 #include <QtCore/qglobal.h>
 
 QT_BEGIN_NAMESPACE
 
 #if defined(QT_BUILD_WINEXTRAS_LIB)
-#  define QTWINEXTRAS_EXPORT Q_DECL_EXPORT
+#  define Q_WINEXTRAS_EXPORT Q_DECL_EXPORT
 #else
-#  define QTWINEXTRAS_EXPORT Q_DECL_IMPORT
+#  define Q_WINEXTRAS_EXPORT Q_DECL_IMPORT
 #endif
 
 QT_END_NAMESPACE
 
-#endif // QTWINEXTRAS_GLOBAL_H
+#endif // QWINEXTRASGLOBAL_H

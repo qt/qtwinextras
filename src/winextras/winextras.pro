@@ -3,8 +3,8 @@ TARGET = QtWinExtras
 load(qt_module)
 
 SOURCES += \
-    qtwinfunctions.cpp
+    qwinfunctions.cpp
 
 HEADERS += \
-    qtwinfunctions.h \
-    qtwinextrasglobal.h
+    qwinfunctions.h \
+    qwinextrasglobal.h

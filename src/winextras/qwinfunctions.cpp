@@ -40,7 +40,7 @@
  **
  ****************************************************************************/
 
-#include "qtwinfunctions.h"
+#include "qwinfunctions.h"
 #include <QPixmap>
 #include <QBitmap>
 #include <QImage>
