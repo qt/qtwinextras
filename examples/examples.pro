@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS += iconextractor
+win32:SUBDIRS += iconextractor
