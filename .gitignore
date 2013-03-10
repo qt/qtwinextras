@@ -14,6 +14,8 @@
 
 *.pro.user
 *.pro.user.*
+*.qmlproject.user
+*.qmlproject.user.*
 moc_*.cpp
 qrc_*.cpp
 Makefile

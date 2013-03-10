@@ -1,2 +1,3 @@
 TEMPLATE = subdirs
-win32:SUBDIRS += winextras
+CONFIG += ordered
+win32:SUBDIRS += winextras imports
