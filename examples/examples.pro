@@ -1,8 +1,2 @@
 TEMPLATE = subdirs
-win32:{
-    SUBDIRS += \
-        iconextractor \
-        dwmfeatures \
-        jumplistexample
-    EXAMPLE_FILES += quickdwm
-}
+win32:SUBDIRS += winextras
