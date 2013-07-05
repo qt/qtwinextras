@@ -1777,6 +1777,18 @@ void QWinExtras::setCompositionEnabled(bool enabled)
 /*!
     \since 5.2
 
+    Returns whether the colorization color is an opaque blend.
+ */
+bool QWinExtras::isCompositionOpaque()
+{
+    bool opaque;
+    colorizationColor(&opaque);
+    return opaque;
+}
+
+/*!
+    \since 5.2
+
     Set Application User Model ID \a id.
 
     More at http://msdn.microsoft.com/en-us/library/windows/desktop/dd378459.aspx

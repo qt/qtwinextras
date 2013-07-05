@@ -108,6 +108,7 @@ void Q_WINEXTRAS_EXPORT disableBlurBehindWindow(QWindow *window);
 
 bool Q_WINEXTRAS_EXPORT isCompositionEnabled();
 void Q_WINEXTRAS_EXPORT setCompositionEnabled(bool enabled);
+bool Q_WINEXTRAS_EXPORT isCompositionOpaque();
 
 void Q_WINEXTRAS_EXPORT setCurrentProcessExplicitAppUserModelID(const QString &id);
 
@@ -270,6 +271,7 @@ void disableBlurBehindWindow(QWindow *window);
 
 bool isCompositionEnabled();
 void setCompositionEnabled(bool enabled);
+bool isCompositionOpaque();
 void setCurrentProcessExplicitAppUserModelID(const QString &id);
 void markFullscreenWindow(QWindow *, bool fullscreen = true);
 void taskbarActivateTab(QWindow *);
