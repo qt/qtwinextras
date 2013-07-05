@@ -251,8 +251,8 @@ public:
 
     static void warning(const char *function, HRESULT hresult)
     {
-        QByteArray err = QWinExtras::errorStringFromHresult(hresult).toLocal8Bit();
-        qWarning("QJumpList: %s() failed: %#010x, %s.", function, (unsigned)hresult, err.data());
+        const QString err = QWinExtras::errorStringFromHresult(hresult);
+        qWarning("QJumpList: %s() failed: %#010x, %s.", function, (unsigned)hresult, qPrintable(err));
     }
 
     static QString iconsDirPath()
@@ -330,8 +330,8 @@ public:
         IObjectCollection *collection = 0;
         HRESULT hresult = CoCreateInstance(CLSID_EnumerableObjectCollection, 0, CLSCTX_INPROC_SERVER, IID_IObjectCollection, reinterpret_cast<void **>(&collection));
         if (FAILED(hresult)) {
-            QByteArray err = QWinExtras::errorStringFromHresult(hresult).toLocal8Bit();
-            qWarning("QJumpList: failed to instantiate IObjectCollection: %#010x, %s.", (unsigned)hresult, err.data());
+            const QString err = QWinExtras::errorStringFromHresult(hresult);
+            qWarning("QJumpList: failed to instantiate IObjectCollection: %#010x, %s.", (unsigned)hresult, qPrintable(err));
             return 0;
         }
         Q_FOREACH (QJumpListItem *item, list) {
@@ -426,8 +426,8 @@ public:
         IShellLinkW *link = 0;
         HRESULT hresult = CoCreateInstance(CLSID_ShellLink, 0, CLSCTX_INPROC_SERVER, IID_IShellLinkW, reinterpret_cast<void **>(&link));
         if (FAILED(hresult)) {
-            QByteArray err = QWinExtras::errorStringFromHresult(hresult).toLocal8Bit();
-            qWarning("QJumpList: failed to instantiate IShellLinkW: %#010x, %s.", (unsigned)hresult, err.data());
+            const QString err = QWinExtras::errorStringFromHresult(hresult);
+            qWarning("QJumpList: failed to instantiate IShellLinkW: %#010x, %s.", (unsigned)hresult, qPrintable(err));
             return 0;
         }
 

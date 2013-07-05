@@ -287,13 +287,13 @@ QWinTaskbarButtonPrivate::QWinTaskbarButtonPrivate(QWinTaskbarButton *parent) :
     HRESULT hresult = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, IID_ITaskbarList4, reinterpret_cast<void **>(&pTbList));
     if (FAILED(hresult)) {
         pTbList = 0;
-        QByteArray err = QWinExtras::errorStringFromHresult(hresult).toLocal8Bit();
-        qWarning("QWinTaskbarButton: IID_ITaskbarList4 was not created: %#010x, %s.", (unsigned)hresult, err.data());
+        const QString err = QWinExtras::errorStringFromHresult(hresult);
+        qWarning("QWinTaskbarButton: IID_ITaskbarList4 was not created: %#010x, %s.", (unsigned)hresult, qPrintable(err));
     } else if (FAILED(pTbList->HrInit())) {
         pTbList->Release();
         pTbList = 0;
-        QByteArray err = QWinExtras::errorStringFromHresult(hresult).toLocal8Bit();
-        qWarning("QWinTaskbarButton: IID_ITaskbarList4 was not initialized: %#010x, %s.", (unsigned)hresult, err.data());
+        const QString err = QWinExtras::errorStringFromHresult(hresult);
+        qWarning("QWinTaskbarButton: IID_ITaskbarList4 was not initialized: %#010x, %s.", (unsigned)hresult, qPrintable(err));
     }
 }
 
@@ -309,7 +309,7 @@ HWND QWinTaskbarButtonPrivate::handle()
 
 int QWinTaskbarButtonPrivate::iconSize() const
 {
-    return GetSystemMetrics(SM_CXICON);
+    return GetSystemMetrics(SM_CXSMICON);
 }
 
 TBPFLAG QWinTaskbarButtonPrivate::nativeProgressState(QWinTaskbarButton::ProgressState state)
@@ -337,11 +337,13 @@ void QWinTaskbarButtonPrivate::updateOverlayIcon()
         descrPtr = new wchar_t[overlayIconDescription.length() + 1];
         descrPtr[overlayIconDescription.toWCharArray(descrPtr)] = 0;
     }
-    if (!overlayIcon.isNull()) {
+    if (!overlayIcon.isNull())
         hicon = QWinExtras::toHICON(overlayIcon.pixmap(iconSize()));
-    }
 
-    pTbList->SetOverlayIcon(handle(), hicon, descrPtr);
+    if (hicon)
+        pTbList->SetOverlayIcon(handle(), hicon, descrPtr);
+    else if (!hicon && !overlayIcon.isNull())
+        pTbList->SetOverlayIcon(handle(), (HICON)LoadImage(0, IDI_APPLICATION, IMAGE_ICON, SM_CXSMICON, SM_CYSMICON, LR_SHARED), descrPtr);
 
     if (hicon)
         DeleteObject(hicon);
