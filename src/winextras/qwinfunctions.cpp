@@ -210,6 +210,34 @@ HRGN QWinExtras::toHRGN(const QRegion &region)
 /*!
     \since 5.2
 
+    Returns a QRegion that is equivalent to the given \a hrgn.
+ */
+QRegion QWinExtras::fromHRGN(HRGN hrgn)
+{
+    DWORD regionDataSize = GetRegionData(hrgn, 0, NULL);
+    if (regionDataSize == 0)
+        return QRegion();
+
+    LPRGNDATA regionData = (LPRGNDATA)malloc(regionDataSize);
+    if (!regionData)
+        return QRegion();
+
+    QRegion region;
+    if (GetRegionData(hrgn, regionDataSize, regionData) == regionDataSize) {
+        LPRECT pRect = (LPRECT)regionData->Buffer;
+        for (DWORD i = 0; i < regionData->rdh.nCount; ++i)
+            region += QRect(pRect[i].left, pRect[i].top,
+                            pRect[i].right - pRect[i].left,
+                            pRect[i].bottom - pRect[i].top);
+    }
+
+    free(regionData);
+    return region;
+}
+
+/*!
+    \since 5.2
+
     Returns a message string which explains \a hresult error id specified or empty string
     if explanation cannot be found.
  */

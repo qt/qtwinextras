@@ -77,6 +77,7 @@ HICON Q_WINEXTRAS_EXPORT toHICON(const QPixmap &p);
 QImage Q_WINEXTRAS_EXPORT imageFromHBITMAP(HDC hdc, HBITMAP bitmap, int width, int height);
 QPixmap Q_WINEXTRAS_EXPORT fromHICON(HICON icon);
 HRGN Q_WINEXTRAS_EXPORT toHRGN(const QRegion &region);
+QRegion Q_WINEXTRAS_EXPORT fromHRGN(HRGN hrgn);
 
 QString Q_WINEXTRAS_EXPORT stringFromHresult(HRESULT hresult);
 QString Q_WINEXTRAS_EXPORT errorStringFromHresult(HRESULT hresult);
@@ -252,6 +253,7 @@ HICON toHICON(const QPixmap &p);
 QImage imageFromHBITMAP(HDC hdc, HBITMAP bitmap, int w, int h);
 QPixmap fromHICON(HICON icon);
 HRGN toHRGN(const QRegion &region);
+QRegion fromHRGN(HRGN hrgn);
 QString stringFromHresult(HRESULT hresult);
 QString errorStringFromHresult(HRESULT hresult);
 QColor colorizationColor(bool *opaqueBlend = 0);
