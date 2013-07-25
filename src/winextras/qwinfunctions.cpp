@@ -72,12 +72,12 @@ Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON(HICON icon);
     \brief The QWinExtras namespace contains miscellaneous Windows-specific functions.
     \inheaderfile QWinFunctions
 
-    \section2 Type conversion
+    \section2 Type Conversion
 
     The QWinExtras namespace provides functions with the help of which Qt objects of classes such as QPixmap or QImage
     can be converted to Windows HBITMAP or HICON handle and vice versa.
 
-    \section2 DWM and glass frame
+    \section2 DWM and Glass Frame
 
     The glass frame firstly introduced with Windows Vista can be easily manipulated using extendFrameIntoClientArea() and enableBlurBehindWindow() functions.
     Windows 8 lost glass effect, but applications still can integrate their windows into system frame.

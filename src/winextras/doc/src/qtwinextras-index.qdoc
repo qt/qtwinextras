@@ -32,7 +32,7 @@
 
     The Qt Windows Extras module provides classes and functions which allow using some Windows APIs in Qt-way, including but no limiting to type conversion functions.
 
-    \section1 Getting started
+    \section1 Getting Started
 
     To include the definitions of the module's classes and functions, use the following directive:
 
