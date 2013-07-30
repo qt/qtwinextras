@@ -43,7 +43,6 @@ import QtWinExtras 1.0
 
 /*!
     \qmltype JumpLink
-    \instantiates QQuickJumpListItem
     \inqmlmodule QtWinExtras
 
     \brief Represents a command to a application.

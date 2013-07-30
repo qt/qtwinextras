@@ -43,7 +43,6 @@ import QtWinExtras 1.0
 
 /*!
     \qmltype JumpDestination
-    \instantiates QQuickJumpListItem
     \inqmlmodule QtWinExtras
 
     \brief Represents a file, which can be edited or viewed by application.
