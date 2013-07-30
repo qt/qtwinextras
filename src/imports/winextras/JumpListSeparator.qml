@@ -43,6 +43,7 @@ import QtWinExtras 1.0
 
 /*!
     \qmltype JumpListSeparator
+    \inherits JumpListItem
     \inqmlmodule QtWinExtras
 
     \brief Represents a task list separator.
