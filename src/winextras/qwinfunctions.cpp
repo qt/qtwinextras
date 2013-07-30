@@ -74,24 +74,39 @@ Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON(HICON icon);
 
     \section2 Type Conversion
 
-    The QWinExtras namespace provides functions with the help of which Qt objects of classes such as QPixmap or QImage
-    can be converted to Windows HBITMAP or HICON handle and vice versa.
+    The QWinExtras namespace provides functions to convert Qt objects of classes
+    such as QPixmap or QImage to Windows HBITMAP or HICON handles, and vice
+    versa.
 
     \section2 DWM and Glass Frame
 
-    The glass frame firstly introduced with Windows Vista can be easily manipulated using extendFrameIntoClientArea() and enableBlurBehindWindow() functions.
-    Windows 8 lost glass effect, but applications still can integrate their windows into system frame.
-    Applications can use that feature to visually separate window controls from the rest if it or focus user's attention on window content.
+    You can determine whether a window is included in the DWM Flip3D rendering.
 
-    \image glass.png Glass frame extended into client area of a window.
+    The glass frame that was first introduced with Windows Vista can be easily
+    manipulated using the extendFrameIntoClientArea() and
+    enableBlurBehindWindow() functions. Windows 8 lost the glass effect, but
+    applications can still integrate their windows into the system frame to
+    visually separate window controls from the rest of the window or to focus
+    the user's attention on window content.
 
-    Windows 7 \b {Aero Peek} feature gives user power of X-ray vision allowing user to peer past all open windows straight to desktop and gadgets placed there.
-    An application can use the setWindowExcludedFromPeek function to exclude it's window from Aero Peek to allow user to view window contents without him actually switching to it.
-    That behavior, for example, can be enabled for a gadget-like window of for a window which constantly displays some monitoring data.
+    \image glass.png "Glass frame extended into client area of a window"
 
-    \note The Aero Peek is disabled in Windows 8 by defalut but can be enabled by user.
+    \section2 Aero Peek
 
-    \image peek-on.png A window excluded from Aero Peek
+    The Windows 7 \b {Aero Peek} feature gives the users the powers of X-ray
+    vision that enable them to peek past all open windows straight at the
+    desktop and the gadgets placed there. They can view the contents of a window
+    without  actually switching to it. You can enable Aero Peek for a
+    gadget-like window or for a window that constantly displays monitoring data.
+
+    You can use the setWindowExcludedFromPeek() function to exclude an
+    application window from Aero Peek.
+
+    \note Aero Peek is disabled in Windows 8 by default but can be enabled
+    by the user.
+
+    \image peek-on.png "A window excluded from Aero Peek"
+
  */
 
 /*!
@@ -111,7 +126,7 @@ HBITMAP QWinExtras::createMask(const QBitmap &bitmap)
 /*!
     \since 5.2
 
-    Creates a \c HBITMAP equivalent to the QPixmap \a p,
+    Creates a \c HBITMAP equivalent of the QPixmap \a p,
     based on the given \a format. Returns the \c HBITMAP handle.
 
     It is the caller's responsibility to free the \c HBITMAP data
@@ -140,7 +155,7 @@ QPixmap QWinExtras::fromHBITMAP(HBITMAP bitmap, QWinExtras::HBitmapFormat format
 /*!
     \since 5.2
 
-    Creates a \c HICON equivalent to the QPixmap \a p.
+    Creates a \c HICON equivalent of the QPixmap \a p.
     Returns the \c HICON handle.
 
     It is the caller's responsibility to free the \c HICON data after use.
@@ -157,7 +172,7 @@ HICON QWinExtras::toHICON(const QPixmap &p)
 
     Returns a QImage that is equivalent to the
     given \a bitmap. The conversion is based on the specified \c HDC context \a hdc
-    using specified \a width and \a height.
+    using the specified \a width and \a height.
 
     \sa toHBITMAP()
 */
@@ -238,8 +253,8 @@ QRegion QWinExtras::fromHRGN(HRGN hrgn)
 /*!
     \since 5.2
 
-    Returns a message string which explains \a hresult error id specified or empty string
-    if explanation cannot be found.
+    Returns a message string that explains the \a hresult error id specified or
+    an empty string if the explanation cannot be found.
  */
 QString QWinExtras::stringFromHresult(HRESULT hresult)
 {
@@ -255,7 +270,8 @@ QString QWinExtras::stringFromHresult(HRESULT hresult)
 /*!
     \since 5.2
 
-    Returns code name of \a hresult error id specified (usually WinAPI macros name) or empty string if message is unknown.
+    Returns the code name of the \a hresult error id specified (usually the name
+    of the WinAPI macro) or an empty string if the message is unknown.
  */
 QString QWinExtras::errorStringFromHresult(HRESULT hresult)
 {
@@ -1445,7 +1461,9 @@ QString QWinExtras::errorStringFromHresult(HRESULT hresult)
 /*!
     \since 5.2
 
-    Returns DWM colorization color. After function returns the optional \a opaqueBlend will contain true if the color is an opaque blend and false otherwise.
+    Returns the DWM colorization color. After the function returns, the optional
+    \a opaqueBlend will contain true if the color is an opaque blend and false
+    otherwise.
  */
 QColor QWinExtras::colorizationColor(bool *opaqueBlend)
 {
@@ -1462,9 +1480,10 @@ QColor QWinExtras::colorizationColor(bool *opaqueBlend)
 /*!
     \since 5.2
 
-    Returns real colorization color, set by user, using undocumented registry key.
-    API-based function \c getColorizationColor() returns a alpha-blended color which is often more like semitransparent gray
-    than something similar to what is chosen by user.
+    Returns the real colorization color, set by the user, using an undocumented
+    registry key. The API-based function \c getColorizationColor() returns an
+    alpha-blended color which often turns out a semitransparent gray rather
+    than something similar to what is chosen by the user.
 
     \sa QWinExtras::colorizationColor()
  */
@@ -1490,7 +1509,7 @@ QColor QWinExtras::realColorizationColor()
 /*!
     \since 5.2
 
-    Excludes the \a window from Aero Peek if \a exclude is \c true.
+    Excludes the specified \a window from Aero Peek if \a exclude is true.
  */
 void QWinExtras::setWindowExcludedFromPeek(QWindow *window, bool exclude)
 {
@@ -1508,7 +1527,7 @@ void QWinExtras::setWindowExcludedFromPeek(QWindow *window, bool exclude)
 /*!
     \since 5.2
 
-    Returns true if the \a window is excluded from Aero Peek.
+    Returns true if the specified \a window is excluded from Aero Peek.
  */
 bool QWinExtras::isWindowExcludedFromPeek(QWindow *window)
 {
@@ -1527,7 +1546,9 @@ bool QWinExtras::isWindowExcludedFromPeek(QWindow *window)
 /*!
     \since 5.2
 
-    Disables Aero Peek for the \a window when hovering taskbar thumbnail of the window with mouse pointer if \a disallow is true and allows otherwise.
+    Disables Aero Peek for the specified \a window when hovering over the
+    taskbar thumbnail of the window with the mouse pointer if \a disallow is
+    true; otherwise allows it.
 
     The default is false.
  */
@@ -1547,7 +1568,8 @@ void QWinExtras::setWindowDisallowPeek(QWindow *window, bool disallow)
 /*!
     \since 5.2
 
-    Returns true if Aero Peek is disallowed on thumbnail of this \a window.
+    Returns true if Aero Peek is disallowed on the thumbnail of the specified
+    \a window.
  */
 bool QWinExtras::isWindowPeekDisallowed(QWindow *window)
 {
@@ -1566,7 +1588,7 @@ bool QWinExtras::isWindowPeekDisallowed(QWindow *window)
 /*!
     \since 5.2
 
-    Set Flip3D \a policy for \a window.
+    Sets the Flip3D policy \a policy for the specified \a window.
  */
 void QWinExtras::setWindowFlip3DPolicy(QWindow *window, QWinExtras::WindowFlip3DPolicy policy)
 {
@@ -1598,13 +1620,13 @@ void QWinExtras::setWindowFlip3DPolicy(QWindow *window, QWinExtras::WindowFlip3D
 /*!
     \fn QWinExtras::WindowFlip3DPolicy QWinExtras::windowFlip3DPolicy(QWidget *window)
     \since 5.2
-    \overload QWinExtras::WindowFlip3DPolicy QWinExtras::windowFlip3DPolicy()
+    \overload QWinExtras::windowFlip3DPolicy()
  */
 
 /*!
     \since 5.2
 
-    Returns current Flip3D policy for \a window.
+    Returns the current Flip3D policy for the specified \a window.
  */
 QWinExtras::WindowFlip3DPolicy QWinExtras::windowFlip3DPolicy(QWindow *window)
 {
@@ -1643,13 +1665,17 @@ void qt_ExtendFrameIntoClientArea(QWindow *window, int left, int top, int right,
 /*!
     \since 5.2
 
-    Extend glass frame into client area of the \a window using \a left, \a top, \a right and \a bottom margin values.
+    Extends the glass frame into the client area of the specified \a window
+    using the \a left, \a top, \a right, and \a bottom margin values.
 
-    Pass -1 as values for any of the four margins to fully extend frame, creating "sheet of glass" effect.
+    Pass -1 as values for any of the four margins to fully extend the frame,
+    creating a \e {sheet of glass} effect.
 
-    If you want extended frame to act like standard window border, you should handle that yourself.
+    If you want the extended frame to act like a standard window border, you
+    should handle that yourself.
 
-    \note If the \a window is a QWidget handle, then you should set the Qt::WA_NoSystemBackground attribute to your widget.
+    \note If \a window is a QWidget handle, set the
+    Qt::WA_NoSystemBackground attribute for your widget.
 
     \sa QWinExtras::resetExtendedFrame()
  */
@@ -1663,14 +1689,16 @@ void QWinExtras::extendFrameIntoClientArea(QWindow *window, int left, int top, i
     \since 5.2
     \overload QWinExtras::extendFrameIntoClientArea()
 
-    Convenience overload which allows passing frame sizes in a \a margins structure.
+    Convenience overload that allows passing frame sizes in a \a margins
+    structure.
  */
 
 /*!
     \since 5.2
     \overload QWinExtras::extendFrameIntoClientArea()
 
-    Extend glass frame into client area of the \a window using \a margins provided.
+    Extends the glass frame into the client area of the specified \a window
+    using the specified \a margins.
  */
 void QWinExtras::extendFrameIntoClientArea(QWindow *window, const QMargins &margins)
 {
@@ -1686,11 +1714,13 @@ void QWinExtras::extendFrameIntoClientArea(QWindow *window, const QMargins &marg
 /*!
     \since 5.2
 
-    Resets glass frame and restores \a window attributes.
+    Resets the glass frame and restores the \a window attributes.
 
-    This functions just calls \c extendFrameIntoClientArea() with margins set to 0 and is provided for convenience.
+    This convenience function calls extendFrameIntoClientArea() with margins set
+    to 0.
 
-    \note You should unset the \c Qt::WA_NoSystemBackground attribute if you did that in order to \c extendFrameIntoClientArea() to work.
+    \note You must unset the Qt::WA_NoSystemBackground attribute for
+    extendFrameIntoClientArea() to work.
 
     \sa QWinExtras::extendFrameIntoClientArea()
  */
@@ -1709,7 +1739,8 @@ void QWinExtras::resetExtendedFrame(QWindow *window)
 /*!
     \since 5.2
 
-    Enables the blur effect for the \a window on a specified \a region.
+    Enables the blur effect for the specified \a region of the specified
+    \a window.
 
     \sa disableBlurBehindWindow()
  */
@@ -1742,7 +1773,7 @@ void QWinExtras::enableBlurBehindWindow(QWindow *window, const QRegion &region)
 /*!
     \since 5.2
 
-    Enables blur effect on a \a window.
+    Enables the blur effect for the specified \a window.
 
     \sa disableBlurBehindWindow()
  */
@@ -1760,7 +1791,7 @@ void QWinExtras::enableBlurBehindWindow(QWindow *window)
 /*!
     \since 5.2
 
-    Disables previuosly enabled blur effect on the \a window.
+    Disables the previously enabled blur effect for the specified \a window.
 
     \sa enableBlurBehindWindow()
  */
@@ -1776,7 +1807,7 @@ void QWinExtras::disableBlurBehindWindow(QWindow *window)
 /*!
     \since 5.2
 
-    Returns DWM composition state.
+    Returns the DWM composition state.
  */
 bool QWinExtras::isCompositionEnabled()
 {
@@ -1790,9 +1821,10 @@ bool QWinExtras::isCompositionEnabled()
 /*!
     \since 5.2
 
-    Set whether Windows Desktop composition is \a enabled.
+    Sets whether the Windows Desktop composition is \a enabled.
 
-    \note Underlying function declared deprecated as of Windows 8 and has no effect.
+    \note The underlying function was declared deprecated as of Windows 8 and
+    takes no effect.
  */
 void QWinExtras::setCompositionEnabled(bool enabled)
 {
@@ -1817,9 +1849,11 @@ bool QWinExtras::isCompositionOpaque()
 /*!
     \since 5.2
 
-    Set Application User Model ID \a id.
+    Sets the Application User Model ID \a id.
 
-    More at http://msdn.microsoft.com/en-us/library/windows/desktop/dd378459.aspx
+    For more information, see
+    \l{http://msdn.microsoft.com/en-us/library/windows/desktop/dd378459.aspx}
+    {Application User Model IDs}.
  */
 void QWinExtras::setCurrentProcessExplicitAppUserModelID(const QString &id)
 {
@@ -1869,9 +1903,13 @@ ITaskbarList2 *qt_createITaskbarList2()
 /*!
     \since 5.2
 
-    Marks a \a window as full-screen in order to handle it correctly by the shell if \a fullscreen is true and removes the mark otherwise.
+    Marks the specified \a window as running in the full-screen mode if
+    \a fullscreen is true, so that the shell handles it correctly. Otherwise,
+    removes the mark.
 
-    \note You don't usually need to call this function as Windows taskbar always tries to determine whether windows is fullscreen.
+    \note You do not usually need to call this function, because the Windows
+    taskbar always tries to determine whether a window is running in the
+    full-screen mode.
  */
 void QWinExtras::markFullscreenWindow(QWindow *window, bool fullscreen)
 {
@@ -1891,7 +1929,7 @@ void QWinExtras::markFullscreenWindow(QWindow *window, bool fullscreen)
 /*!
     \since 5.2
 
-    Activates an item on the taskbar without activating \a window itself.
+    Activates an item on the taskbar without activating the \a window itself.
  */
 void QWinExtras::taskbarActivateTab(QWindow *window)
 {
@@ -1911,7 +1949,8 @@ void QWinExtras::taskbarActivateTab(QWindow *window)
 /*!
     \since 5.2
 
-    Marks an item on the taskbar which represents \a window as active but not visually activates it.
+    Marks the item that represents the specified \a window on the taskbar
+    as active, but does not activate it visually.
  */
 void QWinExtras::taskbarActivateTabAlt(QWindow *window)
 {
@@ -1931,7 +1970,7 @@ void QWinExtras::taskbarActivateTabAlt(QWindow *window)
 /*!
     \since 5.2
 
-    Adds an item for the \a window to taskbar.
+    Adds an item for the specified \a window to the taskbar.
  */
 void QWinExtras::taskbarAddTab(QWindow *window)
 {
@@ -1951,7 +1990,7 @@ void QWinExtras::taskbarAddTab(QWindow *window)
 /*!
     \since 5.2
 
-    Removes the \a window from taskbar.
+    Removes the specified \a window from the taskbar.
  */
 void QWinExtras::taskbarDeleteTab(QWindow *window)
 {
@@ -1970,17 +2009,20 @@ void QWinExtras::taskbarDeleteTab(QWindow *window)
     This enum defines how the conversion between \c
     HBITMAP and QPixmap is performed.
 
-    \value HBitmapNoAlpha The alpha channel is ignored and always treated as
+    \value  HBitmapNoAlpha
+    The alpha channel is ignored and always treated as
     being set to fully opaque. This is preferred if the \c HBITMAP is
     used with standard GDI calls, such as \c BitBlt().
 
-    \value HBitmapPremultipliedAlpha The \c HBITMAP is treated as having an
+    \value HBitmapPremultipliedAlpha
+    The \c HBITMAP is treated as having an
     alpha channel and premultiplied colors. This is preferred if the
     \c HBITMAP is accessed through the \c AlphaBlend() GDI function.
 
-    \value HBitmapAlpha The \c HBITMAP is treated as having a plain alpha
+    \value HBitmapAlpha
+    The \c HBITMAP is treated as having a plain alpha
     channel. This is the preferred format if the \c HBITMAP is going
-    to be used as an application icon or systray icon.
+    to be used as an application icon or a systray icon.
 
     \sa fromHBITMAP(), toHBITMAP()
 */
@@ -1990,11 +2032,19 @@ void QWinExtras::taskbarDeleteTab(QWindow *window)
 
     \since 5.2
 
-    \value FlipDefault      Let the OS decide.
+    This enum type specifies the Flip3D window policy.
 
-    \value FlipExcludeAbove Exclude the window from Flip3D and display it above Flip3D.
+    \value  FlipDefault
+            Let the OS decide whether to include the window in the Flip3D
+            rendering.
 
-    \value FlipExcludeBelow Exclude the window from Flip3D and display it below Flip3D.
+    \value  FlipExcludeAbove
+            Exclude the window from Flip3D and display it above the Flip3D
+            rendering.
+
+    \value  FlipExcludeBelow
+            Exclude the window from Flip3D and display it below the Flip3D
+            rendering.
 
     \sa setWindowFlip3DPolicy()
  */

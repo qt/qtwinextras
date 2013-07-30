@@ -71,14 +71,14 @@ public:
     \inmodule QtWinExtras
     \since 5.2
     \inheaderfile QJumpList
-    \brief This class represents Jump List destination or link.
+    \brief The QJumpListItem class represents a Jump List destination or link.
 
     Objects of this class are returned by QJumpList::removedDestinations()
-    and can also be used to add items to Jump List.
+    and can also be used to add items to a Jump List.
  */
 
 /*!
-    Constructs a QJumpListItem with specified \a type.
+    Constructs a QJumpListItem with the specified \a type.
  */
 QJumpListItem::QJumpListItem(QJumpListItem::Type type) :
     d_ptr(new QJumpListItemPrivate)
@@ -94,7 +94,7 @@ QJumpListItem::~QJumpListItem()
 }
 
 /*!
-    Sets item \a type.
+    Sets the item \a type.
  */
 void QJumpListItem::setType(QJumpListItem::Type type)
 {
@@ -103,7 +103,7 @@ void QJumpListItem::setType(QJumpListItem::Type type)
 }
 
 /*!
-    Returns item type.
+    Returns the item type.
  */
 QJumpListItem::Type QJumpListItem::type() const
 {
@@ -112,11 +112,19 @@ QJumpListItem::Type QJumpListItem::type() const
 }
 
 /*!
-    Sets item \a filePath, meaning of which depends on type of this item.
+    Sets the item \a filePath, the meaning of which depends on the type of this
+    item:
 
-    If item type is QJumpListItem::Destination, then \a filePath is path to a file, which can be opened by application.
+    \list
 
-    If item type is QJumpListItem::Link, then \a filePath is path to an executable, which will be executed when this item is clicked by user.
+        \li If the item type is QJumpListItem::Destination, \a filePath is the
+            path to a file that can be opened by an application.
+
+        \li If the item type is QJumpListItem::Link, \a filePath is the path to
+            an executable that is executed when this item is clicked by the
+            user.
+
+    \endlist
 
     \sa setWorkingDirectory(), setArguments()
  */
@@ -127,7 +135,7 @@ void QJumpListItem::setFilePath(const QString &filePath)
 }
 
 /*!
-    Returns file path, set by setFilePath().
+    Returns the file path set by setFilePath().
  */
 QString QJumpListItem::filePath() const
 {
@@ -136,9 +144,9 @@ QString QJumpListItem::filePath() const
 }
 
 /*!
-    Sets working directory path of this item using \a workingDirectory provided.
+    Sets the path to the working directory of this item to \a workingDirectory.
 
-    This value is used only if type of this item is QJumpListItem::Link.
+    This value is used only if the type of this item is QJumpListItem::Link.
 
     \sa setFilePath()
  */
@@ -149,7 +157,7 @@ void QJumpListItem::setWorkingDirectory(const QString &workingDirectory)
 }
 
 /*!
-    Returns working directory path.
+    Returns the working directory path.
  */
 QString QJumpListItem::workingDirectory() const
 {
@@ -158,9 +166,9 @@ QString QJumpListItem::workingDirectory() const
 }
 
 /*!
-    Sets \a icon of this item.
+    Sets the \a icon of this item.
 
-    This value is used only if type of this item is QJumpListItem::Link.
+    This value is used only if the type of this item is QJumpListItem::Link.
  */
 void QJumpListItem::setIcon(const QIcon &icon)
 {
@@ -169,7 +177,7 @@ void QJumpListItem::setIcon(const QIcon &icon)
 }
 
 /*!
-    Returns icon set for this item.
+    Returns the icon set for this item.
  */
 QIcon QJumpListItem::icon() const
 {
@@ -178,9 +186,9 @@ QIcon QJumpListItem::icon() const
 }
 
 /*!
-    Sets \a title of this item.
+    Sets the \a title of this item.
 
-    This value is used only if type of this item is QJumpListItem::Link.
+    This value is used only if the type of this item is QJumpListItem::Link.
  */
 void QJumpListItem::setTitle(const QString &title)
 {
@@ -189,7 +197,7 @@ void QJumpListItem::setTitle(const QString &title)
 }
 
 /*!
-    Returns title of this item.
+    Returns the title of this item.
  */
 QString QJumpListItem::title() const
 {
@@ -198,9 +206,9 @@ QString QJumpListItem::title() const
 }
 
 /*!
-    Sets \a description for this item.
+    Sets a \a description for this item.
 
-    This value is used only if type of this item is QJumpListItem::Link.
+    This value is used only if the type of this item is QJumpListItem::Link.
  */
 void QJumpListItem::setDescription(const QString &description)
 {
@@ -209,7 +217,7 @@ void QJumpListItem::setDescription(const QString &description)
 }
 
 /*!
-    Returns description of this item.
+    Returns the description of this item.
  */
 QString QJumpListItem::description() const
 {
@@ -220,7 +228,7 @@ QString QJumpListItem::description() const
 /*!
     Sets command-line \a arguments for this item.
 
-    This value is used only if type of this item is QJumpListItem::Link.
+    This value is used only if the type of this item is QJumpListItem::Link.
 
     \sa setFilePath()
  */
@@ -231,7 +239,7 @@ void QJumpListItem::setArguments(const QStringList &arguments)
 }
 
 /*!
-    Returns command-line arguments of this item.
+    Returns the command-line arguments of this item.
  */
 QStringList QJumpListItem::arguments() const
 {
@@ -537,22 +545,36 @@ public:
 /*!
     \class QJumpList
     \inmodule QtWinExtras
-    \brief This class represents a transparent wrapper around Windows Jump Lists.
+    \brief The QJumpList class represents a transparent wrapper around Windows
+    Jump Lists.
 
     \since 5.2
 
-    An application can use Jump Lists to provide user with faster access to files or display shortcuts to tasks or commands.
+    An application can use Jump Lists to provide users with faster access to
+    files or to display shortcuts to tasks or commands.
 
     \image jumplist.png Jump List
 
-    \b Destinations — categorized shortucts to files and URLs which application can handle and even links to another applications.
-    Windows provides two standard categories, which can be added to custom Jump List, in addition to ones that application can create by itself.
-    \b Recent and \b Frequent — so called 'known' categories — are populated automatically by Windows when application
-    uses QFileDialog::getOpenFileName function or when the application is launched to open a file from Windos Shell.
-    \note in order for application to be able to add destinations to its Jump Lists it should associate itself with
-    file types it can handle.
+    \list
 
-    \b Tasks — shortcuts to application functionality. Application can display there its most frequently used context-independent functions.
+        \li \b Destinations — categorized shortcuts to files and URLs that the
+            application can handle and even links to other applications.
+            Windows provides two standard categories that can be added to the
+            custom Jump List, in addition to the ones that the application can
+            create itself.
+        \li \b Recent and \b Frequent — so called \e known categories that are
+            populated automatically by Windows when the application uses the
+            QFileDialog::getOpenFileName() function or when the application is
+            launched to open a file from the Windows shell.
+
+        \li \b Tasks — shortcuts to application functionality. An application
+            can display its most frequently used context-independent functions
+            on task lists.
+
+    \endlist
+
+    \note To be able to add destinations to its Jump Lists, the application
+    should associate itself with the file types it can handle.
 
     \section3 Example
 
@@ -564,14 +586,18 @@ public:
 
     This enum specifies QJumpListItem type, changing its meaning for QJumpList.
 
-    \value Unknown Invalid item type.
-    \value Destination Item acts as link to file which application can open.
-    \value Link Item represends a link to some application.
-    \value Separator Item becomes a separator. Used only for task list.
+    \value  Unknown
+            Invalid item type.
+    \value  Destination
+            Item acts as a link to a file that the application can open.
+    \value  Link
+            Item represents a link to some application.
+    \value  Separator
+            Item becomes a separator. This value is used only for task lists.
  */
 
 /*!
-    Constructs a QJumpList with parent object \a parent.
+    Constructs a QJumpList with the parent object \a parent.
  */
 QJumpList::QJumpList(QObject *parent) :
     QObject(parent), d_ptr(new QJumpListPrivate)
@@ -582,8 +608,8 @@ QJumpList::QJumpList(QObject *parent) :
 }
 
 /*!
-    Destroys the QJumpList. If commit() or abort() were not called for corresponding begin() call
-    thenJump List building is aborted.
+    Destroys the QJumpList. If commit() or abort() were not called for the
+    corresponding begin() call, building the Jump List is aborted.
  */
 QJumpList::~QJumpList()
 {
@@ -596,8 +622,8 @@ QJumpList::~QJumpList()
 
 /*!
     Initiates Jump List building.
-    This method must be called before adding any item.
-    Returns true in success and false otherwise.
+    This method must be called before adding Jump List items.
+    Returns true if successful; otherwise returns false.
  */
 bool QJumpList::begin()
 {
@@ -619,7 +645,7 @@ bool QJumpList::begin()
 
 /*!
     Completes Jump List building, initiated by begin(), and displays it.
-    Returns true in success and false otherwise.
+    Returns true if successful; otherwise returns false.
  */
 bool QJumpList::commit()
 {
@@ -646,8 +672,9 @@ bool QJumpList::commit()
 }
 
 /*!
-    Aborts Jump List building initiated by begin() leving currently active Jump List unchanged.
-    Returns true on success and false otherwise.
+    Aborts Jump List building initiated by begin() and leaves the currently
+    active Jump List unchanged.
+    Returns true if successful; otherwise returns false.
  */
 bool QJumpList::abort()
 {
@@ -663,8 +690,8 @@ bool QJumpList::abort()
 }
 
 /*!
-    Clears application Jump List.
-    Returns true on success and false otherwise.
+    Clears the application Jump List.
+    Returns true if successful; otherwise returns false.
  */
 bool QJumpList::clear()
 {
@@ -682,10 +709,11 @@ bool QJumpList::clear()
     return result;
 }
 /*!
-    Specifies a unique AppUserModelID \a appId for the application whose custom Jump List will be built using this object.
+    Specifies a unique AppUserModelID \a appId for the application whose custom
+    Jump List will be built using this object.
     This is optional.
     This method must be called before begin().
-    Returns true in success and false otherwise.
+    Returns true if successful; otherwise returns false.
 */
 bool QJumpList::setApplicationId(const QString &appId)
 {
@@ -702,7 +730,8 @@ bool QJumpList::setApplicationId(const QString &appId)
 }
 
 /*!
-    Retrieves destinations which were removed by user and must not be added again.
+    Retrieves destinations that were removed by the user and must not be added
+    again.
     Adding a group with removed destinations will fail.
  */
 QList<QJumpListItem *> QJumpList::removedDestinations() const
@@ -716,7 +745,8 @@ QList<QJumpListItem *> QJumpList::removedDestinations() const
 }
 
 /*!
-    Returns the number of items which Jump List will display. This is configured by user.
+    Returns the number of items that the Jump List will display. This is
+    configured by the user.
  */
 int QJumpList::capacity() const
 {
@@ -726,9 +756,9 @@ int QJumpList::capacity() const
 
 /*!
     \property QJumpList::isRecentCategoryShown
-    \brief whether to show 'Recent' known category.
+    \brief whether to show the known Recent category
 
-    This property's default is false.
+    The default value of this property is false.
     Changes to this property are applied only after commit() is called.
 */
 void QJumpList::setRecentCategoryShown(bool show)
@@ -745,9 +775,9 @@ bool QJumpList::isRecentCategoryShown() const
 
 /*!
     \property QJumpList::isFrequentCategoryShown
-    \brief whether to show 'Recent' known category.
+    \brief whether to show the known Frequent category
 
-    This property's default is false.
+    The default value of this property is false.
     Changes to this property are applied only after commit() is called.
 */
 void QJumpList::setFrequentCategoryShown(bool show)
@@ -763,9 +793,9 @@ bool QJumpList::isFrequentCategoryShown() const
 }
 
 /*!
-    Declares building of a custom category with specified \a title.
+    Declares the building of a custom category with the specified \a title.
 
-    begin() must be called before call to this method.
+    begin() must be called before calling this method.
  */
 void QJumpList::beginCategory(const QString &title)
 {
@@ -782,9 +812,9 @@ void QJumpList::beginCategory(const QString &title)
 }
 
 /*!
-    Declares building of a task list.
+    Declares the building of a task list.
 
-    begin() must be called before call to this method.
+    begin() must be called before calling this method.
  */
 void QJumpList::beginTasks()
 {
@@ -799,10 +829,10 @@ void QJumpList::beginTasks()
 }
 
 /*!
-    Adds a \a item to Jump List.
+    Adds an \a item to the Jump List.
 
-    beginCategory() or beginTasks() should be called before call to this method.
-    Returns true in success and false otherwise.
+    beginCategory() or beginTasks() should be called before calling this method.
+    Returns true if successful; otherwise returns false.
  */
 bool QJumpList::addItem(QJumpListItem *item)
 {
@@ -816,9 +846,9 @@ bool QJumpList::addItem(QJumpListItem *item)
 }
 
 /*!
-    Adds a destination to Jump List pointing to \a filePath provided.
+    Adds a destination to the Jump List pointing to \a filePath.
 
-    beginCategory() or beginTasks() should be called before call to this method.
+    beginCategory() or beginTasks() should be called before calling this method.
  */
 void QJumpList::addDestination(const QString &filePath)
 {
@@ -832,11 +862,12 @@ void QJumpList::addDestination(const QString &filePath)
 }
 
 /*!
-    \overload addLink(const QIcon &icon, const QString &title, const QString &description, const QString &workingDirectory, const QString &executablePath, const QStringList &arguments)
+    \overload addLink()
 
-    Adds a link to to JumpList using \a title, \a executablePath and optional \a arguments provided.
+    Adds a link to the Jump List using \a title, \a executablePath, and
+    optionally \a arguments.
 
-    beginCategory() or beginTasks() should be called before call to this method.
+    beginCategory() or beginTasks() should be called before calling this method.
  */
 void QJumpList::addLink(const QString &title, const QString &executablePath, const QStringList &arguments)
 {
@@ -844,11 +875,12 @@ void QJumpList::addLink(const QString &title, const QString &executablePath, con
 }
 
 /*!
-    \overload addLink(const QIcon &icon, const QString &title, const QString &description, const QString &workingDirectory, const QString &executablePath, const QStringList &arguments)
+    \overload addLink()
 
-    Adds a link to to JumpList using \a title, \a description, \a executablePath and optional \a arguments provided.
+    Adds a link to the Jump List using \a title, \a description,
+    \a executablePath, and optionally \a arguments.
 
-    beginCategory() or beginTasks() should be called before call to this method.
+    beginCategory() or beginTasks() should be called before calling this method.
  */
 void QJumpList::addLink(const QString &title, const QString &description, const QString &executablePath, const QStringList &arguments)
 {
@@ -856,11 +888,12 @@ void QJumpList::addLink(const QString &title, const QString &description, const 
 }
 
 /*!
-    \overload addLink(const QIcon &icon, const QString &title, const QString &description, const QString &workingDirectory, const QString &executablePath, const QStringList &arguments)
+    \overload addLink()
 
-    Adds a link to to JumpList using \a icon, \a title, \a executablePath and optional \a arguments provided.
+    Adds a link to the Jump List using \a icon, \a title, \a executablePath, and
+    optionally \a arguments.
 
-    beginCategory() or beginTasks() should be called before call to this method.
+    beginCategory() or beginTasks() should be called before calling this method.
  */
 void QJumpList::addLink(const QIcon &icon, const QString &title, const QString &executablePath, const QStringList &arguments)
 {
@@ -868,11 +901,12 @@ void QJumpList::addLink(const QIcon &icon, const QString &title, const QString &
 }
 
 /*!
-    \overload addLink(const QIcon &icon, const QString &title, const QString &description, const QString &workingDirectory, const QString &executablePath, const QStringList &arguments)
+    \overload addLink()
 
-    Adds a link to to JumpList using \a icon, \a title, \a description, \a executablePath and optional \a arguments provided.
+    Adds a link to the Jump List using \a icon, \a title, \a description,
+    \a executablePath, and optionally \a arguments.
 
-    beginCategory() or beginTasks() should be called before call to this method.
+    beginCategory() or beginTasks() should be called before calling this method.
  */
 void QJumpList::addLink(const QIcon &icon, const QString &title, const QString &description, const QString &executablePath, const QStringList &arguments)
 {
@@ -880,9 +914,10 @@ void QJumpList::addLink(const QIcon &icon, const QString &title, const QString &
 }
 
 /*!
-    Adds a link to to JumpList using \a icon, \a title, \a description, \a workingDirectory, \a executablePath and \a arguments provided.
+    Adds a link to the Jump List using \a icon, \a title, \a description,
+    \a workingDirectory, \a executablePath, and \a arguments.
 
-    beginCategory() or beginTasks() should be called before call to this method.
+    beginCategory() or beginTasks() should be called before calling this method.
  */
 void QJumpList::addLink(const QIcon &icon, const QString &title, const QString &description, const QString &workingDirectory, const QString &executablePath, const QStringList &arguments)
 {
@@ -901,9 +936,9 @@ void QJumpList::addLink(const QIcon &icon, const QString &title, const QString &
 }
 
 /*!
-    Adds separator to Jump List.
+    Adds a separator to the Jump List.
 
-    beginTasks() should be called before call to this method.
+    beginTasks() should be called before calling this method.
  */
 void QJumpList::addSeparator()
 {

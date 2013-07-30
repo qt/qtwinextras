@@ -56,24 +56,36 @@ QT_BEGIN_NAMESPACE
 /*!
     \class QWinTaskbarButton
     \inmodule QtWinExtras
-    \brief The QWinTaskbarButton class represents Windows taskbar button for a window.
+    \brief The QWinTaskbarButton class represents the Windows taskbar button for
+    a window.
 
     \since 5.2
 
-    The QWinTaskbarButton class allows setting overlay icons on a button, displaying progress indicator and adding small toolbar to window thumbnail popup.
+    The QWinTaskbarButton class enables you to set overlay icons on a taskbar
+    button, to display a progress indicator, and to add a small toolbar to the
+    window thumbnail popup.
  */
 
 /*!
     \enum QWinTaskbarButton::ProgressState
-    \value NoProgressState No progress indicator.
-    \value IndeterminateState The progress indicator cycles repeatedly.
-    \value NormalState
-    \value PausedState Indicator turns yellow. Use that to show that operation has been paused, but can be continued.
-    \value ErrorState Indicator turns red.
+
+    This enum type specifies the state of the progress indicator.
+
+    \value  NoProgressState
+            No progress indicator is displayed.
+    \value  IndeterminateState
+            The progress indicator cycles repeatedly.
+    \value  NormalState
+            The progress indicator is green.
+    \value PausedState
+            The progress indicator turns yellow. Use this state to show that the
+            operation has been paused, but it can be continued.
+    \value  ErrorState
+            The progress indicator turns red.
  */
 
 /*!
-    Constructs a QWinTaskbarButton with parent object \a parent.
+    Constructs a QWinTaskbarButton with the parent object \a parent.
  */
 QWinTaskbarButton::QWinTaskbarButton(QObject *parent) :
     QObject(parent), d_ptr(new QWinTaskbarButtonPrivate(this))
@@ -89,7 +101,8 @@ QWinTaskbarButton::~QWinTaskbarButton()
 }
 
 /*!
-    Sets \a window, on taskbar button of which this QWinTaskbarButton will operate.
+    Sets the \a window whose taskbar button this QWinTaskbarButton will operate
+    on.
  */
 void QWinTaskbarButton::setWindow(QWindow *window)
 {
@@ -108,7 +121,7 @@ void QWinTaskbarButton::setWindow(QWindow *window)
 
 /*!
     \property QWinTaskbarButton::overlayIcon
-    \brief holds overlay icon of the button.
+    \brief the overlay icon of the button
  */
 QIcon QWinTaskbarButton::overlayIcon() const
 {
@@ -118,7 +131,7 @@ QIcon QWinTaskbarButton::overlayIcon() const
 
 /*!
     \property QWinTaskbarButton::overlayIconAccessibilityDescription
-    \brief holds the overlay icon accessibility description text.
+    \brief the overlay icon accessibility description text
  */
 QString QWinTaskbarButton::overlayIconAccessibilityDescription() const
 {
@@ -128,7 +141,7 @@ QString QWinTaskbarButton::overlayIconAccessibilityDescription() const
 
 /*!
     \property QWinTaskbarButton::progressState
-    \brief holds progress state of the progress indicator.
+    \brief the progress state of the progress indicator
  */
 QWinTaskbarButton::ProgressState QWinTaskbarButton::progressState() const
 {
@@ -138,7 +151,7 @@ QWinTaskbarButton::ProgressState QWinTaskbarButton::progressState() const
 
 /*!
     \property QWinTaskbarButton::progressValue
-    \brief holds the current progress value of the progress indicator.
+    \brief the current progress value of the progress indicator
  */
 int QWinTaskbarButton::progressValue() const
 {
@@ -148,7 +161,7 @@ int QWinTaskbarButton::progressValue() const
 
 /*!
     \property QWinTaskbarButton::progressMinimum
-    \brief holds the minimum value of the progress indicator.
+    \brief the minimum value of the progress indicator
  */
 int QWinTaskbarButton::progressMinimum() const
 {
@@ -158,7 +171,7 @@ int QWinTaskbarButton::progressMinimum() const
 
 /*!
     \property QWinTaskbarButton::progressMaximum
-    \brief holds the maximum value of the progress indicator.
+    \brief the maximum value of the progress indicator
  */
 int QWinTaskbarButton::progressMaximum() const
 {
@@ -168,7 +181,7 @@ int QWinTaskbarButton::progressMaximum() const
 
 /*!
     \internal
-    Used to intercept TaskbarButtonCreated messages.
+    Intercepts TaskbarButtonCreated messages.
  */
 bool QWinTaskbarButton::eventFilter(QObject *object, QEvent *event)
 {
@@ -198,7 +211,7 @@ void QWinTaskbarButton::setOverlayIconAccessibilityDescription(const QString &de
 }
 
 /*!
-    Clear previously set overlay icon.
+    Clears the previously set overlay icon.
     \sa QWinTaskbarButton::setOverlayIcon()
  */
 void QWinTaskbarButton::clearOverlayIcon()
@@ -251,7 +264,7 @@ void QWinTaskbarButton::setProgressMaximum(int max)
 }
 
 /*!
-    Sets both \a minimum and \a maximum values.
+    Sets both the \a minimum and \a maximum values.
  */
 void QWinTaskbarButton::setProgressRange(int minimum, int maximum)
 {
@@ -270,7 +283,8 @@ void QWinTaskbarButton::setProgressRange(int minimum, int maximum)
 /*!
     Resets the progress indicator of this button.
 
-    This function sets progress state to \c NoProgressState and rewinds progress value to minimum.
+    This function sets the progress state to \c NoProgressState and rewinds the
+    progress value to the minimum value.
  */
 void QWinTaskbarButton::resetProgress()
 {
@@ -372,13 +386,14 @@ void QWinTaskbarButtonPrivate::updateProgressValue()
 /*!
     \fn void QWinTaskbarButton::progressStateChanged(const ProgressState state)
 
-    This signal is emitted when \c progressState property changes its value. The \a state argument contains the new value.
+    This signal is emitted when the \c progressState property changes its value.
+    The \a state argument contains the new value.
  */
 
 /*!
     \fn void QWinTaskbarButton::progressValueChanged(int value)
 
-    This signal is emitted when progress indicator \a value changes.
+    This signal is emitted when the progress indicator \a value changes.
  */
 
 QT_END_NAMESPACE

@@ -54,7 +54,8 @@ QT_BEGIN_NAMESPACE
     \instantiates QQuickWinDwmFeatures
     \inqmlmodule QtWinExtras
 
-    \brief The WinDwmFeatures item allows extending glass frame into client area, as well as controlling behavior of Aero Peek and Flip3D.
+    \brief Enables you to extend a glass frame into the client area, as well as
+    to control the behavior of Aero Peek and Flip3D.
  */
 
 /*!
@@ -102,7 +103,7 @@ bool QQuickWinDwmFeatures::colorizationOpaqueBlend() const
 /*!
     \qmlproperty int WinDwmFeatures::topGlassMargin
 
-    Top glass frame height. Default value is 0.
+    The top glass frame margin. The default value is 0.
  */
 void QQuickWinDwmFeatures::setTopGlassMargin(int margin)
 {
@@ -114,7 +115,7 @@ void QQuickWinDwmFeatures::setTopGlassMargin(int margin)
 /*!
     \qmlproperty int WinDwmFeatures::rightGlassMargin
 
-    Right glass frame width. Default value is 0.
+    The right glass frame margin. The default value is 0.
  */
 void QQuickWinDwmFeatures::setRightGlassMargin(int margin)
 {
@@ -126,7 +127,7 @@ void QQuickWinDwmFeatures::setRightGlassMargin(int margin)
 /*!
     \qmlproperty int WinDwmFeatures::bottomGlassMargin
 
-    Bottom glass frame height. Default value is 0.
+    The bottom glass frame margin. The default value is 0.
  */
 void QQuickWinDwmFeatures::setBottomGlassMargin(int margin)
 {
@@ -138,7 +139,7 @@ void QQuickWinDwmFeatures::setBottomGlassMargin(int margin)
 /*!
     \qmlproperty int WinDwmFeatures::leftGlassMargin
 
-    Left glass frame width. Default value is 0.
+    The left glass frame margin. The default value is 0.
  */
 void QQuickWinDwmFeatures::setLeftGlassMargin(int margin)
 {
@@ -195,8 +196,9 @@ void QQuickWinDwmFeatures::setExcludedFromPeek(bool exclude)
 /*!
     \qmlproperty bool WinDwmFeatures::peekDisallowed
 
-    Default is false. Set this to \c true if you want to forbid Aero Peek when user hovers mouse on window thumbnail.
- */
+    Set this value to true if you want to forbid Aero Peek when the user hovers
+    the mouse over the window thumbnail. The default value is false.
+*/
 bool QQuickWinDwmFeatures::peekDisallowed() const
 {
     Q_D(const QQuickWinDwmFeatures);
@@ -221,7 +223,7 @@ void QQuickWinDwmFeatures::setPeekDisallowed(bool disallow)
 /*!
     \qmlproperty WinDwmFeatures::Flip3DPolicy WinDwmFeatures::flip3DPolicy
 
-    Contains current Flip3D policy for the window.
+    The current Flip3D policy for the window.
  */
 QQuickWinDwmFeatures::Flip3DPolicy QQuickWinDwmFeatures::flip3DPolicy() const
 {

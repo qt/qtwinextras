@@ -55,7 +55,7 @@ JumpListItem {
     /*!
         \qmlproperty string JumpDestination::filePath
 
-        Path of the file.
+        The path to the file.
      */
     property string filePath
 }

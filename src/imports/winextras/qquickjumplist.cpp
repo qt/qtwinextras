@@ -49,7 +49,7 @@ QT_BEGIN_NAMESPACE
     \instantiates QQuickJumpList
     \inqmlmodule QtWinExtras
 
-    \brief The JumpList item allows modifying application Jump List.
+    \brief Enables you to modify the application Jump List.
  */
 
 /*!
@@ -85,7 +85,7 @@ QQmlListProperty<QQuickJumpListCategory> QQuickJumpList::destinations()
 /*!
     \qmlproperty bool JumpList::showFrequentCategory
 
-    Contains true if 'frequent' category is shown, false otherwise.
+    Contains true if the \e Frequent category is shown; otherwise false.
  */
 bool QQuickJumpList::showFrequentCategory() const
 {
@@ -100,7 +100,7 @@ void QQuickJumpList::setShowFrequentCategory(bool show)
 /*!
     \qmlproperty bool JumpList::showRecentCategory
 
-    Contains true if 'recent' category is shown, false otherwise.
+    Contains true if the \e Recent category is shown; otherwise false.
  */
 bool QQuickJumpList::showRecentCategory() const
 {
@@ -174,7 +174,7 @@ QQuickJumpListCategory::~QQuickJumpListCategory()
 /*!
     \qmlproperty object JumpCategory::destinations
 
-    Destinations in this category.
+    The destinations in this category.
  */
 QQmlListProperty<QQuickJumpListItem> QQuickJumpListCategory::destinations()
 {
@@ -189,7 +189,7 @@ void QQuickJumpListCategory::setTitle(const QString &title)
 /*!
     \qmlproperty string JumpCategory::title
 
-    Title of the category.
+    The title of the category.
  */
 QString QQuickJumpListCategory::title() const
 {

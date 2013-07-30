@@ -28,12 +28,14 @@
 /*!
     \module QtWinExtras
     \title Qt Windows Extras C++ Classes
-    \brief The Qt Windows Extras module provides classes and functions which allow using some Windows APIs in Qt-way.
+    \brief Provides classes and functions for using some Windows APIs in a Qt way
 
     \ingroup modules
     \ingroup technology-apis
 
-    The namespaces contain Windows-specific functions for type conversion and DWM glass frame manipulation.
+    The QWinExtras namespace contains Windows-specific functions for type
+    conversions and DWM glass frame manipulation.
 
-    The classes provided allow using features, introduced with Windows 7, like JumpLists or progress indicator on taskbar button.
+    The classes enable you to use features introduced with Windows 7, such as
+    Jump Lists or a progress indicator on a taskbar button.
 */

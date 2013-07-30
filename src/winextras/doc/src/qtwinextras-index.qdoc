@@ -28,13 +28,19 @@
 /*!
     \page qtwinextras-index.html
     \title Qt Windows Extras
-    \brief The Qt Windows Extras module provides classes and functions which allow using some Windows APIs in Qt-way.
+    \brief Provides classes and functions for using some Windows APIs in a Qt way
 
-    The Qt Windows Extras module provides classes and functions which allow using some Windows APIs in Qt-way, including but no limiting to type conversion functions.
+    Qt Windows Extras provide classes and functions that enable you to use
+    miscellaneous Windows-specific functions. For example, you can convert Qt
+    objects to Windows object handles and manipulate DWM glass frames.
+
+    In addition, you can use features introduced with Windows 7, such as Aero
+    Peek, Jump Lists, or a progress indicator on a taskbar button.
 
     \section1 Getting Started
 
-    To include the definitions of the module's classes and functions, use the following directive:
+    To include the definitions of the module's classes and functions, use the
+    following directive:
 
     \snippet code/use-qtwinextras.cpp include
 

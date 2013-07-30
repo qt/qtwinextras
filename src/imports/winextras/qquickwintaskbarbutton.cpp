@@ -50,7 +50,9 @@ QT_BEGIN_NAMESPACE
     \instantiates QQuickWinTaskbarButton
     \inqmlmodule QtWinExtras
 
-    \brief The WinTaskbarButton item allows setting overlay icons on a button, displaying progress indicator and adding small toolbar to window thumbnail popup..
+    \brief Enables you to set overlay icons on a taskbar button, to display a
+    progress indicator, and to add a small toolbar to the window thumbnail
+    popup.
 
     \sa QWinTaskbarButton
  */
@@ -82,7 +84,7 @@ void QQuickWinTaskbarButton::setProgressMinimum(int min)
 /*!
     \qmlproperty int WinTaskbarButton::progressMaximum
 
-    Maximum progress value.
+    The maximum progress value.
  */
 int QQuickWinTaskbarButton::progressMaximum() const
 {
@@ -97,7 +99,7 @@ void QQuickWinTaskbarButton::setProgressMaximum(int max)
 /*!
     \qmlproperty int WinTaskbarButton::progressValue
 
-    Displayed progress value.
+    The displayed progress value.
  */
 int QQuickWinTaskbarButton::progressValue() const
 {
@@ -112,7 +114,7 @@ void QQuickWinTaskbarButton::setProgressValue(int progress)
 /*!
     \qmlproperty string WinTaskbarButton::icon
 
-    Overlay icon path.
+    The overlay icon path.
  */
 QString QQuickWinTaskbarButton::overlayIcon() const
 {
@@ -128,7 +130,7 @@ void QQuickWinTaskbarButton::setOverlayIcon(const QString &path)
 /*!
     \qmlproperty int WinTaskbarButton::iconDescription
 
-    Accessibility description for overlay icon.
+    The accessibility description for the overlay icon.
  */
 QString QQuickWinTaskbarButton::iconDescription() const
 {
@@ -144,22 +146,23 @@ void QQuickWinTaskbarButton::setIconDescription(const QString &descr)
 /*!
     \qmlproperty enumeration WinTaskbarButton::progressState
 
-    State of progress indicator.
+    The state of the progress indicator.
 
     The state can be one of the following:
 
     \table
     \header \li Value \li Description
     \row \li NoProgressState
-        \li No progress indicator.
+        \li No progress indicator is displayed.
     \row \li IndeterminateState
         \li The progress indicator cycles repeatedly.
     \row \li NormalState
-        \li
+        \li The progress indicator is green.
     \row \li PausedState
-        \li Indicator turns yellow. Use that to show that operation has been paused, but can be continued.
+        \li The progress indicator turns yellow. Use this state to show that the
+            operation has been paused, but it can be continued.
     \row \li ErrorState
-        \li Indicator turns red.
+        \li The progress indicator turns red.
     \endtable
  */
 QWinTaskbarButton::ProgressState QQuickWinTaskbarButton::progressState() const

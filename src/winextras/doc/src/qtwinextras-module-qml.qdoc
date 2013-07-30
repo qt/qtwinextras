@@ -29,7 +29,7 @@
     \qmlmodule QtWinExtras
     \title Qt Windows Extras QML Types
     \ingroup qmlmodules
-    \brief Enables use of MS Windows features with QML.
+    \brief Enables the use of Windows features with QML.
 
     \section1 QML Types
  */

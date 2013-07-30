@@ -55,14 +55,14 @@ JumpListItem {
     /*!
         \qmlproperty string JumpLink::iconPath
 
-        Path to link icon.
+        The path to a link icon.
      */
     property string iconPath
 
     /*!
         \qmlproperty string JumpLink::executablePath
 
-        Path to executable file.
+        The path to an executable file.
      */
     property string executablePath
 
@@ -76,14 +76,14 @@ JumpListItem {
     /*!
         \qmlproperty string JumpLink::description
 
-        Description of the link.
+        The description of the link.
      */
     property string description
 
     /*!
         \qmlproperty string JumpLink::title
 
-        Title of the link.
+        The title of the link.
      */
     property string title
 }
