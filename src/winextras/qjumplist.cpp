@@ -294,6 +294,13 @@ public:
         }
     }
 
+    inline void clearItems()
+    {
+        isListBegan = false;
+        qDeleteAll(jumpListItems);
+        jumpListItems.clear();
+    }
+
     static QList<QJumpListItem *> fromComCollection(IObjectArray *array)
     {
         QList<QJumpListItem *> list;
@@ -631,9 +638,7 @@ bool QJumpList::commit()
         d->appendCategory();
     }
 
-    d->isListBegan = false;
-    qDeleteAll(d->jumpListItems);
-    d->jumpListItems.clear();
+    d->clearItems();
     HRESULT hresult = d->pDestList->CommitList();
     if (FAILED(hresult))
         QJumpListPrivate::warning("CommitList", hresult);
@@ -650,10 +655,7 @@ bool QJumpList::abort()
     if (!d->pDestList)
         return false;
 
-    d->isListBegan = false;
-    qDeleteAll(d->jumpListItems);
-    qDeleteAll(d->jumpListItems);
-    d->jumpListItems.clear();
+    d->clearItems();
     HRESULT hresult = d->pDestList->AbortList();
     if (FAILED(hresult))
         QJumpListPrivate::warning("AbortList", hresult);
