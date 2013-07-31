@@ -49,6 +49,9 @@ import QtWinExtras 1.0
     \brief Represents a task list separator.
 
     \since 5.2
+
+    The JumpListSeparator type represents a separator in a Jump List. This value
+    is used only for task lists.
  */
 
 JumpListItem {

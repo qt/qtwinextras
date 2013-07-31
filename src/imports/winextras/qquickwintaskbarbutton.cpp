@@ -50,11 +50,13 @@ QT_BEGIN_NAMESPACE
     \instantiates QQuickWinTaskbarButton
     \inqmlmodule QtWinExtras
 
-    \brief Enables you to set overlay icons on a taskbar button, to display a
-    progress indicator, and to add a small toolbar to the window thumbnail
-    popup.
+    \brief Manages Windows taskbar buttons.
 
     \since 5.2
+
+    The WinTaskbarButton type enables you to set overlay icons on a taskbar
+    button, to display a progress indicator, and to add a small toolbar to the
+    window thumbnail popup.
 
     \sa QWinTaskbarButton
  */

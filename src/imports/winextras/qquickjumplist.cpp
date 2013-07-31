@@ -50,7 +50,13 @@ QT_BEGIN_NAMESPACE
     \inqmlmodule QtWinExtras
 
     \brief Enables you to modify the application Jump List.
+
     \since 5.2
+
+    The JumpList type enables you to modify Windows Jump Lists.
+
+    An application can use Jump Lists to provide users with faster access to
+    files or to display shortcuts to tasks or commands.
  */
 
 /*!
@@ -156,7 +162,9 @@ void QQuickJumpList::appendGroup(QQmlListProperty<QQuickJumpListCategory> *prope
     \brief Represents a category of custom destinations.
 
     \since 5.2
-    A category consists of several destinations and has a title.
+
+    The JumpCategory type represents a category that consists of several
+    Jump List destinations and has a title.
  */
 
 /*!

@@ -46,8 +46,12 @@ import QtWinExtras 1.0
     \inherits JumpListItem
     \inqmlmodule QtWinExtras
 
-    \brief Represents a command to a application.
+    \brief Represents a command to execute an application.
+
     \since 5.2
+
+    The JumpLink type represents a command to execute an application.
+
  */
 
 JumpListItem {
