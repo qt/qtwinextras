@@ -50,6 +50,7 @@ QT_BEGIN_NAMESPACE
     \inqmlmodule QtWinExtras
 
     \brief Enables you to modify the application Jump List.
+    \since 5.2
  */
 
 /*!
@@ -154,6 +155,7 @@ void QQuickJumpList::appendGroup(QQmlListProperty<QQuickJumpListCategory> *prope
 
     \brief Represents a category of custom destinations.
 
+    \since 5.2
     A category consists of several destinations and has a title.
  */
 

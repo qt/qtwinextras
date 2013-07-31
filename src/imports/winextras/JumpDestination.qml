@@ -47,6 +47,7 @@ import QtWinExtras 1.0
     \inqmlmodule QtWinExtras
 
     \brief Represents a file, which can be edited or viewed by application.
+    \since 5.2
  */
 
 JumpListItem {

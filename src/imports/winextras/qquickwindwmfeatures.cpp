@@ -56,6 +56,7 @@ QT_BEGIN_NAMESPACE
 
     \brief Enables you to extend a glass frame into the client area, as well as
     to control the behavior of Aero Peek and Flip3D.
+    \since 5.2
  */
 
 /*!

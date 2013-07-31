@@ -48,6 +48,7 @@ import QtWinExtras 1.0
 
     \brief Represents a task list separator.
 
+    \since 5.2
  */
 
 JumpListItem {

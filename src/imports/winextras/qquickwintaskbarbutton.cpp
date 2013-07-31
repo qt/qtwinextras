@@ -54,6 +54,8 @@ QT_BEGIN_NAMESPACE
     progress indicator, and to add a small toolbar to the window thumbnail
     popup.
 
+    \since 5.2
+
     \sa QWinTaskbarButton
  */
 
