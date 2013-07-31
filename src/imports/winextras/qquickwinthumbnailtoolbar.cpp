@@ -39,32 +39,59 @@
  **
  ****************************************************************************/
 
-#include "qwinextrasplugin.h"
-#include "qquickwindwmfeatures.h"
-#include "qquickwintaskbarbutton.h"
-#include "qquickjumplist.h"
 #include "qquickwinthumbnailtoolbar.h"
 #include "qquickwinthumbnailtoolbutton.h"
 
-#include <QtQml/QtQml>
+#include <QQuickWindow>
+#include <QQmlEngine>
 
 QT_BEGIN_NAMESPACE
 
-QWinExtrasQmlPlugin::QWinExtrasQmlPlugin(QObject *parent) :
-    QQmlExtensionPlugin(parent)
+/*!
+    \qmltype ThumbnailToolBar
+    \instantiates QQuickWinThumbnailToolBar
+    \inqmlmodule QtWinExtras
+
+    \brief Allows manipulating the window's thumbnail toolbar.
+
+    This class allows an application to embed a toolbar in the thumbnail of a window,
+    which is shown when hovering over its taskbar icon. It provides quick access to
+    the window's commands without requiring the user to restore or activate the window.
+
+    \image thumbbar.png Media player thumbnail toolbar
+
+    \section3 Example
+    \snippet code/thumbbar.qml thumbbar_qml
+    \since QtWinExtras 1.0
+ */
+
+QQuickWinThumbnailToolBar::QQuickWinThumbnailToolBar(QQuickItem *parent) :
+    QQuickItem(parent)
 {
 }
 
-void QWinExtrasQmlPlugin::registerTypes(const char *uri)
+QQuickWinThumbnailToolBar::~QQuickWinThumbnailToolBar()
 {
-    Q_ASSERT(uri == QLatin1String("QtWinExtras"));
-    qmlRegisterType<QQuickWinDwmFeatures>(uri, 1, 0, "WinDwmFeatures");
-    qmlRegisterType<QQuickWinTaskbarButton>(uri, 1, 0, "WinTaskbarButton");
-    qmlRegisterType<QQuickJumpList>(uri, 1, 0, "JumpList");
-    qmlRegisterType<QQuickJumpListItem>(uri, 1, 0, "JumpListItem");
-    qmlRegisterType<QQuickJumpListCategory>(uri, 1, 0, "JumpListCategory");
-    qmlRegisterType<QQuickWinThumbnailToolBar>(uri, 1, 0, "ThumbnailToolBar");
-    qmlRegisterType<QQuickWinThumbnailToolButton>(uri, 1, 0, "ThumbnailToolButton");
+}
+
+QQmlListProperty<QObject> QQuickWinThumbnailToolBar::data()
+{
+    return QQmlListProperty<QObject>(this, this, &QQuickWinThumbnailToolBar::addData, 0, 0, 0);
+}
+
+void QQuickWinThumbnailToolBar::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data)
+{
+    if (change == ItemSceneChange)
+        m_toolbar.setWindow(data.window);
+    QQuickItem::itemChange(change, data);
+}
+
+void QQuickWinThumbnailToolBar::addData(QQmlListProperty<QObject> *property, QObject *object)
+{
+    if (const QQuickWinThumbnailToolButton *button = qobject_cast<QQuickWinThumbnailToolButton *>(object)) {
+        QQuickWinThumbnailToolBar *quickThumbbar = static_cast<QQuickWinThumbnailToolBar *>(property->data);
+        quickThumbbar->m_toolbar.addButton(button->m_button);
+    }
 }
 
 QT_END_NAMESPACE

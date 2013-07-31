@@ -39,32 +39,68 @@
  **
  ****************************************************************************/
 
-#include "qwinextrasplugin.h"
-#include "qquickwindwmfeatures.h"
-#include "qquickwintaskbarbutton.h"
-#include "qquickjumplist.h"
-#include "qquickwinthumbnailtoolbar.h"
-#include "qquickwinthumbnailtoolbutton.h"
+#ifndef QQUICKWINTHUMBNAILTOOLBUTTON_H
+#define QQUICKWINTHUMBNAILTOOLBUTTON_H
 
-#include <QtQml/QtQml>
+#include <QQuickItem>
+#include <QWinThumbnailToolBar>
+#include <QUrl>
+
+#include "qwiniconloader.h"
 
 QT_BEGIN_NAMESPACE
 
-QWinExtrasQmlPlugin::QWinExtrasQmlPlugin(QObject *parent) :
-    QQmlExtensionPlugin(parent)
+class QQuickWinThumbnailToolButton : public QObject
 {
-}
+    Q_OBJECT
+    Q_PROPERTY(QUrl iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
+    Q_PROPERTY(QString tooltip READ tooltip WRITE setTooltip NOTIFY tooltipChanged)
+    Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
+    Q_PROPERTY(bool interactive READ isInteractive WRITE setInteractive NOTIFY interactiveChanged)
+    Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibleChanged)
+    Q_PROPERTY(bool dismissOnClick READ dismissOnClick WRITE setDismissOnClick NOTIFY dismissOnClickChanged)
+    Q_PROPERTY(bool flat READ isFlat WRITE setFlat NOTIFY flatChanged)
 
-void QWinExtrasQmlPlugin::registerTypes(const char *uri)
-{
-    Q_ASSERT(uri == QLatin1String("QtWinExtras"));
-    qmlRegisterType<QQuickWinDwmFeatures>(uri, 1, 0, "WinDwmFeatures");
-    qmlRegisterType<QQuickWinTaskbarButton>(uri, 1, 0, "WinTaskbarButton");
-    qmlRegisterType<QQuickJumpList>(uri, 1, 0, "JumpList");
-    qmlRegisterType<QQuickJumpListItem>(uri, 1, 0, "JumpListItem");
-    qmlRegisterType<QQuickJumpListCategory>(uri, 1, 0, "JumpListCategory");
-    qmlRegisterType<QQuickWinThumbnailToolBar>(uri, 1, 0, "ThumbnailToolBar");
-    qmlRegisterType<QQuickWinThumbnailToolButton>(uri, 1, 0, "ThumbnailToolButton");
-}
+public:
+    explicit QQuickWinThumbnailToolButton(QObject *parent = 0);
+    ~QQuickWinThumbnailToolButton();
+
+    void setIconSource(const QUrl &iconSource);
+    QUrl iconSource();
+    void setTooltip(const QString &tooltip);
+    QString tooltip() const;
+    void setEnabled(bool isEnabled);
+    bool isEnabled() const;
+    void setInteractive(bool isInteractive);
+    bool isInteractive() const;
+    void setVisible(bool isVisible);
+    bool isVisible() const;
+    void setDismissOnClick(bool dismiss);
+    bool dismissOnClick() const;
+    void setFlat(bool flat);
+    bool isFlat() const;
+
+Q_SIGNALS:
+    void clicked();
+    void iconSourceChanged();
+    void tooltipChanged();
+    void enabledChanged();
+    void interactiveChanged();
+    void visibleChanged();
+    void dismissOnClickChanged();
+    void flatChanged();
+
+private Q_SLOTS:
+    void iconLoaded();
+
+private:
+    QUrl m_iconSource;
+    QWinThumbnailToolButton *m_button;
+    QWinIconLoader m_loader;
+
+    friend class QQuickWinThumbnailToolBar;
+};
 
 QT_END_NAMESPACE
+
+#endif // QQUICKWINTHUMBNAILTOOLBUTTON_H

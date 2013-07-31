@@ -42,4 +42,5 @@ OTHER_FILES += \
     doc/snippets/code/use-qtwinextras.pro \
     doc/snippets/code/jumplist.cpp \
     doc/snippets/code/use-qtwinextras.cpp \
-    doc/snippets/code/thumbbar.cpp
+    doc/snippets/code/thumbbar.cpp \
+    doc/snippets/code/thumbbar.qml

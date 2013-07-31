@@ -39,32 +39,34 @@
  **
  ****************************************************************************/
 
-#include "qwinextrasplugin.h"
-#include "qquickwindwmfeatures.h"
-#include "qquickwintaskbarbutton.h"
-#include "qquickjumplist.h"
-#include "qquickwinthumbnailtoolbar.h"
-#include "qquickwinthumbnailtoolbutton.h"
+#ifndef QQUICKWINTHUMBNAILTOOLBAR_H
+#define QQUICKWINTHUMBNAILTOOLBAR_H
 
-#include <QtQml/QtQml>
+#include <QQuickItem>
+#include <QWinThumbnailToolBar>
 
 QT_BEGIN_NAMESPACE
 
-QWinExtrasQmlPlugin::QWinExtrasQmlPlugin(QObject *parent) :
-    QQmlExtensionPlugin(parent)
+class QQuickWinThumbnailToolBar : public QQuickItem
 {
-}
+    Q_OBJECT
+    Q_PROPERTY(QQmlListProperty<QObject> data READ data)
+    Q_CLASSINFO("DefaultProperty", "data")
 
-void QWinExtrasQmlPlugin::registerTypes(const char *uri)
-{
-    Q_ASSERT(uri == QLatin1String("QtWinExtras"));
-    qmlRegisterType<QQuickWinDwmFeatures>(uri, 1, 0, "WinDwmFeatures");
-    qmlRegisterType<QQuickWinTaskbarButton>(uri, 1, 0, "WinTaskbarButton");
-    qmlRegisterType<QQuickJumpList>(uri, 1, 0, "JumpList");
-    qmlRegisterType<QQuickJumpListItem>(uri, 1, 0, "JumpListItem");
-    qmlRegisterType<QQuickJumpListCategory>(uri, 1, 0, "JumpListCategory");
-    qmlRegisterType<QQuickWinThumbnailToolBar>(uri, 1, 0, "ThumbnailToolBar");
-    qmlRegisterType<QQuickWinThumbnailToolButton>(uri, 1, 0, "ThumbnailToolButton");
-}
+public:
+    explicit QQuickWinThumbnailToolBar(QQuickItem *parent = 0);
+    ~QQuickWinThumbnailToolBar();
+
+    QQmlListProperty<QObject> data();
+
+    void itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data);
+
+private:
+    static void addData(QQmlListProperty<QObject> *property, QObject *button);
+
+    QWinThumbnailToolBar m_toolbar;
+};
 
 QT_END_NAMESPACE
+
+#endif // QQUICKWINTHUMBNAILTOOLBAR_H

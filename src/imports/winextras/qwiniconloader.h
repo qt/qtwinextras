@@ -39,32 +39,41 @@
  **
  ****************************************************************************/
 
-#include "qwinextrasplugin.h"
-#include "qquickwindwmfeatures.h"
-#include "qquickwintaskbarbutton.h"
-#include "qquickjumplist.h"
-#include "qquickwinthumbnailtoolbar.h"
-#include "qquickwinthumbnailtoolbutton.h"
+#ifndef QWINICONLOADER_H
+#define QWINICONLOADER_H
 
-#include <QtQml/QtQml>
+#include <QObject>
+#include <QIcon>
 
 QT_BEGIN_NAMESPACE
 
-QWinExtrasQmlPlugin::QWinExtrasQmlPlugin(QObject *parent) :
-    QQmlExtensionPlugin(parent)
-{
-}
+class QIcon;
+class QQmlEngine;
+class QNetworkReply;
 
-void QWinExtrasQmlPlugin::registerTypes(const char *uri)
+class QWinIconLoader : public QObject
 {
-    Q_ASSERT(uri == QLatin1String("QtWinExtras"));
-    qmlRegisterType<QQuickWinDwmFeatures>(uri, 1, 0, "WinDwmFeatures");
-    qmlRegisterType<QQuickWinTaskbarButton>(uri, 1, 0, "WinTaskbarButton");
-    qmlRegisterType<QQuickJumpList>(uri, 1, 0, "JumpList");
-    qmlRegisterType<QQuickJumpListItem>(uri, 1, 0, "JumpListItem");
-    qmlRegisterType<QQuickJumpListCategory>(uri, 1, 0, "JumpListCategory");
-    qmlRegisterType<QQuickWinThumbnailToolBar>(uri, 1, 0, "ThumbnailToolBar");
-    qmlRegisterType<QQuickWinThumbnailToolButton>(uri, 1, 0, "ThumbnailToolButton");
-}
+    Q_OBJECT
+
+public:
+    explicit QWinIconLoader(QObject *parent = 0);
+    void load(const QUrl &url, QQmlEngine *engine);
+    QIcon icon() const;
+
+Q_SIGNALS:
+    void finished();
+
+private Q_SLOTS:
+    void onRequestFinished(QNetworkReply*);
+
+private:
+    void loadFromFile(const QUrl &url);
+    void loadFromNetwork(const QUrl &url, QQmlEngine *engine);
+    void loadFromImageProvider(const QUrl &url, QQmlEngine *engine);
+
+    QIcon m_icon;
+};
 
 QT_END_NAMESPACE
+
+#endif // QWINICONLOADER_H

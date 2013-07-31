@@ -15,13 +15,19 @@ HEADERS += \
     qquickwindwmfeatures.h \
     qquickwindwmfeatures_p.h \
     qquickwintaskbarbutton.h \
-    qquickjumplist.h
+    qquickjumplist.h \
+    qquickwinthumbnailtoolbar.h \
+    qquickwinthumbnailtoolbutton.h \
+    qwiniconloader.h
 
 SOURCES += \
     qwinextrasplugin.cpp \
     qquickwindwmfeatures.cpp \
     qquickwintaskbarbutton.cpp \
-    qquickjumplist.cpp
+    qquickjumplist.cpp \
+    qquickwinthumbnailtoolbar.cpp \
+    qquickwinthumbnailtoolbutton.cpp \
+    qwiniconloader.cpp
 
 OTHER_FILES += \
     qmldir \
