@@ -12,7 +12,9 @@ SOURCES += \
     qwincompositionstatechangeevent.cpp \
     qwineventfilter.cpp \
     qwintaskbarbuttoncreatedevent.cpp \
-    qwinthemechangeevent.cpp
+    qwinthemechangeevent.cpp \
+    qwinthumbnailtoolbar.cpp \
+    qwinthumbnailtoolbutton.cpp
 
 HEADERS += \
     qwinfunctions.h \
@@ -31,7 +33,11 @@ HEADERS += \
     winpropkey_p.h \
     qwineventfilter_p.h \
     qwinthemechangeevent.h \
-    qwinthemechangeevent_p.h
+    qwinthemechangeevent_p.h \
+    qwinthumbnailtoolbar.h \
+    qwinthumbnailtoolbar_p.h \
+    qwinthumbnailtoolbutton.h \
+    qwinthumbnailtoolbutton_p.h
 
 QMAKE_DOCS = $$PWD/doc/qtwinextras.qdocconf
 
@@ -45,4 +51,5 @@ OTHER_FILES += \
     doc/src/qtwinextras-module-qml.qdoc \
     doc/snippets/code/use-qtwinextras.pro \
     doc/snippets/code/jumplist.cpp \
-    doc/snippets/code/use-qtwinextras.cpp
+    doc/snippets/code/use-qtwinextras.cpp \
+    doc/snippets/code/thumbbar.cpp
