@@ -9,6 +9,31 @@
 *.so
 *.dll
 *.dylib
+*.obj
+
+# Visual Studio generated files
+
+*.ib_pdb_index
+*.idb
+*.ilk
+*.pdb
+*.sln
+*.suo
+*.vcproj
+*vcproj.*.*.user
+*.ncb
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.exe.embed.manifest
+*.exe_manifest.rc
+*.exe_manifest.res
+*_resource.rc
+
+# MinGW generated files
+
+*.Debug
+*.Release
 
 # Qt-es
 
@@ -18,5 +43,13 @@
 *.qmlproject.user.*
 moc_*.cpp
 qrc_*.cpp
-Makefile
+Makefile*
 *-build-*
+.qmake.cache
+ui_*.h
+
+# Directories
+
+debug
+release
+tmp
