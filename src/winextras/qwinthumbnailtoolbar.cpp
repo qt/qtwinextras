@@ -49,7 +49,7 @@
 #include <QTimer>
 #include <QDebug>
 
-#include "qwintaskbarbuttoncreatedevent.h"
+#include "qwinevent.h"
 #include "qwinfunctions.h"
 #include "qwineventfilter_p.h"
 
@@ -294,7 +294,7 @@ void QWinThumbnailToolBarPrivate::_q_scheduleUpdate()
 
 bool QWinThumbnailToolBarPrivate::eventFilter(QObject *object, QEvent *event)
 {
-    if (object == window && event->type() == QWinTaskbarButtonCreatedEvent::eventType()) {
+    if (object == window && event->type() == QWinEvent::TaskbarButtonCreated) {
         initToolbar();
         _q_scheduleUpdate();
     }

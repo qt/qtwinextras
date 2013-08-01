@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of QtWinExtras in the Qt Toolkit.
@@ -39,30 +40,35 @@
  **
  ****************************************************************************/
 
-#ifndef QWINTASKBARBUTTONCREATEDEVENT_H
-#define QWINTASKBARBUTTONCREATEDEVENT_H
+#include "qwinevent.h"
 
-#include <QEvent>
-#include <QScopedPointer>
+const int QWinEvent::ColorizationChange = QEvent::registerEventType();
+const int QWinEvent::CompositionChange = QEvent::registerEventType();
+const int QWinEvent::TaskbarButtonCreated = QEvent::registerEventType();
+const int QWinEvent::ThemeChange = QEvent::registerEventType();
 
-QT_BEGIN_NAMESPACE
-
-class QWinTaskbarButtonCreatedEventPrivate;
-
-class QWinTaskbarButtonCreatedEvent : public QEvent
+QWinEvent::QWinEvent(int type) : QEvent(static_cast<QEvent::Type>(type))
 {
-public:
-    QWinTaskbarButtonCreatedEvent();
-    ~QWinTaskbarButtonCreatedEvent();
+}
 
-    static QEvent::Type eventType();
+QWinEvent::~QWinEvent()
+{
+}
 
-private:
-    QScopedPointer<QWinTaskbarButtonCreatedEventPrivate> d_ptr;
+QWinColorizationChangeEvent::QWinColorizationChangeEvent(QRgb color, bool opaque)
+    : QWinEvent(ColorizationChange), rgb(color), opaque(opaque)
+{
+}
 
-    Q_DECLARE_PRIVATE(QWinTaskbarButtonCreatedEvent)
-};
+QWinColorizationChangeEvent::~QWinColorizationChangeEvent()
+{
+}
 
-QT_END_NAMESPACE
+QWinCompositionChangeEvent::QWinCompositionChangeEvent(bool enabled)
+    : QWinEvent(CompositionChange), enabled(enabled)
+{
+}
 
-#endif // QWINTASKBARBUTTONCREATEDEVENT_H
+QWinCompositionChangeEvent::~QWinCompositionChangeEvent()
+{
+}

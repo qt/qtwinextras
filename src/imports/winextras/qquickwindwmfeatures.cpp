@@ -43,8 +43,7 @@
 #include "qquickwindwmfeatures_p.h"
 
 #include <QtWinExtras/private/qwineventfilter_p.h>
-#include <QWinColorizationColorChangeEvent>
-#include <QWinCompositionStateChangeEvent>
+#include <QWinEvent>
 #include <QQuickWindow>
 
 QT_BEGIN_NAMESPACE
@@ -248,10 +247,10 @@ bool QQuickWinDwmFeatures::eventFilter(QObject *object, QEvent *event)
 {
     bool filterOut = false;
     if (object == window()) {
-        if (event->type() == QWinCompositionStateChangeEvent::eventType()) {
+        if (event->type() == QWinEvent::CompositionChange) {
             emit isCompositionEnabledChanged();
             filterOut = true;
-        } else if (event->type() == QWinColorizationColorChangeEvent::eventType()) {
+        } else if (event->type() == QWinEvent::ColorizationChange) {
             emit colorizationColorChanged();
             emit realColorizationColorChanged();
             emit colorizationOpaqueBlendChanged();

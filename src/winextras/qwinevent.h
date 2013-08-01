@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of QtWinExtras in the Qt Toolkit.
@@ -39,31 +40,53 @@
  **
  ****************************************************************************/
 
-#ifndef QWINCOMPOSITIONSTATECHANGEEVENT_H
-#define QWINCOMPOSITIONSTATECHANGEEVENT_H
+#ifndef QWINEVENT_H
+#define QWINEVENT_H
 
+#include <QtGui/qrgb.h>
+#include <QtCore/qcoreevent.h>
 #include <QtWinExtras/qwinextrasglobal.h>
-#include <QEvent>
-#include <QScopedPointer>
 
 QT_BEGIN_NAMESPACE
 
-class QWinCompositionStateChangeEventPrivate;
-
-class Q_WINEXTRAS_EXPORT QWinCompositionStateChangeEvent : public QEvent
+class Q_WINEXTRAS_EXPORT QWinEvent : public QEvent
 {
 public:
-    explicit QWinCompositionStateChangeEvent(bool isCompositionEnabled);
-    ~QWinCompositionStateChangeEvent();
-    bool isCompositionEnabled() const;
+    static const int ColorizationChange;
+    static const int CompositionChange;
+    static const int TaskbarButtonCreated;
+    static const int ThemeChange;
 
-    static QEvent::Type eventType();
+    explicit QWinEvent(int type);
+    ~QWinEvent();
+};
+
+class Q_WINEXTRAS_EXPORT QWinColorizationChangeEvent : public QWinEvent
+{
+public:
+    QWinColorizationChangeEvent(QRgb color, bool opaque);
+    ~QWinColorizationChangeEvent();
+
+    inline QRgb color() const { return rgb; }
+    inline bool opaqueBlend() const { return opaque; }
 
 private:
-    QScopedPointer<QWinCompositionStateChangeEventPrivate> d_ptr;
-    Q_DECLARE_PRIVATE(QWinCompositionStateChangeEvent)
+    QRgb rgb;
+    bool opaque;
+};
+
+class Q_WINEXTRAS_EXPORT QWinCompositionChangeEvent : public QWinEvent
+{
+public:
+    explicit QWinCompositionChangeEvent(bool enabled);
+    ~QWinCompositionChangeEvent();
+
+    inline bool isCompositionEnabled() const { return enabled; }
+
+private:
+    bool enabled;
 };
 
 QT_END_NAMESPACE
 
-#endif // QWINCOMPOSITIONSTATECHANGEEVENT_H
+#endif // QWINEVENT_H

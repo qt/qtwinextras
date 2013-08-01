@@ -8,13 +8,10 @@ SOURCES += \
     qwintaskbarbutton.cpp \
     windowsguidsdefs.cpp \
     qjumplist.cpp \
-    qwincolorizationcolorchangeevent.cpp \
-    qwincompositionstatechangeevent.cpp \
     qwineventfilter.cpp \
-    qwintaskbarbuttoncreatedevent.cpp \
-    qwinthemechangeevent.cpp \
     qwinthumbnailtoolbar.cpp \
-    qwinthumbnailtoolbutton.cpp
+    qwinthumbnailtoolbutton.cpp \
+    qwinevent.cpp
 
 HEADERS += \
     qwinfunctions.h \
@@ -23,21 +20,14 @@ HEADERS += \
     qwintaskbarbutton_p.h \
     qwintaskbarbutton.h \
     qjumplist.h \
-    qwincolorizationcolorchangeevent.h \
-    qwincolorizationcolorchangeevent_p.h \
-    qwincompositionstatechangeevent.h \
-    qwincompositionstatechangeevent_p.h \
-    qwintaskbarbuttoncreatedevent.h \
-    qwintaskbarbuttoncreatedevent_p.h \
     winshobjidl_p.h \
     winpropkey_p.h \
     qwineventfilter_p.h \
-    qwinthemechangeevent.h \
-    qwinthemechangeevent_p.h \
     qwinthumbnailtoolbar.h \
     qwinthumbnailtoolbar_p.h \
     qwinthumbnailtoolbutton.h \
-    qwinthumbnailtoolbutton_p.h
+    qwinthumbnailtoolbutton_p.h \
+    qwinevent.h
 
 QMAKE_DOCS = $$PWD/doc/qtwinextras.qdocconf
 

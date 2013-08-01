@@ -40,11 +40,8 @@
  ****************************************************************************/
 
 #include "qwineventfilter_p.h"
-#include "qwincolorizationcolorchangeevent.h"
-#include "qwincompositionstatechangeevent.h"
-#include "qwinthemechangeevent.h"
-#include "qwintaskbarbuttoncreatedevent.h"
 #include "qwinfunctions.h"
+#include "qwinevent.h"
 #include <QGuiApplication>
 #include <QWindow>
 
@@ -77,17 +74,17 @@ bool QWinEventFilter::nativeEventFilter(const QByteArray &, void *message, long 
     QWindow *window = 0;
     switch (msg->message) {
     case WM_DWMCOLORIZATIONCOLORCHANGED :
-        event = new QWinColorizationColorChangeEvent(msg->wParam, msg->lParam);
+        event = new QWinColorizationChangeEvent(msg->wParam, msg->lParam);
         break;
     case WM_DWMCOMPOSITIONCHANGED :
-        event = new QWinCompositionStateChangeEvent(QWinExtras::isCompositionEnabled());
+        event = new QWinCompositionChangeEvent(QWinExtras::isCompositionEnabled());
         break;
     case WM_THEMECHANGED :
-        event = new QWinThemeChangeEvent();
+        event = new QWinEvent(QWinEvent::ThemeChange);
         break;
     default :
         if (tbButtonCreatedMsgId == msg->message) {
-            event = new QWinTaskbarButtonCreatedEvent;
+            event = new QWinEvent(QWinEvent::TaskbarButtonCreated);
             filterOut = true;
         }
         break;
@@ -97,8 +94,7 @@ bool QWinEventFilter::nativeEventFilter(const QByteArray &, void *message, long 
         window = findWindow(msg->hwnd);
         if (window)
             qApp->sendEvent(window, event);
-        else
-            delete event;
+        delete event;
     }
 
     if (filterOut && result) {

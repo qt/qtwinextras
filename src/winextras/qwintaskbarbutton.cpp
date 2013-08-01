@@ -43,7 +43,7 @@
 #include "qwintaskbarbutton_p.h"
 #include "qwinfunctions.h"
 #include "qwineventfilter_p.h"
-#include "qwintaskbarbuttoncreatedevent.h"
+#include "qwinevent.h"
 
 #include <QWindow>
 #include <QIcon>
@@ -186,7 +186,7 @@ int QWinTaskbarButton::progressMaximum() const
 bool QWinTaskbarButton::eventFilter(QObject *object, QEvent *event)
 {
     Q_D(QWinTaskbarButton);
-    if (object == d->window && event->type() == QWinTaskbarButtonCreatedEvent::eventType()) {
+    if (object == d->window && event->type() == QWinEvent::TaskbarButtonCreated) {
         d->pTbList->SetProgressState(d->handle(), QWinTaskbarButtonPrivate::nativeProgressState(d->progressState));
         d->updateProgressValue();
         d->updateOverlayIcon();
