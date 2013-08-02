@@ -88,8 +88,10 @@ QT_BEGIN_NAMESPACE
     Constructs a QWinTaskbarButton with the parent object \a parent.
  */
 QWinTaskbarButton::QWinTaskbarButton(QObject *parent) :
-    QObject(parent), d_ptr(new QWinTaskbarButtonPrivate(this))
+    QObject(parent), d_ptr(new QWinTaskbarButtonPrivate)
 {
+    Q_D(QWinTaskbarButton);
+    d->q_ptr = this;
     QWinEventFilter::setup();
 }
 
@@ -294,9 +296,9 @@ void QWinTaskbarButton::resetProgress()
 
 
 
-QWinTaskbarButtonPrivate::QWinTaskbarButtonPrivate(QWinTaskbarButton *parent) :
+QWinTaskbarButtonPrivate::QWinTaskbarButtonPrivate() :
     progressMinimum(0), progressMaximum(100), progressValue(0), progressState(QWinTaskbarButton::NoProgressState),
-    updateNeeded(false), pTbList(0), window(0), q_ptr(parent)
+    updateNeeded(false), pTbList(0), window(0), q_ptr(0)
 {
     HRESULT hresult = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, IID_ITaskbarList4, reinterpret_cast<void **>(&pTbList));
     if (FAILED(hresult)) {

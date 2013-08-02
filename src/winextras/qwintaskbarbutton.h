@@ -71,7 +71,7 @@ public:
 
     Q_ENUMS(ProgressState)
 
-    explicit QWinTaskbarButton(QObject *parent);
+    explicit QWinTaskbarButton(QObject *parent = 0);
     ~QWinTaskbarButton();
     void setWindow(QWindow *window);
 

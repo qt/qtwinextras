@@ -56,7 +56,7 @@ QT_BEGIN_NAMESPACE
 class QWinTaskbarButtonPrivate
 {
 public:
-    explicit QWinTaskbarButtonPrivate(QWinTaskbarButton *parent);
+    QWinTaskbarButtonPrivate();
     ~QWinTaskbarButtonPrivate();
 
     int progressMinimum;
