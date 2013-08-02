@@ -37,5 +37,6 @@
     conversions and DWM glass frame manipulation.
 
     The classes enable you to use features introduced with Windows 7, such as
-    Jump Lists or a progress indicator on a taskbar button.
+    Jump Lists, a progress indicator on a taskbar button, or a thumbnail
+    toolbar.
 */

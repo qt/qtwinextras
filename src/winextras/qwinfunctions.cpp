@@ -72,41 +72,6 @@ Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON(HICON icon);
     \brief The QWinExtras namespace contains miscellaneous Windows-specific functions.
     \inheaderfile QWinFunctions
 
-    \section2 Type Conversion
-
-    The QWinExtras namespace provides functions to convert Qt objects of classes
-    such as QPixmap or QImage to Windows HBITMAP or HICON handles, and vice
-    versa.
-
-    \section2 DWM and Glass Frame
-
-    You can determine whether a window is included in the DWM Flip3D rendering.
-
-    The glass frame that was first introduced with Windows Vista can be easily
-    manipulated using the extendFrameIntoClientArea() and
-    enableBlurBehindWindow() functions. Windows 8 lost the glass effect, but
-    applications can still integrate their windows into the system frame to
-    visually separate window controls from the rest of the window or to focus
-    the user's attention on window content.
-
-    \image glass.png "Glass frame extended into client area of a window"
-
-    \section2 Aero Peek
-
-    The Windows 7 \b {Aero Peek} feature gives the users the powers of X-ray
-    vision that enable them to peek past all open windows straight at the
-    desktop and the gadgets placed there. They can view the contents of a window
-    without  actually switching to it. You can enable Aero Peek for a
-    gadget-like window or for a window that constantly displays monitoring data.
-
-    You can use the setWindowExcludedFromPeek() function to exclude an
-    application window from Aero Peek.
-
-    \note Aero Peek is disabled in Windows 8 by default but can be enabled
-    by the user.
-
-    \image peek-on.png "A window excluded from Aero Peek"
-
  */
 
 /*!

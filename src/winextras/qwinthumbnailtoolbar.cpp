@@ -63,14 +63,6 @@ static const int windowsLimitedThumbbarSize = 7;
     \since 5.2
     \brief The QWinThumbnailToolBar class allows manipulating the window's thumbnail toolbar.
 
-    This class allows an application to embed a toolbar in the thumbnail of a window,
-    which is shown when hovering over its taskbar icon. It provides quick access to
-    the window's commands without requiring the user to restore or activate the window.
-
-    \image thumbbar.png Media player thumbnail toolbar
-
-    \section3 Example
-    \snippet code/thumbbar.cpp thumbbar_cpp
  */
 
 /*!

@@ -35,7 +35,8 @@
     objects to Windows object handles and manipulate DWM glass frames.
 
     In addition, you can use features introduced with Windows 7, such as Aero
-    Peek, Jump Lists, or a progress indicator on a taskbar button.
+    Peek, Jump Lists, a progress indicator on a taskbar button, or a thumbnail
+    toolbar.
 
     \section1 Getting Started
 
@@ -47,6 +48,12 @@
     To link against the module, add this line to your qmake .pro file:
 
     \snippet code/use-qtwinextras.pro link
+
+    \section1 Articles and Guides
+
+    \list
+    \li \l {Qt Windows Extras Overview}
+    \endlist
 
     \section1 API Reference
 

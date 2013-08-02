@@ -552,33 +552,6 @@ public:
 
     An application can use Jump Lists to provide users with faster access to
     files or to display shortcuts to tasks or commands.
-
-    \image jumplist.png Jump List
-
-    \list
-
-        \li \b Destinations — categorized shortcuts to files and URLs that the
-            application can handle and even links to other applications.
-            Windows provides two standard categories that can be added to the
-            custom Jump List, in addition to the ones that the application can
-            create itself.
-        \li \b Recent and \b Frequent — so called \e known categories that are
-            populated automatically by Windows when the application uses the
-            QFileDialog::getOpenFileName() function or when the application is
-            launched to open a file from the Windows shell.
-
-        \li \b Tasks — shortcuts to application functionality. An application
-            can display its most frequently used context-independent functions
-            on task lists.
-
-    \endlist
-
-    \note To be able to add destinations to its Jump Lists, the application
-    should associate itself with the file types it can handle.
-
-    \section3 Example
-
-    \snippet code/jumplist.cpp jumplist
  */
 
 /*!
