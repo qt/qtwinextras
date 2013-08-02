@@ -43,8 +43,7 @@
 #include "ui_examplewidget.h"
 
 #include <QWinFunctions>
-#include <QWinCompositionStateChangeEvent>
-#include <QWinThemeChangeEvent>
+#include <QWinEvent>
 #include <QDebug>
 #include <qt_windows.h>
 
@@ -85,10 +84,10 @@ void ExampleWidget::changeEvent(QEvent *e)
 
 bool ExampleWidget::event(QEvent *e)
 {
-    if (e->type() == QWinCompositionStateChangeEvent::eventType()) {
-        QWinCompositionStateChangeEvent *stateEvent = static_cast<QWinCompositionStateChangeEvent *>(e);
-        qDebug() << "Composition state change: " << stateEvent->isCompositionEnabled();
-    } else if (e->type() == QWinThemeChangeEvent::eventType()) {
+    if (e->type() == QWinEvent::CompositionChange) {
+        QWinCompositionChangeEvent *event = static_cast<QWinCompositionChangeEvent *>(e);
+        qDebug() << "Composition state change: " << event->isCompositionEnabled();
+    } else if (e->type() == QWinEvent::ThemeChange) {
         qDebug() << "Theme change.";
     }
     return QWidget::event(e);
