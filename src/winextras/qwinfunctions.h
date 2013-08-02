@@ -46,9 +46,9 @@
 #pragma qt_class(QWinFunctions)
 #endif
 
-#include <QObject>
-#include <QtWinExtras/qwinextrasglobal.h>
+#include <QtCore/qobject.h>
 #include <QtCore/qt_windows.h>
+#include <QtWinExtras/qwinextrasglobal.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -124,7 +124,7 @@ void Q_WINEXTRAS_EXPORT taskbarDeleteTab(QWindow *);
 
 #ifdef QT_WIDGETS_LIB
 
-#include <QWidget>
+#include <QtWidgets/qwidget.h>
 
 namespace QWinExtras
 {

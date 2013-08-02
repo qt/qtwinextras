@@ -42,9 +42,8 @@
 #ifndef QWINTASKBARBUTTON_H
 #define QWINTASKBARBUTTON_H
 
+#include <QtCore/qobject.h>
 #include <QtWinExtras/qwinextrasglobal.h>
-#include <QObject>
-#include <QList>
 
 QT_BEGIN_NAMESPACE
 
