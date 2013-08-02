@@ -1,7 +1,8 @@
 win32 {
     TEMPLATE = subdirs
     CONFIG += ordered
-    SUBDIRS += winextras imports
+    SUBDIRS += winextras
+    qtHaveModule(quick): SUBDIRS += imports
 } else {
     # fake project for creating the documentation
     TEMPLATE = aux
