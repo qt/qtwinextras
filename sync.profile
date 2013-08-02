@@ -3,5 +3,8 @@
 );
 
 %dependencies = (
-    qtbase => "refs/heads/stable"
+    "qtbase" => "",
+    "qtdeclarative" => "",
+    "qtxmlpatterns" => "",
+    "qtjsbackend" => "",
 );
