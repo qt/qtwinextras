@@ -32,6 +32,7 @@
 
     \ingroup modules
     \ingroup technology-apis
+    \qtvariable winextras
 
     The QWinExtras namespace contains Windows-specific functions for type
     conversions and DWM glass frame manipulation.
