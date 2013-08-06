@@ -51,6 +51,7 @@
 #include <QQuickImageProvider>
 #include <QQmlFile>
 #include <qt_windows.h>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 
