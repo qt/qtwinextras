@@ -52,7 +52,7 @@ QT_BEGIN_NAMESPACE
 
     \brief Manages Windows taskbar buttons.
 
-    \since 5.2
+    \since QtWinExtras 1.0
 
     The WinTaskbarButton type enables you to set overlay icons on a taskbar
     button, to display a progress indicator, and to add a small toolbar to the

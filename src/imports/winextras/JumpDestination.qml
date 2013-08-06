@@ -48,7 +48,7 @@ import QtWinExtras 1.0
 
     \brief Represents a file that can be edited or viewed by an application.
 
-    \since 5.2
+    \since QtWinExtras 1.0
 
     The JumpDestination type contains a path to a file that users can select
     from a Jump List to view or edit it with an application.

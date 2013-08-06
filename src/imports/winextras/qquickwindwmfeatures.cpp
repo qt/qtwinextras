@@ -55,7 +55,7 @@ QT_BEGIN_NAMESPACE
 
     \brief Enables you to manage the Windows DWM features.
 
-    \since 5.2
+    \since QtWinExtras 1.0
 
     The WinDwmFeatures type enables you to extend a glass frame into the client
     area, as well as to control the behavior of Aero Peek and Flip3D.

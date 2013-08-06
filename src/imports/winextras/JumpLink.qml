@@ -48,7 +48,7 @@ import QtWinExtras 1.0
 
     \brief Represents a command to execute an application.
 
-    \since 5.2
+    \since QtWinExtras 1.0
 
     The JumpLink type represents a command to execute an application.
 
