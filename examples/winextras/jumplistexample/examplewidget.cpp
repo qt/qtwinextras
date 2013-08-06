@@ -48,6 +48,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QJumpList>
+#include <QJumpListItem>
 #include <QDebug>
 
 ExampleWidget::ExampleWidget(QWidget *parent) :

@@ -46,6 +46,7 @@
 #include <QQmlListProperty>
 #include <QIcon>
 #include <QJumpList>
+#include <QJumpListItem>
 
 QT_BEGIN_NAMESPACE
 

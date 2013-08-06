@@ -40,8 +40,8 @@
  ****************************************************************************/
 
 #include "qjumplist.h"
+#include "qjumplistitem.h"
 
-#include <QIcon>
 #include <QDir>
 #include <QCoreApplication>
 #include <qt_windows.h>
@@ -54,199 +54,32 @@
 
 QT_BEGIN_NAMESPACE
 
-class QJumpListItemPrivate
-{
-public:
-    QString filePath;
-    QString workingDirectory;
-    QString title;
-    QString description;
-    QIcon icon;
-    QStringList arguments;
-    QJumpListItem::Type type;
-};
-
 /*!
-    \class QJumpListItem
+    \class QJumpList
     \inmodule QtWinExtras
+    \brief The QJumpList class represents a transparent wrapper around Windows
+    Jump Lists.
+
     \since 5.2
-    \inheaderfile QJumpList
-    \brief The QJumpListItem class represents a Jump List destination or link.
 
-    Objects of this class are returned by QJumpList::removedDestinations()
-    and can also be used to add items to a Jump List.
+    An application can use Jump Lists to provide users with faster access to
+    files or to display shortcuts to tasks or commands.
  */
 
 /*!
-    Constructs a QJumpListItem with the specified \a type.
+    \enum QJumpListItem::Type
+
+    This enum specifies QJumpListItem type, changing its meaning for QJumpList.
+
+    \value  Unknown
+            Invalid item type.
+    \value  Destination
+            Item acts as a link to a file that the application can open.
+    \value  Link
+            Item represents a link to some application.
+    \value  Separator
+            Item becomes a separator. This value is used only for task lists.
  */
-QJumpListItem::QJumpListItem(QJumpListItem::Type type) :
-    d_ptr(new QJumpListItemPrivate)
-{
-    d_ptr->type = type;
-}
-
-/*!
-    Destroys the QJumpListItem.
- */
-QJumpListItem::~QJumpListItem()
-{
-}
-
-/*!
-    Sets the item \a type.
- */
-void QJumpListItem::setType(QJumpListItem::Type type)
-{
-    Q_D(QJumpListItem);
-    d->type = type;
-}
-
-/*!
-    Returns the item type.
- */
-QJumpListItem::Type QJumpListItem::type() const
-{
-    Q_D(const QJumpListItem);
-    return d->type;
-}
-
-/*!
-    Sets the item \a filePath, the meaning of which depends on the type of this
-    item:
-
-    \list
-
-        \li If the item type is QJumpListItem::Destination, \a filePath is the
-            path to a file that can be opened by an application.
-
-        \li If the item type is QJumpListItem::Link, \a filePath is the path to
-            an executable that is executed when this item is clicked by the
-            user.
-
-    \endlist
-
-    \sa setWorkingDirectory(), setArguments()
- */
-void QJumpListItem::setFilePath(const QString &filePath)
-{
-    Q_D(QJumpListItem);
-    d->filePath = filePath;
-}
-
-/*!
-    Returns the file path set by setFilePath().
- */
-QString QJumpListItem::filePath() const
-{
-    Q_D(const QJumpListItem);
-    return d->filePath;
-}
-
-/*!
-    Sets the path to the working directory of this item to \a workingDirectory.
-
-    This value is used only if the type of this item is QJumpListItem::Link.
-
-    \sa setFilePath()
- */
-void QJumpListItem::setWorkingDirectory(const QString &workingDirectory)
-{
-    Q_D(QJumpListItem);
-    d->workingDirectory = workingDirectory;
-}
-
-/*!
-    Returns the working directory path.
- */
-QString QJumpListItem::workingDirectory() const
-{
-    Q_D(const QJumpListItem);
-    return d->workingDirectory;
-}
-
-/*!
-    Sets the \a icon of this item.
-
-    This value is used only if the type of this item is QJumpListItem::Link.
- */
-void QJumpListItem::setIcon(const QIcon &icon)
-{
-    Q_D(QJumpListItem);
-    d->icon = icon;
-}
-
-/*!
-    Returns the icon set for this item.
- */
-QIcon QJumpListItem::icon() const
-{
-    Q_D(const QJumpListItem);
-    return d->icon;
-}
-
-/*!
-    Sets the \a title of this item.
-
-    This value is used only if the type of this item is QJumpListItem::Link.
- */
-void QJumpListItem::setTitle(const QString &title)
-{
-    Q_D(QJumpListItem);
-    d->title = title;
-}
-
-/*!
-    Returns the title of this item.
- */
-QString QJumpListItem::title() const
-{
-    Q_D(const QJumpListItem);
-    return d->title;
-}
-
-/*!
-    Sets a \a description for this item.
-
-    This value is used only if the type of this item is QJumpListItem::Link.
- */
-void QJumpListItem::setDescription(const QString &description)
-{
-    Q_D(QJumpListItem);
-    d->description = description;
-}
-
-/*!
-    Returns the description of this item.
- */
-QString QJumpListItem::description() const
-{
-    Q_D(const QJumpListItem);
-    return d->description;
-}
-
-/*!
-    Sets command-line \a arguments for this item.
-
-    This value is used only if the type of this item is QJumpListItem::Link.
-
-    \sa setFilePath()
- */
-void QJumpListItem::setArguments(const QStringList &arguments)
-{
-    Q_D(QJumpListItem);
-    d->arguments = arguments;
-}
-
-/*!
-    Returns the command-line arguments of this item.
- */
-QStringList QJumpListItem::arguments() const
-{
-    Q_D(const QJumpListItem);
-    return d->arguments;
-}
-
 
 class QJumpListPrivate
 {
@@ -540,34 +373,6 @@ public:
     QList<QJumpListItem *> jumpListItems;
     UINT listSize;
 };
-
-
-/*!
-    \class QJumpList
-    \inmodule QtWinExtras
-    \brief The QJumpList class represents a transparent wrapper around Windows
-    Jump Lists.
-
-    \since 5.2
-
-    An application can use Jump Lists to provide users with faster access to
-    files or to display shortcuts to tasks or commands.
- */
-
-/*!
-    \enum QJumpListItem::Type
-
-    This enum specifies QJumpListItem type, changing its meaning for QJumpList.
-
-    \value  Unknown
-            Invalid item type.
-    \value  Destination
-            Item acts as a link to a file that the application can open.
-    \value  Link
-            Item represents a link to some application.
-    \value  Separator
-            Item becomes a separator. This value is used only for task lists.
- */
 
 /*!
     Constructs a QJumpList with the parent object \a parent.
