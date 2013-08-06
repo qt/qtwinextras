@@ -45,8 +45,8 @@
 #include <QQuickItem>
 #include <QQmlListProperty>
 #include <QIcon>
-#include <QJumpList>
-#include <QJumpListItem>
+#include <QWinJumpList>
+#include <QWinJumpListItem>
 
 QT_BEGIN_NAMESPACE
 
@@ -68,7 +68,7 @@ public:
     ~QQuickJumpListItem();
     void setType(int type);
     int type() const;
-    QJumpListItem *toJumpListItem() const;
+    QWinJumpListItem *toJumpListItem() const;
 
 private:
     int m_type; // 1 - link, 2 - destination
@@ -88,7 +88,7 @@ public:
     void setTitle(const QString &title);
     QString title() const;
 
-    QList<QJumpListItem *> toItemList() const;
+    QList<QWinJumpListItem *> toItemList() const;
 
     static void addItem(QQmlListProperty<QQuickJumpListItem> *property, QQuickJumpListItem *value);
 

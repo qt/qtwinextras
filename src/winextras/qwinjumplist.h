@@ -39,10 +39,9 @@
  **
  ****************************************************************************/
 
-#ifndef QJUMPLISTITEM_H
-#define QJUMPLISTITEM_H
+#ifndef QWINJUMPLIST_H
+#define QWINJUMPLIST_H
 
-#include <QtGui/qicon.h>
 #include <QtCore/qobject.h>
 #include <QtCore/qstringlist.h>
 #include <QtCore/qscopedpointer.h>
@@ -50,42 +49,54 @@
 
 QT_BEGIN_NAMESPACE
 
-class QJumpListItemPrivate;
+class QIcon;
+class QWinJumpListItem;
+class QWinJumpListPrivate;
 
-class Q_WINEXTRAS_EXPORT QJumpListItem
+class Q_WINEXTRAS_EXPORT QWinJumpList : public QObject
 {
+    Q_OBJECT
+    Q_PROPERTY(int recentCategoryShown READ isRecentCategoryShown WRITE setRecentCategoryShown)
+    Q_PROPERTY(int frequentCategoryShown READ isFrequentCategoryShown WRITE setFrequentCategoryShown)
+
 public:
-    enum Type {
-        Unknown,
-        Destination,
-        Link,
-        Separator
-    };
+    explicit QWinJumpList(QObject *parent = 0);
+    ~QWinJumpList();
 
-    explicit QJumpListItem(Type type = Unknown);
-    ~QJumpListItem();
+public Q_SLOTS:
+    bool begin();
+    bool commit();
+    bool abort();
+    bool clear();
 
-    void setType(Type type);
-    Type type() const;
-    void setFilePath(const QString &filePath);
-    QString filePath() const;
-    void setWorkingDirectory(const QString &workingDirectory);
-    QString workingDirectory() const;
-    void setIcon(const QIcon &icon);
-    QIcon icon() const;
-    void setTitle(const QString &title);
-    QString title() const;
-    void setDescription(const QString &description);
-    QString description() const;
-    void setArguments(const QStringList &arguments);
-    QStringList arguments() const;
+public:
+    bool setApplicationId(const QString &);
+    QList<QWinJumpListItem *> removedDestinations() const;
+    int capacity() const;
+
+    void setRecentCategoryShown(bool);
+    bool isRecentCategoryShown() const;
+    void setFrequentCategoryShown(bool);
+    bool isFrequentCategoryShown() const;
+
+    void beginCategory(const QString &title);
+    void beginTasks();
+
+    bool addItem(QWinJumpListItem *item);
+    void addDestination(const QString &filePath);
+    void addLink(const QString &title, const QString &executablePath, const QStringList &arguments = QStringList());
+    void addLink(const QString &title, const QString &description, const QString &executablePath, const QStringList &arguments = QStringList());
+    void addLink(const QIcon &icon, const QString &title, const QString &executablePath, const QStringList &arguments = QStringList());
+    void addLink(const QIcon &icon, const QString &title, const QString &description, const QString &executablePath, const QStringList &arguments = QStringList());
+    void addLink(const QIcon &icon, const QString &title, const QString &description, const QString &workingDirectory, const QString &executablePath, const QStringList &arguments);
+    void addSeparator();
 
 private:
-    Q_DISABLE_COPY(QJumpListItem)
-    Q_DECLARE_PRIVATE(QJumpListItem)
-    QScopedPointer<QJumpListItemPrivate> d_ptr;
+    Q_DISABLE_COPY(QWinJumpList)
+    Q_DECLARE_PRIVATE(QWinJumpList)
+    QScopedPointer<QWinJumpListPrivate> d_ptr;
 };
 
 QT_END_NAMESPACE
 
-#endif // QJUMPLISTITEM_H
+#endif // QWINJUMPLIST_H

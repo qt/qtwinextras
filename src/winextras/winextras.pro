@@ -7,8 +7,8 @@ SOURCES += \
     qwinfunctions_p.cpp \
     qwintaskbarbutton.cpp \
     windowsguidsdefs.cpp \
-    qjumplist.cpp \
-    qjumplistitem.cpp \
+    qwinjumplist.cpp \
+    qwinjumplistitem.cpp \
     qwineventfilter.cpp \
     qwinthumbnailtoolbar.cpp \
     qwinthumbnailtoolbutton.cpp \
@@ -20,8 +20,8 @@ HEADERS += \
     qwinfunctions_p.h \
     qwintaskbarbutton_p.h \
     qwintaskbarbutton.h \
-    qjumplist.h \
-    qjumplistitem.h \
+    qwinjumplist.h \
+    qwinjumplistitem.h \
     winshobjidl_p.h \
     winpropkey_p.h \
     qwineventfilter_p.h \

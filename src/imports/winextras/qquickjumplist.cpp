@@ -122,7 +122,7 @@ void QQuickJumpList::setShowRecentCategory(bool show)
 void QQuickJumpList::componentComplete()
 {
     QQuickItem::componentComplete();
-    QJumpList jumplist;
+    QWinJumpList jumplist;
     jumplist.begin();
     jumplist.setFrequentCategoryShown(frequentCategoryShown);
     jumplist.setRecentCategoryShown(recentCategoryShown);
@@ -135,8 +135,8 @@ void QQuickJumpList::componentComplete()
     if (!categoryList.isEmpty()) {
         Q_FOREACH (QQuickJumpListCategory *category, categoryList) {
             jumplist.beginCategory(category->title());
-            QList<QJumpListItem *> items = category->toItemList();
-            Q_FOREACH (QJumpListItem *item, items)
+            QList<QWinJumpListItem *> items = category->toItemList();
+            Q_FOREACH (QWinJumpListItem *item, items)
                 jumplist.addItem(item);
         }
     }
@@ -206,9 +206,9 @@ QString QQuickJumpListCategory::title() const
     return m_groupTitle;
 }
 
-QList<QJumpListItem *> QQuickJumpListCategory::toItemList() const
+QList<QWinJumpListItem *> QQuickJumpListCategory::toItemList() const
 {
-    QList<QJumpListItem *> destinations;
+    QList<QWinJumpListItem *> destinations;
     foreach (QQuickJumpListItem *item, m_destinations)
         destinations.append(item->toJumpListItem());
     return destinations;
@@ -239,19 +239,19 @@ int QQuickJumpListItem::type() const
     return m_type;
 }
 
-QJumpListItem *QQuickJumpListItem::toJumpListItem() const
+QWinJumpListItem *QQuickJumpListItem::toJumpListItem() const
 {
-    QJumpListItem *item = new QJumpListItem();
+    QWinJumpListItem *item = new QWinJumpListItem();
     switch (m_type) {
     case ItemTypeSeparator :
-        item->setType(QJumpListItem::Separator);
+        item->setType(QWinJumpListItem::Separator);
         break;
     case ItemTypeDestination :
-        item->setType(QJumpListItem::Destination);
+        item->setType(QWinJumpListItem::Destination);
         item->setFilePath(property("filePath").toString());
         break;
     case ItemTypeLink :
-        item->setType(QJumpListItem::Link);
+        item->setType(QWinJumpListItem::Link);
         item->setFilePath(property("executablePath").toString());
         item->setArguments(QStringList(property("arguments").toStringList()));
         item->setDescription(property("description").toString());

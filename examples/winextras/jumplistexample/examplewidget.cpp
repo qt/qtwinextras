@@ -47,8 +47,8 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QJumpList>
-#include <QJumpListItem>
+#include <QWinJumpList>
+#include <QWinJumpListItem>
 #include <QDebug>
 
 ExampleWidget::ExampleWidget(QWidget *parent) :
@@ -103,7 +103,7 @@ void ExampleWidget::showFile(const QString &path)
 
 void ExampleWidget::updateJumpList()
 {
-    QJumpList jumplist;
+    QWinJumpList jumplist;
     jumplist.begin();
     if (ui->cbShowFrequent->isChecked())
         jumplist.setFrequentCategoryShown(true);
@@ -111,7 +111,7 @@ void ExampleWidget::updateJumpList()
         jumplist.setRecentCategoryShown(true);
     jumplist.beginTasks();
     if (ui->cbRunFullscreen->isChecked()) {
-        QJumpListItem *item = new QJumpListItem(QJumpListItem::Link);
+        QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Link);
         item->setTitle(ui->cbRunFullscreen->text());
         item->setFilePath(QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));
         item->setArguments(QStringList("-fullscreen"));

@@ -119,7 +119,7 @@
     \section3 Jump List Example
 
     The following example code illustrates how to use the classes in the
-    QJumpList and QJumpListItem classes to implement Jump Lists:
+    QWinJumpList and QWinJumpListItem classes to implement Jump Lists:
 
     \snippet code/jumplist.cpp jumplist
 

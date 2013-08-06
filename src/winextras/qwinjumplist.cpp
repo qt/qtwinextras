@@ -39,8 +39,8 @@
  **
  ****************************************************************************/
 
-#include "qjumplist.h"
-#include "qjumplistitem.h"
+#include "qwinjumplist.h"
+#include "qwinjumplistitem.h"
 
 #include <QDir>
 #include <QCoreApplication>
@@ -55,9 +55,9 @@
 QT_BEGIN_NAMESPACE
 
 /*!
-    \class QJumpList
+    \class QWinJumpList
     \inmodule QtWinExtras
-    \brief The QJumpList class represents a transparent wrapper around Windows
+    \brief The QWinJumpList class represents a transparent wrapper around Windows
     Jump Lists.
 
     \since 5.2
@@ -67,9 +67,9 @@ QT_BEGIN_NAMESPACE
  */
 
 /*!
-    \enum QJumpListItem::Type
+    \enum QWinJumpListItem::Type
 
-    This enum specifies QJumpListItem type, changing its meaning for QJumpList.
+    This enum specifies QWinJumpListItem type, changing its meaning for QWinJumpList.
 
     \value  Unknown
             Invalid item type.
@@ -81,10 +81,10 @@ QT_BEGIN_NAMESPACE
             Item becomes a separator. This value is used only for task lists.
  */
 
-class QJumpListPrivate
+class QWinJumpListPrivate
 {
 public:
-    QJumpListPrivate() :
+    QWinJumpListPrivate() :
         pDestList(0), isListBegan(false), showFrequentCategory(false), showRecentCategory(false),
         categoryBegan(false), tasksBegan(false), listSize(0)
     {
@@ -93,7 +93,7 @@ public:
     static void warning(const char *function, HRESULT hresult)
     {
         const QString err = QWinExtras::errorStringFromHresult(hresult);
-        qWarning("QJumpList: %s() failed: %#010x, %s.", function, (unsigned)hresult, qPrintable(err));
+        qWarning("QWinJumpList: %s() failed: %#010x, %s.", function, (unsigned)hresult, qPrintable(err));
     }
 
     static QString iconsDirPath()
@@ -142,9 +142,9 @@ public:
         jumpListItems.clear();
     }
 
-    static QList<QJumpListItem *> fromComCollection(IObjectArray *array)
+    static QList<QWinJumpListItem *> fromComCollection(IObjectArray *array)
     {
-        QList<QJumpListItem *> list;
+        QList<QWinJumpListItem *> list;
         UINT count = 0;
         array->GetCount(&count);
         for (unsigned i = 0; i < count; i++) {
@@ -154,7 +154,7 @@ public:
                 continue;
             IShellItem2 *shellItem = 0;
             IShellLinkW *shellLink = 0;
-            QJumpListItem *jumplistItem = 0;
+            QWinJumpListItem *jumplistItem = 0;
             if (SUCCEEDED(collectionItem->QueryInterface(IID_IShellItem2, reinterpret_cast<void **>(shellItem)))) {
                 jumplistItem = fromIShellItem(shellItem);
                 shellItem->Release();
@@ -162,7 +162,7 @@ public:
                 jumplistItem = fromIShellLink(shellLink);
                 shellLink->Release();
             } else {
-                qWarning("QJumpList: object of unexpected class found");
+                qWarning("QWinJumpList: object of unexpected class found");
             }
             collectionItem->Release();
             if (jumplistItem)
@@ -171,7 +171,7 @@ public:
         return list;
     }
 
-    static IObjectCollection *toComCollection(const QList<QJumpListItem *> &list)
+    static IObjectCollection *toComCollection(const QList<QWinJumpListItem *> &list)
     {
         if (list.isEmpty())
             return 0;
@@ -179,10 +179,10 @@ public:
         HRESULT hresult = CoCreateInstance(CLSID_EnumerableObjectCollection, 0, CLSCTX_INPROC_SERVER, IID_IObjectCollection, reinterpret_cast<void **>(&collection));
         if (FAILED(hresult)) {
             const QString err = QWinExtras::errorStringFromHresult(hresult);
-            qWarning("QJumpList: failed to instantiate IObjectCollection: %#010x, %s.", (unsigned)hresult, qPrintable(err));
+            qWarning("QWinJumpList: failed to instantiate IObjectCollection: %#010x, %s.", (unsigned)hresult, qPrintable(err));
             return 0;
         }
-        Q_FOREACH (QJumpListItem *item, list) {
+        Q_FOREACH (QWinJumpListItem *item, list) {
             IUnknown *iitem = toICustomDestinationListItem(item);
             if (iitem) {
                 collection->AddObject(iitem);
@@ -192,9 +192,9 @@ public:
         return collection;
     }
 
-    static QJumpListItem *fromIShellLink(IShellLinkW *link)
+    static QWinJumpListItem *fromIShellLink(IShellLinkW *link)
     {
-        QJumpListItem *item = new QJumpListItem(QJumpListItem::Link);
+        QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Link);
 
         IPropertyStore *linkProps;
         link->QueryInterface(IID_IPropertyStore, reinterpret_cast<void **>(&linkProps));
@@ -222,9 +222,9 @@ public:
         return item;
     }
 
-    static QJumpListItem *fromIShellItem(IShellItem2 *shellitem)
+    static QWinJumpListItem *fromIShellItem(IShellItem2 *shellitem)
     {
-        QJumpListItem *item = new QJumpListItem(QJumpListItem::Destination);
+        QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Destination);
         wchar_t *strPtr;
         shellitem->GetDisplayName(SIGDN_FILESYSPATH, &strPtr);
         item->setFilePath(QString::fromWCharArray(strPtr));
@@ -255,31 +255,31 @@ public:
         return args;
     }
 
-    static IUnknown *toICustomDestinationListItem(const QJumpListItem *item)
+    static IUnknown *toICustomDestinationListItem(const QWinJumpListItem *item)
     {
         switch (item->type()) {
-        case QJumpListItem::Destination :
+        case QWinJumpListItem::Destination :
             return toIShellItem(item);
-        case QJumpListItem::Link :
+        case QWinJumpListItem::Link :
             return toIShellLink(item);
-        case QJumpListItem::Separator :
+        case QWinJumpListItem::Separator :
             return makeSeparatorShellItem();
         default:
             return 0;
         }
     }
 
-    static IShellLinkW *toIShellLink(const QJumpListItem *item)
+    static IShellLinkW *toIShellLink(const QWinJumpListItem *item)
     {
         IShellLinkW *link = 0;
         HRESULT hresult = CoCreateInstance(CLSID_ShellLink, 0, CLSCTX_INPROC_SERVER, IID_IShellLinkW, reinterpret_cast<void **>(&link));
         if (FAILED(hresult)) {
             const QString err = QWinExtras::errorStringFromHresult(hresult);
-            qWarning("QJumpList: failed to instantiate IShellLinkW: %#010x, %s.", (unsigned)hresult, qPrintable(err));
+            qWarning("QWinJumpList: failed to instantiate IShellLinkW: %#010x, %s.", (unsigned)hresult, qPrintable(err));
             return 0;
         }
 
-        const int iconPathSize = QJumpListPrivate::iconsDirPath().size() + sizeof(void *)*2 + 4; // path + ptr-name-in-hex + .ico
+        const int iconPathSize = QWinJumpListPrivate::iconsDirPath().size() + sizeof(void *)*2 + 4; // path + ptr-name-in-hex + .ico
         const int bufferSize = qMax(item->workingDirectory().size(), qMax(item->description().size(), qMax(item->title().size(), qMax(item->filePath().size(), iconPathSize)))) + 1;
         wchar_t *buffer = new wchar_t[bufferSize];
 
@@ -302,7 +302,7 @@ public:
         link->SetArguments(buffer);
 
         if (!item->icon().isNull()) {
-            QString iconPath = QJumpListPrivate::iconsDirPath() + QString::number(reinterpret_cast<quintptr>(item), 16) + QLatin1String(".ico");
+            QString iconPath = QWinJumpListPrivate::iconsDirPath() + QString::number(reinterpret_cast<quintptr>(item), 16) + QLatin1String(".ico");
             bool iconSaved = item->icon().pixmap(GetSystemMetrics(SM_CXICON)).save(iconPath, "ico");
             if (iconSaved) {
                 qt_qstringToNullTerminated(iconPath, buffer);
@@ -329,7 +329,7 @@ public:
         return link;
     }
 
-    static IShellItem2 *toIShellItem(const QJumpListItem *item)
+    static IShellItem2 *toIShellItem(const QWinJumpListItem *item)
     {
         IShellItem2 *shellitem = 0;
         wchar_t *buffer = new wchar_t[item->filePath().length() + 1];
@@ -370,28 +370,28 @@ public:
     QString currentlyBuiltCategoryTitle;
     bool categoryBegan;
     bool tasksBegan;
-    QList<QJumpListItem *> jumpListItems;
+    QList<QWinJumpListItem *> jumpListItems;
     UINT listSize;
 };
 
 /*!
-    Constructs a QJumpList with the parent object \a parent.
+    Constructs a QWinJumpList with the parent object \a parent.
  */
-QJumpList::QJumpList(QObject *parent) :
-    QObject(parent), d_ptr(new QJumpListPrivate)
+QWinJumpList::QWinJumpList(QObject *parent) :
+    QObject(parent), d_ptr(new QWinJumpListPrivate)
 {
     HRESULT hresult = CoCreateInstance(CLSID_DestinationList, 0, CLSCTX_INPROC_SERVER, IID_ICustomDestinationList, reinterpret_cast<void **>(&d_ptr->pDestList));
     if (FAILED(hresult))
-        QJumpListPrivate::warning("CoCreateInstance", hresult);
+        QWinJumpListPrivate::warning("CoCreateInstance", hresult);
 }
 
 /*!
-    Destroys the QJumpList. If commit() or abort() were not called for the
+    Destroys the QWinJumpList. If commit() or abort() were not called for the
     corresponding begin() call, building the Jump List is aborted.
  */
-QJumpList::~QJumpList()
+QWinJumpList::~QWinJumpList()
 {
-    Q_D(QJumpList);
+    Q_D(QWinJumpList);
     if (d->isListBegan)
         abort();
     if (d->pDestList)
@@ -403,9 +403,9 @@ QJumpList::~QJumpList()
     This method must be called before adding Jump List items.
     Returns true if successful; otherwise returns false.
  */
-bool QJumpList::begin()
+bool QWinJumpList::begin()
 {
-    Q_D(QJumpList);
+    Q_D(QWinJumpList);
     if (!d->pDestList)
         return false;
 
@@ -416,7 +416,7 @@ bool QJumpList::begin()
         array->Release();
         d->isListBegan = true;
     } else {
-        QJumpListPrivate::warning("BeginList", hresult);
+        QWinJumpListPrivate::warning("BeginList", hresult);
     }
     return SUCCEEDED(hresult);
 }
@@ -425,9 +425,9 @@ bool QJumpList::begin()
     Completes Jump List building, initiated by begin(), and displays it.
     Returns true if successful; otherwise returns false.
  */
-bool QJumpList::commit()
+bool QWinJumpList::commit()
 {
-    Q_D(QJumpList);
+    Q_D(QWinJumpList);
     if (!d->pDestList || !d->isListBegan)
         return false;
 
@@ -445,7 +445,7 @@ bool QJumpList::commit()
     d->clearItems();
     HRESULT hresult = d->pDestList->CommitList();
     if (FAILED(hresult))
-        QJumpListPrivate::warning("CommitList", hresult);
+        QWinJumpListPrivate::warning("CommitList", hresult);
     return SUCCEEDED(hresult);
 }
 
@@ -454,16 +454,16 @@ bool QJumpList::commit()
     active Jump List unchanged.
     Returns true if successful; otherwise returns false.
  */
-bool QJumpList::abort()
+bool QWinJumpList::abort()
 {
-    Q_D(QJumpList);
+    Q_D(QWinJumpList);
     if (!d->pDestList)
         return false;
 
     d->clearItems();
     HRESULT hresult = d->pDestList->AbortList();
     if (FAILED(hresult))
-        QJumpListPrivate::warning("AbortList", hresult);
+        QWinJumpListPrivate::warning("AbortList", hresult);
     return SUCCEEDED(hresult);
 }
 
@@ -471,9 +471,9 @@ bool QJumpList::abort()
     Clears the application Jump List.
     Returns true if successful; otherwise returns false.
  */
-bool QJumpList::clear()
+bool QWinJumpList::clear()
 {
-    Q_D(QJumpList);
+    Q_D(QWinJumpList);
     if (!d->pDestList)
         return false;
 
@@ -493,9 +493,9 @@ bool QJumpList::clear()
     This method must be called before begin().
     Returns true if successful; otherwise returns false.
 */
-bool QJumpList::setApplicationId(const QString &appId)
+bool QWinJumpList::setApplicationId(const QString &appId)
 {
-    Q_D(QJumpList);
+    Q_D(QWinJumpList);
     if (!d->pDestList)
         return false;
 
@@ -503,7 +503,7 @@ bool QJumpList::setApplicationId(const QString &appId)
     HRESULT hresult = d->pDestList->SetAppID(wcAppId);
     delete[] wcAppId;
     if (FAILED(hresult))
-        QJumpListPrivate::warning("SetAppID", hresult);
+        QWinJumpListPrivate::warning("SetAppID", hresult);
     return SUCCEEDED(hresult);
 }
 
@@ -512,12 +512,12 @@ bool QJumpList::setApplicationId(const QString &appId)
     again.
     Adding a group with removed destinations will fail.
  */
-QList<QJumpListItem *> QJumpList::removedDestinations() const
+QList<QWinJumpListItem *> QWinJumpList::removedDestinations() const
 {
-    Q_D(const QJumpList);
+    Q_D(const QWinJumpList);
     IObjectArray *array = 0;
     d->pDestList->GetRemovedDestinations(IID_IObjectArray, reinterpret_cast<void **>(&array));
-    QList<QJumpListItem *> list = QJumpListPrivate::fromComCollection(array);
+    QList<QWinJumpListItem *> list = QWinJumpListPrivate::fromComCollection(array);
     array->Release();
     return list;
 }
@@ -526,47 +526,47 @@ QList<QJumpListItem *> QJumpList::removedDestinations() const
     Returns the number of items that the Jump List will display. This is
     configured by the user.
  */
-int QJumpList::capacity() const
+int QWinJumpList::capacity() const
 {
-    Q_D(const QJumpList);
+    Q_D(const QWinJumpList);
     return d->listSize;
 }
 
 /*!
-    \property QJumpList::isRecentCategoryShown
+    \property QWinJumpList::isRecentCategoryShown
     \brief whether to show the known Recent category
 
     The default value of this property is false.
     Changes to this property are applied only after commit() is called.
 */
-void QJumpList::setRecentCategoryShown(bool show)
+void QWinJumpList::setRecentCategoryShown(bool show)
 {
-    Q_D(QJumpList);
+    Q_D(QWinJumpList);
     d->showRecentCategory = show;
 }
 
-bool QJumpList::isRecentCategoryShown() const
+bool QWinJumpList::isRecentCategoryShown() const
 {
-    Q_D(const QJumpList);
+    Q_D(const QWinJumpList);
     return d->showRecentCategory;
 }
 
 /*!
-    \property QJumpList::isFrequentCategoryShown
+    \property QWinJumpList::isFrequentCategoryShown
     \brief whether to show the known Frequent category
 
     The default value of this property is false.
     Changes to this property are applied only after commit() is called.
 */
-void QJumpList::setFrequentCategoryShown(bool show)
+void QWinJumpList::setFrequentCategoryShown(bool show)
 {
-    Q_D(QJumpList);
+    Q_D(QWinJumpList);
     d->showFrequentCategory = show;
 }
 
-bool QJumpList::isFrequentCategoryShown() const
+bool QWinJumpList::isFrequentCategoryShown() const
 {
-    Q_D(const QJumpList);
+    Q_D(const QWinJumpList);
     return d->showFrequentCategory;
 }
 
@@ -575,9 +575,9 @@ bool QJumpList::isFrequentCategoryShown() const
 
     begin() must be called before calling this method.
  */
-void QJumpList::beginCategory(const QString &title)
+void QWinJumpList::beginCategory(const QString &title)
 {
-    Q_D(QJumpList);
+    Q_D(QWinJumpList);
     if (!d->pDestList)
         return;
 
@@ -594,9 +594,9 @@ void QJumpList::beginCategory(const QString &title)
 
     begin() must be called before calling this method.
  */
-void QJumpList::beginTasks()
+void QWinJumpList::beginTasks()
 {
-    Q_D(QJumpList);
+    Q_D(QWinJumpList);
     if (!d->pDestList)
         return;
 
@@ -612,9 +612,9 @@ void QJumpList::beginTasks()
     beginCategory() or beginTasks() should be called before calling this method.
     Returns true if successful; otherwise returns false.
  */
-bool QJumpList::addItem(QJumpListItem *item)
+bool QWinJumpList::addItem(QWinJumpListItem *item)
 {
-    Q_D(QJumpList);
+    Q_D(QWinJumpList);
     if (!d->pDestList || (!d->categoryBegan && !d->tasksBegan)) {
         return false;
     }
@@ -628,13 +628,13 @@ bool QJumpList::addItem(QJumpListItem *item)
 
     beginCategory() or beginTasks() should be called before calling this method.
  */
-void QJumpList::addDestination(const QString &filePath)
+void QWinJumpList::addDestination(const QString &filePath)
 {
-    Q_D(QJumpList);
+    Q_D(QWinJumpList);
     if (!d->pDestList || (!d->categoryBegan && !d->tasksBegan))
         return;
 
-    QJumpListItem *item = new QJumpListItem(QJumpListItem::Destination);
+    QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Destination);
     item->setFilePath(filePath);
     d->jumpListItems.append(item);
 }
@@ -647,7 +647,7 @@ void QJumpList::addDestination(const QString &filePath)
 
     beginCategory() or beginTasks() should be called before calling this method.
  */
-void QJumpList::addLink(const QString &title, const QString &executablePath, const QStringList &arguments)
+void QWinJumpList::addLink(const QString &title, const QString &executablePath, const QStringList &arguments)
 {
     addLink(QIcon(), title, QString(), QString(), executablePath, arguments);
 }
@@ -660,7 +660,7 @@ void QJumpList::addLink(const QString &title, const QString &executablePath, con
 
     beginCategory() or beginTasks() should be called before calling this method.
  */
-void QJumpList::addLink(const QString &title, const QString &description, const QString &executablePath, const QStringList &arguments)
+void QWinJumpList::addLink(const QString &title, const QString &description, const QString &executablePath, const QStringList &arguments)
 {
     addLink(QIcon(), title, description, QString(), executablePath, arguments);
 }
@@ -673,7 +673,7 @@ void QJumpList::addLink(const QString &title, const QString &description, const 
 
     beginCategory() or beginTasks() should be called before calling this method.
  */
-void QJumpList::addLink(const QIcon &icon, const QString &title, const QString &executablePath, const QStringList &arguments)
+void QWinJumpList::addLink(const QIcon &icon, const QString &title, const QString &executablePath, const QStringList &arguments)
 {
     addLink(icon, title, QString(), QString(), executablePath, arguments);
 }
@@ -686,7 +686,7 @@ void QJumpList::addLink(const QIcon &icon, const QString &title, const QString &
 
     beginCategory() or beginTasks() should be called before calling this method.
  */
-void QJumpList::addLink(const QIcon &icon, const QString &title, const QString &description, const QString &executablePath, const QStringList &arguments)
+void QWinJumpList::addLink(const QIcon &icon, const QString &title, const QString &description, const QString &executablePath, const QStringList &arguments)
 {
     addLink(icon, title, description, QString(), executablePath, arguments);
 }
@@ -697,13 +697,13 @@ void QJumpList::addLink(const QIcon &icon, const QString &title, const QString &
 
     beginCategory() or beginTasks() should be called before calling this method.
  */
-void QJumpList::addLink(const QIcon &icon, const QString &title, const QString &description, const QString &workingDirectory, const QString &executablePath, const QStringList &arguments)
+void QWinJumpList::addLink(const QIcon &icon, const QString &title, const QString &description, const QString &workingDirectory, const QString &executablePath, const QStringList &arguments)
 {
-    Q_D(QJumpList);
+    Q_D(QWinJumpList);
     if (!d->pDestList || (!d->categoryBegan && !d->tasksBegan))
         return;
 
-    QJumpListItem *item = new QJumpListItem(QJumpListItem::Link);
+    QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Link);
     item->setFilePath(executablePath);
     item->setTitle(title);
     item->setArguments(arguments);
@@ -718,13 +718,13 @@ void QJumpList::addLink(const QIcon &icon, const QString &title, const QString &
 
     beginTasks() should be called before calling this method.
  */
-void QJumpList::addSeparator()
+void QWinJumpList::addSeparator()
 {
-    Q_D(QJumpList);
+    Q_D(QWinJumpList);
     if (!d->pDestList || (!d->categoryBegan && !d->tasksBegan))
         return;
 
-    QJumpListItem *item = new QJumpListItem(QJumpListItem::Separator);
+    QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Separator);
     d->jumpListItems.append(item);
 }
 

@@ -38,18 +38,18 @@
 **
 ****************************************************************************/
 
-#include <QJumpList>
+#include <QWinJumpList>
 
 void foo()
 {
 //! [jumplist]
-    QJumpList jumplist;
+    QWinJumpList jumplist;
     jumplist.begin();
-    jumplist.setKnownCategoryShown(QJumpList::RecentCategory);
+    jumplist.setKnownCategoryShown(QWinJumpList::RecentCategory);
 
     jumplist.beginTasks();
 
-    QJumpListItem *newProject = new QJumpListItem(QJumpListItem::Link);
+    QWinJumpListItem *newProject = new QWinJumpListItem(QWinJumpListItem::Link);
     newProject->setTitle(tr("Create new project"));
     newProject->setFilePath(QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));
     newProject->setArguments(QStringList("--new-project"));

@@ -39,22 +39,22 @@
  **
  ****************************************************************************/
 
-#include "qjumplistitem.h"
+#include "qwinjumplistitem.h"
 
 QT_BEGIN_NAMESPACE
 
 /*!
-    \class QJumpListItem
+    \class QWinJumpListItem
     \inmodule QtWinExtras
     \since 5.2
-    \inheaderfile QJumpList
-    \brief The QJumpListItem class represents a Jump List destination or link.
+    \inheaderfile QWinJumpList
+    \brief The QWinJumpListItem class represents a Jump List destination or link.
 
-    Objects of this class are returned by QJumpList::removedDestinations()
+    Objects of this class are returned by QWinJumpList::removedDestinations()
     and can also be used to add items to a Jump List.
  */
 
-class QJumpListItemPrivate
+class QWinJumpListItemPrivate
 {
 public:
     QString filePath;
@@ -63,40 +63,40 @@ public:
     QString description;
     QIcon icon;
     QStringList arguments;
-    QJumpListItem::Type type;
+    QWinJumpListItem::Type type;
 };
 
 /*!
-    Constructs a QJumpListItem with the specified \a type.
+    Constructs a QWinJumpListItem with the specified \a type.
  */
-QJumpListItem::QJumpListItem(QJumpListItem::Type type) :
-    d_ptr(new QJumpListItemPrivate)
+QWinJumpListItem::QWinJumpListItem(QWinJumpListItem::Type type) :
+    d_ptr(new QWinJumpListItemPrivate)
 {
     d_ptr->type = type;
 }
 
 /*!
-    Destroys the QJumpListItem.
+    Destroys the QWinJumpListItem.
  */
-QJumpListItem::~QJumpListItem()
+QWinJumpListItem::~QWinJumpListItem()
 {
 }
 
 /*!
     Sets the item \a type.
  */
-void QJumpListItem::setType(QJumpListItem::Type type)
+void QWinJumpListItem::setType(QWinJumpListItem::Type type)
 {
-    Q_D(QJumpListItem);
+    Q_D(QWinJumpListItem);
     d->type = type;
 }
 
 /*!
     Returns the item type.
  */
-QJumpListItem::Type QJumpListItem::type() const
+QWinJumpListItem::Type QWinJumpListItem::type() const
 {
-    Q_D(const QJumpListItem);
+    Q_D(const QWinJumpListItem);
     return d->type;
 }
 
@@ -106,10 +106,10 @@ QJumpListItem::Type QJumpListItem::type() const
 
     \list
 
-        \li If the item type is QJumpListItem::Destination, \a filePath is the
+        \li If the item type is QWinJumpListItem::Destination, \a filePath is the
             path to a file that can be opened by an application.
 
-        \li If the item type is QJumpListItem::Link, \a filePath is the path to
+        \li If the item type is QWinJumpListItem::Link, \a filePath is the path to
             an executable that is executed when this item is clicked by the
             user.
 
@@ -117,122 +117,122 @@ QJumpListItem::Type QJumpListItem::type() const
 
     \sa setWorkingDirectory(), setArguments()
  */
-void QJumpListItem::setFilePath(const QString &filePath)
+void QWinJumpListItem::setFilePath(const QString &filePath)
 {
-    Q_D(QJumpListItem);
+    Q_D(QWinJumpListItem);
     d->filePath = filePath;
 }
 
 /*!
     Returns the file path set by setFilePath().
  */
-QString QJumpListItem::filePath() const
+QString QWinJumpListItem::filePath() const
 {
-    Q_D(const QJumpListItem);
+    Q_D(const QWinJumpListItem);
     return d->filePath;
 }
 
 /*!
     Sets the path to the working directory of this item to \a workingDirectory.
 
-    This value is used only if the type of this item is QJumpListItem::Link.
+    This value is used only if the type of this item is QWinJumpListItem::Link.
 
     \sa setFilePath()
  */
-void QJumpListItem::setWorkingDirectory(const QString &workingDirectory)
+void QWinJumpListItem::setWorkingDirectory(const QString &workingDirectory)
 {
-    Q_D(QJumpListItem);
+    Q_D(QWinJumpListItem);
     d->workingDirectory = workingDirectory;
 }
 
 /*!
     Returns the working directory path.
  */
-QString QJumpListItem::workingDirectory() const
+QString QWinJumpListItem::workingDirectory() const
 {
-    Q_D(const QJumpListItem);
+    Q_D(const QWinJumpListItem);
     return d->workingDirectory;
 }
 
 /*!
     Sets the \a icon of this item.
 
-    This value is used only if the type of this item is QJumpListItem::Link.
+    This value is used only if the type of this item is QWinJumpListItem::Link.
  */
-void QJumpListItem::setIcon(const QIcon &icon)
+void QWinJumpListItem::setIcon(const QIcon &icon)
 {
-    Q_D(QJumpListItem);
+    Q_D(QWinJumpListItem);
     d->icon = icon;
 }
 
 /*!
     Returns the icon set for this item.
  */
-QIcon QJumpListItem::icon() const
+QIcon QWinJumpListItem::icon() const
 {
-    Q_D(const QJumpListItem);
+    Q_D(const QWinJumpListItem);
     return d->icon;
 }
 
 /*!
     Sets the \a title of this item.
 
-    This value is used only if the type of this item is QJumpListItem::Link.
+    This value is used only if the type of this item is QWinJumpListItem::Link.
  */
-void QJumpListItem::setTitle(const QString &title)
+void QWinJumpListItem::setTitle(const QString &title)
 {
-    Q_D(QJumpListItem);
+    Q_D(QWinJumpListItem);
     d->title = title;
 }
 
 /*!
     Returns the title of this item.
  */
-QString QJumpListItem::title() const
+QString QWinJumpListItem::title() const
 {
-    Q_D(const QJumpListItem);
+    Q_D(const QWinJumpListItem);
     return d->title;
 }
 
 /*!
     Sets a \a description for this item.
 
-    This value is used only if the type of this item is QJumpListItem::Link.
+    This value is used only if the type of this item is QWinJumpListItem::Link.
  */
-void QJumpListItem::setDescription(const QString &description)
+void QWinJumpListItem::setDescription(const QString &description)
 {
-    Q_D(QJumpListItem);
+    Q_D(QWinJumpListItem);
     d->description = description;
 }
 
 /*!
     Returns the description of this item.
  */
-QString QJumpListItem::description() const
+QString QWinJumpListItem::description() const
 {
-    Q_D(const QJumpListItem);
+    Q_D(const QWinJumpListItem);
     return d->description;
 }
 
 /*!
     Sets command-line \a arguments for this item.
 
-    This value is used only if the type of this item is QJumpListItem::Link.
+    This value is used only if the type of this item is QWinJumpListItem::Link.
 
     \sa setFilePath()
  */
-void QJumpListItem::setArguments(const QStringList &arguments)
+void QWinJumpListItem::setArguments(const QStringList &arguments)
 {
-    Q_D(QJumpListItem);
+    Q_D(QWinJumpListItem);
     d->arguments = arguments;
 }
 
 /*!
     Returns the command-line arguments of this item.
  */
-QStringList QJumpListItem::arguments() const
+QStringList QWinJumpListItem::arguments() const
 {
-    Q_D(const QJumpListItem);
+    Q_D(const QWinJumpListItem);
     return d->arguments;
 }
 
