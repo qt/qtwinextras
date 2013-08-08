@@ -5,14 +5,16 @@ description             = Qt Windows Extras Reference Documentation
 url                     = http://qt-project.org/doc/qt-$QT_VER/qtwinextras
 version                 = $QT_VERSION
 
-exampledirs += ../../../examples \
+exampledirs += ../../../examples/winextras \
                snippets
+
+examplesinstallpath     = winextras
 
 headerdirs = .. ../../imports/winextras
 sourcedirs = .. ../../imports/winextras
 imagedirs += images
 
-depends += qtcore qtgui
+depends += qtcore qtgui qtdoc
 
 qhp.projects = QtWinExtras
 
@@ -28,11 +30,14 @@ qhp.QtWinExtras.customFilters.Qt.name = QtWinExtras $QT_VERSION
 qhp.QtWinExtras.customFilters.Qt.filterAttributes = qtwinextras $QT_VERSION
 
 qhp.QtWinExtras.virtualFolder = qtwinextras
-qhp.QtWinExtras.subprojects = classes qmltypes
+qhp.QtWinExtras.subprojects = classes examples qmltypes
 qhp.QtWinExtras.subprojects.classes.title = C++ Classes and Namespaces
 qhp.QtWinExtras.subprojects.classes.indexTitle = Qt Windows Extras C++ Classes
 qhp.QtWinExtras.subprojects.classes.selectors = class function namespace fake:headerfile
 qhp.QtWinExtras.subprojects.classes.sortPages = true
+qhp.QtWinExtras.subprojects.examples.title = Examples
+qhp.QtWinExtras.subprojects.examples.indexTitle = Qt Windows Extras Examples
+qhp.QtWinExtras.subprojects.examples.selectors = fake:example
 qhp.QtWinExtras.subprojects.qmltypes.title = QML Types
 qhp.QtWinExtras.subprojects.qmltypes.indexTitle = Qt Windows Extras QML Types
 qhp.QtWinExtras.subprojects.qmltypes.selectors = fake:qmlclass
