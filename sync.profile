@@ -6,5 +6,4 @@
     "qtbase" => "",
     "qtdeclarative" => "",
     "qtxmlpatterns" => "",
-    "qtjsbackend" => "",
 );
