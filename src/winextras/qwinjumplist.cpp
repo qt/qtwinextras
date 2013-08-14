@@ -611,6 +611,9 @@ void QWinJumpList::beginTasks()
 
     beginCategory() or beginTasks() should be called before calling this method.
     Returns true if successful; otherwise returns false.
+
+    \warning The \a item pointer becomes invalid after calling any of the following
+             methods: beginCategory(), beginTasks(), commit(), abort(), or clear().
  */
 bool QWinJumpList::addItem(QWinJumpListItem *item)
 {
@@ -627,105 +630,83 @@ bool QWinJumpList::addItem(QWinJumpListItem *item)
     Adds a destination to the Jump List pointing to \a filePath.
 
     beginCategory() or beginTasks() should be called before calling this method.
+    Returns the item if successful; otherwise returns 0.
+
+    \warning The returned pointer becomes invalid after calling any of the following
+             methods: beginCategory(), beginTasks(), commit(), abort(), or clear().
  */
-void QWinJumpList::addDestination(const QString &filePath)
+QWinJumpListItem *QWinJumpList::addDestination(const QString &filePath)
 {
     Q_D(QWinJumpList);
     if (!d->pDestList || (!d->categoryBegan && !d->tasksBegan))
-        return;
+        return 0;
 
     QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Destination);
     item->setFilePath(filePath);
     d->jumpListItems.append(item);
+    return item;
 }
 
 /*!
-    \overload addLink()
-
     Adds a link to the Jump List using \a title, \a executablePath, and
     optionally \a arguments.
 
     beginCategory() or beginTasks() should be called before calling this method.
+    Returns the item if successful; otherwise returns 0.
+
+    \warning The returned pointer becomes invalid after calling any of the following
+             methods: beginCategory(), beginTasks(), commit(), abort(), or clear().
  */
-void QWinJumpList::addLink(const QString &title, const QString &executablePath, const QStringList &arguments)
+QWinJumpListItem *QWinJumpList::addLink(const QString &title, const QString &executablePath, const QStringList &arguments)
 {
-    addLink(QIcon(), title, QString(), QString(), executablePath, arguments);
+    return addLink(QIcon(), title, executablePath, arguments);
 }
 
 /*!
     \overload addLink()
 
-    Adds a link to the Jump List using \a title, \a description,
-    \a executablePath, and optionally \a arguments.
+    Adds a link to the Jump List using \a icon, \a title, \a executablePath,
+    and optionally \a arguments.
 
     beginCategory() or beginTasks() should be called before calling this method.
+    Returns the item if successful; otherwise returns 0.
+
+    \warning The returned pointer becomes invalid after calling any of the following
+             methods: beginCategory(), beginTasks(), commit(), abort(), or clear().
  */
-void QWinJumpList::addLink(const QString &title, const QString &description, const QString &executablePath, const QStringList &arguments)
-{
-    addLink(QIcon(), title, description, QString(), executablePath, arguments);
-}
-
-/*!
-    \overload addLink()
-
-    Adds a link to the Jump List using \a icon, \a title, \a executablePath, and
-    optionally \a arguments.
-
-    beginCategory() or beginTasks() should be called before calling this method.
- */
-void QWinJumpList::addLink(const QIcon &icon, const QString &title, const QString &executablePath, const QStringList &arguments)
-{
-    addLink(icon, title, QString(), QString(), executablePath, arguments);
-}
-
-/*!
-    \overload addLink()
-
-    Adds a link to the Jump List using \a icon, \a title, \a description,
-    \a executablePath, and optionally \a arguments.
-
-    beginCategory() or beginTasks() should be called before calling this method.
- */
-void QWinJumpList::addLink(const QIcon &icon, const QString &title, const QString &description, const QString &executablePath, const QStringList &arguments)
-{
-    addLink(icon, title, description, QString(), executablePath, arguments);
-}
-
-/*!
-    Adds a link to the Jump List using \a icon, \a title, \a description,
-    \a workingDirectory, \a executablePath, and \a arguments.
-
-    beginCategory() or beginTasks() should be called before calling this method.
- */
-void QWinJumpList::addLink(const QIcon &icon, const QString &title, const QString &description, const QString &workingDirectory, const QString &executablePath, const QStringList &arguments)
+QWinJumpListItem *QWinJumpList::addLink(const QIcon &icon, const QString &title, const QString &executablePath, const QStringList &arguments)
 {
     Q_D(QWinJumpList);
     if (!d->pDestList || (!d->categoryBegan && !d->tasksBegan))
-        return;
+        return 0;
 
     QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Link);
     item->setFilePath(executablePath);
     item->setTitle(title);
     item->setArguments(arguments);
-    item->setDescription(description);
     item->setIcon(icon);
-    item->setWorkingDirectory(workingDirectory);
     d->jumpListItems.append(item);
+    return item;
 }
 
 /*!
     Adds a separator to the Jump List.
 
     beginTasks() should be called before calling this method.
+    Returns the item if successful; otherwise returns 0.
+
+    \warning The returned pointer becomes invalid after calling any of the following
+             methods: beginCategory(), beginTasks(), commit(), abort(), or clear().
  */
-void QWinJumpList::addSeparator()
+QWinJumpListItem *QWinJumpList::addSeparator()
 {
     Q_D(QWinJumpList);
     if (!d->pDestList || (!d->categoryBegan && !d->tasksBegan))
-        return;
+        return 0;
 
     QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Separator);
     d->jumpListItems.append(item);
+    return item;
 }
 
 QT_END_NAMESPACE

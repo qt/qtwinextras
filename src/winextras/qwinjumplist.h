@@ -83,13 +83,10 @@ public:
     void beginTasks();
 
     bool addItem(QWinJumpListItem *item);
-    void addDestination(const QString &filePath);
-    void addLink(const QString &title, const QString &executablePath, const QStringList &arguments = QStringList());
-    void addLink(const QString &title, const QString &description, const QString &executablePath, const QStringList &arguments = QStringList());
-    void addLink(const QIcon &icon, const QString &title, const QString &executablePath, const QStringList &arguments = QStringList());
-    void addLink(const QIcon &icon, const QString &title, const QString &description, const QString &executablePath, const QStringList &arguments = QStringList());
-    void addLink(const QIcon &icon, const QString &title, const QString &description, const QString &workingDirectory, const QString &executablePath, const QStringList &arguments);
-    void addSeparator();
+    QWinJumpListItem *addDestination(const QString &filePath);
+    QWinJumpListItem *addLink(const QString &title, const QString &executablePath, const QStringList &arguments = QStringList());
+    QWinJumpListItem *addLink(const QIcon &icon, const QString &title, const QString &executablePath, const QStringList &arguments = QStringList());
+    QWinJumpListItem *addSeparator();
 
 private:
     Q_DISABLE_COPY(QWinJumpList)
