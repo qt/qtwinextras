@@ -210,12 +210,12 @@ public:
         link->GetDescription(buffer, INFOTIPSIZE);
         item->setDescription(QString::fromWCharArray(buffer));
 
-        memset(buffer, 0, buffersize);
+        memset(buffer, 0, buffersize * sizeof(wchar_t));
         int dummyindex;
         link->GetIconLocation(buffer, buffersize-1, &dummyindex);
         item->setIcon(QIcon(QString::fromWCharArray(buffer)));
 
-        memset(buffer, 0, buffersize);
+        memset(buffer, 0, buffersize * sizeof(wchar_t));
         link->GetPath(buffer, buffersize-1, 0, 0);
         item->setFilePath(QString::fromWCharArray(buffer));
 
