@@ -42,12 +42,14 @@
 #ifndef QWINTASKBARBUTTON_H
 #define QWINTASKBARBUTTON_H
 
+#include <QtGui/qicon.h>
 #include <QtCore/qobject.h>
 #include <QtWinExtras/qwinextrasglobal.h>
 
 QT_BEGIN_NAMESPACE
 
 class QWindow;
+class QWinTaskbarProgress;
 class QWinTaskbarButtonPrivate;
 
 class Q_WINEXTRAS_EXPORT QWinTaskbarButton : public QObject
@@ -55,23 +57,10 @@ class Q_WINEXTRAS_EXPORT QWinTaskbarButton : public QObject
     Q_OBJECT
     Q_PROPERTY(QIcon overlayIcon READ overlayIcon WRITE setOverlayIcon)
     Q_PROPERTY(QString overlayIconAccessibilityDescription READ overlayIconAccessibilityDescription WRITE setOverlayIconAccessibilityDescription)
-    Q_PROPERTY(int progressValue READ progressValue WRITE setProgressValue)
-    Q_PROPERTY(int progressMaximum READ progressMaximum WRITE setProgressMaximum)
-    Q_PROPERTY(int progressMinimum READ progressMinimum WRITE setProgressMinimum)
-    Q_PROPERTY(ProgressState progressState READ progressState WRITE setProgressState)
+    Q_PROPERTY(QWinTaskbarProgress *progressBar READ progressBar)
     Q_PROPERTY(QWindow *window READ window WRITE setWindow)
 
 public:
-    enum ProgressState {
-        NoProgressState,
-        IndeterminateState,
-        NormalState,
-        PausedState,
-        ErrorState
-    };
-
-    Q_ENUMS(ProgressState)
-
     explicit QWinTaskbarButton(QObject *parent = 0);
     ~QWinTaskbarButton();
 
@@ -81,10 +70,7 @@ public:
     QIcon overlayIcon() const;
     QString overlayIconAccessibilityDescription() const;
 
-    ProgressState progressState() const;
-    int progressValue() const;
-    int progressMinimum() const;
-    int progressMaximum() const;
+    QWinTaskbarProgress *progressBar() const;
 
     bool eventFilter(QObject *, QEvent *);
 
@@ -94,23 +80,13 @@ public Q_SLOTS:
 
     void clearOverlayIcon();
 
-    void setProgressState(ProgressState state);
-    void setProgressValue(int progress);
-    void setProgressMinimum(int min);
-    void setProgressMaximum(int max);
-    void setProgressRange(int mininum, int progressMaximum);
-    void resetProgress();
-
-Q_SIGNALS:
-    void progressStateChanged(const ProgressState state);
-    void progressValueChanged(int value);
-
 private:
+    Q_DISABLE_COPY(QWinTaskbarButton)
+    Q_DECLARE_PRIVATE(QWinTaskbarButton)
     QScopedPointer<QWinTaskbarButtonPrivate> d_ptr;
 
-    friend class QQuickWinTaskbarButton;
-
-    Q_DECLARE_PRIVATE(QWinTaskbarButton)
+    Q_PRIVATE_SLOT(d_func(), void _q_updateProgressValue())
+    Q_PRIVATE_SLOT(d_func(), void _q_updateProgressState())
 };
 
 QT_END_NAMESPACE

@@ -39,55 +39,63 @@
  **
  ****************************************************************************/
 
-#ifndef QQUICKWINTASKBARBUTTON_H
-#define QQUICKWINTASKBARBUTTON_H
+#ifndef QWINTASKBARPROGRESS_H
+#define QWINTASKBARPROGRESS_H
 
-#include <QQuickItem>
-#include <QWinTaskbarButton>
-#include <QWinTaskbarProgress>
+#include <QtCore/qobject.h>
+#include <QtCore/qscopedpointer.h>
+#include <QtWinExtras/qwinextrasglobal.h>
 
 QT_BEGIN_NAMESPACE
 
-class QQuickWinTaskbarButtonPrivate;
+class QWinTaskbarProgressPrivate;
 
-class QQuickWinTaskbarButton : public QQuickItem
+class Q_WINEXTRAS_EXPORT QWinTaskbarProgress : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int progressMinimum READ progressMinimum WRITE setProgressMinimum)
-    Q_PROPERTY(int progressMaximum READ progressMaximum WRITE setProgressMaximum)
-    Q_PROPERTY(int progressValue   READ progressValue   WRITE setProgressValue)
-    Q_PROPERTY(QString overlayIcon READ overlayIcon WRITE setOverlayIcon)
-    Q_PROPERTY(QString iconDescription READ iconDescription WRITE setIconDescription)
-    Q_PROPERTY(QWinTaskbarProgress::ProgressState progressState READ progressState WRITE setProgressState)
+    Q_PROPERTY(int value READ value WRITE setValue NOTIFY valueChanged)
+    Q_PROPERTY(int minimum READ minimum WRITE setMinimum NOTIFY minimumChanged)
+    Q_PROPERTY(int maximum READ maximum WRITE setMaximum NOTIFY maximumChanged)
+    Q_PROPERTY(ProgressState state READ state WRITE setState NOTIFY stateChanged)
+    Q_ENUMS(ProgressState)
 
 public:
-    Q_ENUMS(QWinTaskbarButton::ProgressState)
+    enum ProgressState {
+        NoProgressState,
+        IndeterminateState,
+        NormalState,
+        PausedState,
+        ErrorState
+    };
 
-    QQuickWinTaskbarButton(QQuickItem *parent = 0);
-    ~QQuickWinTaskbarButton();
-    int progressMinimum() const;
-    void setProgressMinimum(int min);
-    int progressMaximum() const;
-    void setProgressMaximum(int max);
-    int progressValue() const;
-    void setProgressValue(int progress);
-    QString overlayIcon() const;
-    void setOverlayIcon(const QString &path);
-    QString iconDescription() const;
-    void setIconDescription(const QString &descr);
+    explicit QWinTaskbarProgress(QObject *parent = 0);
+    ~QWinTaskbarProgress();
 
-    QWinTaskbarProgress::ProgressState progressState() const;
-    void setProgressState(QWinTaskbarProgress::ProgressState state);
+    ProgressState state() const;
+    int value() const;
+    int minimum() const;
+    int maximum() const;
 
-protected:
-    void itemChange(ItemChange, const ItemChangeData &) Q_DECL_OVERRIDE;
+public Q_SLOTS:
+    void setState(ProgressState state);
+    void setValue(int value);
+    void setMinimum(int minimum);
+    void setMaximum(int minimum);
+    void setRange(int minimum, int maximum);
+    void reset();
+
+Q_SIGNALS:
+    void valueChanged(int value);
+    void minimumChanged(int minimum);
+    void maximumChanged(int maximum);
+    void stateChanged(ProgressState state);
 
 private:
-    QWinTaskbarButton *button;
-    QString m_iconPath;
-    QString m_iconDescription;
+    Q_DISABLE_COPY(QWinTaskbarProgress)
+    Q_DECLARE_PRIVATE(QWinTaskbarProgress)
+    QScopedPointer<QWinTaskbarProgressPrivate> d_ptr;
 };
 
 QT_END_NAMESPACE
 
-#endif // QQUICKWINTASKBARBUTTON_H
+#endif // QWINTASKBARPROGRESS_H

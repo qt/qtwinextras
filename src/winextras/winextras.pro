@@ -6,6 +6,7 @@ SOURCES += \
     qwinfunctions.cpp \
     qwinfunctions_p.cpp \
     qwintaskbarbutton.cpp \
+    qwintaskbarprogress.cpp \
     windowsguidsdefs.cpp \
     qwinjumplist.cpp \
     qwinjumplistitem.cpp \
@@ -20,6 +21,7 @@ HEADERS += \
     qwinfunctions_p.h \
     qwintaskbarbutton_p.h \
     qwintaskbarbutton.h \
+    qwintaskbarprogress.h \
     qwinjumplist.h \
     qwinjumplistitem.h \
     winshobjidl_p.h \

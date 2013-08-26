@@ -43,15 +43,16 @@
 #define QWINTASKBARBUTTON_P_H
 
 #include "qwintaskbarbutton.h"
-#include "winshobjidl_p.h"
 
 #include <QWindow>
-#include <QAbstractNativeEventFilter>
+#include <QPointer>
 #include <qt_windows.h>
 
 struct ITaskbarList4;
 
 QT_BEGIN_NAMESPACE
+
+class QWinTaskbarProgress;
 
 class QWinTaskbarButtonPrivate
 {
@@ -59,28 +60,20 @@ public:
     QWinTaskbarButtonPrivate();
     ~QWinTaskbarButtonPrivate();
 
-    int progressMinimum;
-    int progressMaximum;
-    int progressValue;
+    QPointer<QWinTaskbarProgress> progressBar;
     QIcon overlayIcon;
     QString overlayIconDescription;
-    QWinTaskbarButton::ProgressState progressState;
-    bool updateNeeded;
 
     HWND handle();
     int iconSize() const;
-    static TBPFLAG nativeProgressState(QWinTaskbarButton::ProgressState);
 
     void updateOverlayIcon();
-    void updateProgressValue();
+
+    void _q_updateProgressValue();
+    void _q_updateProgressState();
 
     ITaskbarList4 *pTbList;
     QWindow *window;
-
-private:
-    QWinTaskbarButton *q_ptr;
-
-    Q_DECLARE_PUBLIC(QWinTaskbarButton)
 };
 
 QT_END_NAMESPACE

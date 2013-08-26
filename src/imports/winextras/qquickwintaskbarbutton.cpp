@@ -77,12 +77,12 @@ QQuickWinTaskbarButton::~QQuickWinTaskbarButton()
 
 int QQuickWinTaskbarButton::progressMinimum() const
 {
-    return button->progressMinimum();
+    return button->progressBar()->minimum();
 }
 
 void QQuickWinTaskbarButton::setProgressMinimum(int min)
 {
-    button->setProgressMinimum(min);
+    button->progressBar()->setMinimum(min);
 }
 
 /*!
@@ -92,12 +92,12 @@ void QQuickWinTaskbarButton::setProgressMinimum(int min)
  */
 int QQuickWinTaskbarButton::progressMaximum() const
 {
-    return button->progressMaximum();
+    return button->progressBar()->maximum();
 }
 
 void QQuickWinTaskbarButton::setProgressMaximum(int max)
 {
-    button->setProgressMaximum(max);
+    button->progressBar()->setMaximum(max);
 }
 
 /*!
@@ -107,12 +107,12 @@ void QQuickWinTaskbarButton::setProgressMaximum(int max)
  */
 int QQuickWinTaskbarButton::progressValue() const
 {
-    return button->progressValue();
+    return button->progressBar()->value();
 }
 
 void QQuickWinTaskbarButton::setProgressValue(int progress)
 {
-    button->setProgressValue(progress);
+    button->progressBar()->setValue(progress);
 }
 
 /*!
@@ -169,14 +169,14 @@ void QQuickWinTaskbarButton::setIconDescription(const QString &descr)
         \li The progress indicator turns red.
     \endtable
  */
-QWinTaskbarButton::ProgressState QQuickWinTaskbarButton::progressState() const
+QWinTaskbarProgress::ProgressState QQuickWinTaskbarButton::progressState() const
 {
-    return button->progressState();
+    return button->progressBar()->state();
 }
 
-void QQuickWinTaskbarButton::setProgressState(QWinTaskbarButton::ProgressState state)
+void QQuickWinTaskbarButton::setProgressState(QWinTaskbarProgress::ProgressState state)
 {
-    button->setProgressState(state);
+    button->progressBar()->setState(state);
 }
 
 void QQuickWinTaskbarButton::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data)
