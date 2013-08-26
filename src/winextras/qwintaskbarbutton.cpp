@@ -103,8 +103,8 @@ QWinTaskbarButton::~QWinTaskbarButton()
 }
 
 /*!
-    Sets the \a window whose taskbar button this QWinTaskbarButton will operate
-    on.
+    \property QWinTaskbarButton::window
+    \brief the window whose taskbar button is manipulated
  */
 void QWinTaskbarButton::setWindow(QWindow *window)
 {
@@ -119,6 +119,12 @@ void QWinTaskbarButton::setWindow(QWindow *window)
             d->updateOverlayIcon();
         }
     }
+}
+
+QWindow *QWinTaskbarButton::window() const
+{
+    Q_D(const QWinTaskbarButton);
+    return d->window;
 }
 
 /*!

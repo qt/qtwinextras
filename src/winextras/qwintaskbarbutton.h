@@ -59,6 +59,7 @@ class Q_WINEXTRAS_EXPORT QWinTaskbarButton : public QObject
     Q_PROPERTY(int progressMaximum READ progressMaximum WRITE setProgressMaximum)
     Q_PROPERTY(int progressMinimum READ progressMinimum WRITE setProgressMinimum)
     Q_PROPERTY(ProgressState progressState READ progressState WRITE setProgressState)
+    Q_PROPERTY(QWindow *window READ window WRITE setWindow)
 
 public:
     enum ProgressState {
@@ -73,7 +74,9 @@ public:
 
     explicit QWinTaskbarButton(QObject *parent = 0);
     ~QWinTaskbarButton();
+
     void setWindow(QWindow *window);
+    QWindow *window() const;
 
     QIcon overlayIcon() const;
     QString overlayIconAccessibilityDescription() const;
