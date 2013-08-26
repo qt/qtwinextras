@@ -157,8 +157,8 @@ void QWinThumbnailToolBar::removeButton(QWinThumbnailToolButton *button)
 void QWinThumbnailToolBar::setButtons(const QList<QWinThumbnailToolButton *> &buttons)
 {
     Q_D(QWinThumbnailToolBar);
-    d->buttonList = buttons;
-    Q_FOREACH (QWinThumbnailToolButton *button, d->buttonList)
+    d->buttonList.clear();
+    Q_FOREACH (QWinThumbnailToolButton *button, buttons)
         addButton(button);
     d->_q_updateToolbar();
 }
