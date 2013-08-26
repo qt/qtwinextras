@@ -47,6 +47,7 @@ Makefile*
 *-build-*
 .qmake.cache
 ui_*.h
+.moc
 
 # Directories
 
