@@ -70,6 +70,8 @@ public:
     void setButtons(const QList<QWinThumbnailToolButton *> &buttons);
     QList<QWinThumbnailToolButton *> buttons() const;
     int count() const;
+
+public Q_SLOTS:
     void clear();
 
 private:
