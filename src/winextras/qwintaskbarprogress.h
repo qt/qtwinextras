@@ -88,7 +88,7 @@ Q_SIGNALS:
     void valueChanged(int value);
     void minimumChanged(int minimum);
     void maximumChanged(int maximum);
-    void stateChanged(ProgressState state);
+    void stateChanged(QWinTaskbarProgress::ProgressState state);
 
 private:
     Q_DISABLE_COPY(QWinTaskbarProgress)
