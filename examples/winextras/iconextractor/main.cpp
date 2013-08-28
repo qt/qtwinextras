@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 
     imageFileRoot = imageFileRootInfo.absoluteFilePath() + QLatin1Char('/') + QFileInfo(sourceFile).baseName();
     for (UINT i = 0; i < extractedIconCount; ++i) {
-        const QPixmap pixmap = QWinExtras::fromHICON(icons[i]);
+        const QPixmap pixmap = QtWinExtras::fromHICON(icons[i]);
         if (pixmap.isNull()) {
             std::cerr << "Error converting icons.\n";
             return 1;

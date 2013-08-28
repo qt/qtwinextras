@@ -78,28 +78,28 @@ QQuickWinDwmFeatures::~QQuickWinDwmFeatures()
 
 void QQuickWinDwmFeatures::setCompositionEnabled(bool enabled)
 {
-    QWinExtras::setCompositionEnabled(enabled);
+    QtWinExtras::setCompositionEnabled(enabled);
 }
 
 bool QQuickWinDwmFeatures::isCompositionEnabled() const
 {
-    return QWinExtras::isCompositionEnabled();
+    return QtWinExtras::isCompositionEnabled();
 }
 
 QColor QQuickWinDwmFeatures::colorizationColor() const
 {
-    return QWinExtras::colorizationColor();
+    return QtWinExtras::colorizationColor();
 }
 
 QColor QQuickWinDwmFeatures::realColorizationColor() const
 {
-    return QWinExtras::realColorizationColor();
+    return QtWinExtras::realColorizationColor();
 }
 
 bool QQuickWinDwmFeatures::colorizationOpaqueBlend() const
 {
     bool opaque;
-    QWinExtras::colorizationColor(&opaque);
+    QtWinExtras::colorizationColor(&opaque);
     return opaque;
 }
 
@@ -185,7 +185,7 @@ bool QQuickWinDwmFeatures::excludedFromPeek() const
 {
     Q_D(const QQuickWinDwmFeatures);
     if (window())
-        return QWinExtras::isWindowExcludedFromPeek(window());
+        return QtWinExtras::isWindowExcludedFromPeek(window());
     else
         return d->peekExcluded;
 }
@@ -206,7 +206,7 @@ bool QQuickWinDwmFeatures::peekDisallowed() const
 {
     Q_D(const QQuickWinDwmFeatures);
     if (window())
-        return QWinExtras::isWindowPeekDisallowed(window());
+        return QtWinExtras::isWindowPeekDisallowed(window());
     else
         return d->peekDisallowed;
 }
@@ -232,7 +232,7 @@ QQuickWinDwmFeatures::Flip3DPolicy QQuickWinDwmFeatures::flip3DPolicy() const
 {
     Q_D(const QQuickWinDwmFeatures);
     if (window())
-        return static_cast<Flip3DPolicy>(QWinExtras::windowFlip3DPolicy(window()));
+        return static_cast<Flip3DPolicy>(QtWinExtras::windowFlip3DPolicy(window()));
     else
         return static_cast<Flip3DPolicy>(d->flipPolicy);
 }
@@ -306,13 +306,13 @@ void QQuickWinDwmFeaturesPrivate::update()
             q->window()->setColor(Qt::transparent);
         }
         if (peekExcluded)
-            QWinExtras::setWindowExcludedFromPeek(w, peekExcluded);
+            QtWinExtras::setWindowExcludedFromPeek(w, peekExcluded);
         if (peekDisallowed)
-            QWinExtras::setWindowDisallowPeek(w, peekDisallowed);
+            QtWinExtras::setWindowDisallowPeek(w, peekDisallowed);
         if (flipPolicy != QQuickWinDwmFeatures::FlipDefault)
-            QWinExtras::setWindowFlip3DPolicy(w, static_cast<QWinExtras::WindowFlip3DPolicy>(flipPolicy));
+            QtWinExtras::setWindowFlip3DPolicy(w, static_cast<QtWinExtras::WindowFlip3DPolicy>(flipPolicy));
         if (topMargin || rightMargin || bottomMargin || leftMargin)
-            QWinExtras::extendFrameIntoClientArea(w, leftMargin, topMargin, rightMargin, bottomMargin);
+            QtWinExtras::extendFrameIntoClientArea(w, leftMargin, topMargin, rightMargin, bottomMargin);
     }
 }
 

@@ -87,12 +87,12 @@ QWinTaskbarButtonPrivate::QWinTaskbarButtonPrivate() : progressBar(0), pTbList(0
     HRESULT hresult = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, IID_ITaskbarList4, reinterpret_cast<void **>(&pTbList));
     if (FAILED(hresult)) {
         pTbList = 0;
-        const QString err = QWinExtras::errorStringFromHresult(hresult);
+        const QString err = QtWinExtras::errorStringFromHresult(hresult);
         qWarning("QWinTaskbarButton: IID_ITaskbarList4 was not created: %#010x, %s.", (unsigned)hresult, qPrintable(err));
     } else if (FAILED(pTbList->HrInit())) {
         pTbList->Release();
         pTbList = 0;
-        const QString err = QWinExtras::errorStringFromHresult(hresult);
+        const QString err = QtWinExtras::errorStringFromHresult(hresult);
         qWarning("QWinTaskbarButton: IID_ITaskbarList4 was not initialized: %#010x, %s.", (unsigned)hresult, qPrintable(err));
     }
 }
@@ -124,7 +124,7 @@ void QWinTaskbarButtonPrivate::updateOverlayIcon()
         descrPtr[overlayIconDescription.toWCharArray(descrPtr)] = 0;
     }
     if (!overlayIcon.isNull())
-        hicon = QWinExtras::toHICON(overlayIcon.pixmap(iconSize()));
+        hicon = QtWinExtras::toHICON(overlayIcon.pixmap(iconSize()));
 
     if (hicon)
         pTbList->SetOverlayIcon(handle(), hicon, descrPtr);

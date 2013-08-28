@@ -67,9 +67,9 @@ Q_GUI_EXPORT QImage  qt_imageFromWinHBITMAP(HDC hdc, HBITMAP bitmap, int w, int 
 Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON(HICON icon);
 
 /*!
-    \namespace QWinExtras
+    \namespace QtWinExtras
     \inmodule QtWinExtras
-    \brief The QWinExtras namespace contains miscellaneous Windows-specific functions.
+    \brief The QtWinExtras namespace contains miscellaneous Windows-specific functions.
     \inheaderfile QWinFunctions
 
  */
@@ -83,7 +83,7 @@ Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON(HICON icon);
 
     \sa toHBITMAP()
 */
-HBITMAP QWinExtras::createMask(const QBitmap &bitmap)
+HBITMAP QtWinExtras::createMask(const QBitmap &bitmap)
 {
     return qt_createIconMask(bitmap);
 }
@@ -99,7 +99,7 @@ HBITMAP QWinExtras::createMask(const QBitmap &bitmap)
 
     \sa fromHBITMAP()
 */
-HBITMAP QWinExtras::toHBITMAP(const QPixmap &p, QWinExtras::HBitmapFormat format)
+HBITMAP QtWinExtras::toHBITMAP(const QPixmap &p, QtWinExtras::HBitmapFormat format)
 {
     return qt_pixmapToWinHBITMAP(p, format);
 }
@@ -112,7 +112,7 @@ HBITMAP QWinExtras::toHBITMAP(const QPixmap &p, QWinExtras::HBitmapFormat format
 
     \sa toHBITMAP()
 */
-QPixmap QWinExtras::fromHBITMAP(HBITMAP bitmap, QWinExtras::HBitmapFormat format)
+QPixmap QtWinExtras::fromHBITMAP(HBITMAP bitmap, QtWinExtras::HBitmapFormat format)
 {
     return qt_pixmapFromWinHBITMAP(bitmap, format);
 }
@@ -127,7 +127,7 @@ QPixmap QWinExtras::fromHBITMAP(HBITMAP bitmap, QWinExtras::HBitmapFormat format
 
     \sa fromHICON()
 */
-HICON QWinExtras::toHICON(const QPixmap &p)
+HICON QtWinExtras::toHICON(const QPixmap &p)
 {
     return qt_pixmapToWinHICON(p);
 }
@@ -141,7 +141,7 @@ HICON QWinExtras::toHICON(const QPixmap &p)
 
     \sa toHBITMAP()
 */
-QImage QWinExtras::imageFromHBITMAP(HDC hdc, HBITMAP bitmap, int width, int height)
+QImage QtWinExtras::imageFromHBITMAP(HDC hdc, HBITMAP bitmap, int width, int height)
 {
     return qt_imageFromWinHBITMAP(hdc, bitmap, width, height);
 }
@@ -153,7 +153,7 @@ QImage QWinExtras::imageFromHBITMAP(HDC hdc, HBITMAP bitmap, int width, int heig
 
     \sa toHICON()
 */
-QPixmap QWinExtras::fromHICON(HICON icon)
+QPixmap QtWinExtras::fromHICON(HICON icon)
 {
     return qt_pixmapFromWinHICON(icon);
 }
@@ -168,7 +168,7 @@ HRGN qt_RectToHRGN(const QRect &rc)
 
     Returns a HRGN that is equivalent to the given \a region.
  */
-HRGN QWinExtras::toHRGN(const QRegion &region)
+HRGN QtWinExtras::toHRGN(const QRegion &region)
 {
     if (region.isNull() || region.rectCount() == 0) {
         return 0;
@@ -192,7 +192,7 @@ HRGN QWinExtras::toHRGN(const QRegion &region)
 
     Returns a QRegion that is equivalent to the given \a hrgn.
  */
-QRegion QWinExtras::fromHRGN(HRGN hrgn)
+QRegion QtWinExtras::fromHRGN(HRGN hrgn)
 {
     DWORD regionDataSize = GetRegionData(hrgn, 0, NULL);
     if (regionDataSize == 0)
@@ -221,7 +221,7 @@ QRegion QWinExtras::fromHRGN(HRGN hrgn)
     Returns a message string that explains the \a hresult error id specified or
     an empty string if the explanation cannot be found.
  */
-QString QWinExtras::stringFromHresult(HRESULT hresult)
+QString QtWinExtras::stringFromHresult(HRESULT hresult)
 {
     _com_error error(hresult);
     QString errorMsg;
@@ -238,7 +238,7 @@ QString QWinExtras::stringFromHresult(HRESULT hresult)
     Returns the code name of the \a hresult error id specified (usually the name
     of the WinAPI macro) or an empty string if the message is unknown.
  */
-QString QWinExtras::errorStringFromHresult(HRESULT hresult)
+QString QtWinExtras::errorStringFromHresult(HRESULT hresult)
 {
     switch (hresult) {
     case 0x8000FFFF : return QStringLiteral("E_UNEXPECTED");
@@ -1430,7 +1430,7 @@ QString QWinExtras::errorStringFromHresult(HRESULT hresult)
     \a opaqueBlend will contain true if the color is an opaque blend and false
     otherwise.
  */
-QColor QWinExtras::colorizationColor(bool *opaqueBlend)
+QColor QtWinExtras::colorizationColor(bool *opaqueBlend)
 {
     QWinEventFilter::setup();
 
@@ -1450,9 +1450,9 @@ QColor QWinExtras::colorizationColor(bool *opaqueBlend)
     alpha-blended color which often turns out a semitransparent gray rather
     than something similar to what is chosen by the user.
 
-    \sa QWinExtras::colorizationColor()
+    \sa QtWinExtras::colorizationColor()
  */
-QColor QWinExtras::realColorizationColor()
+QColor QtWinExtras::realColorizationColor()
 {
     QWinEventFilter::setup();
 
@@ -1466,9 +1466,9 @@ QColor QWinExtras::realColorizationColor()
 }
 
 /*!
-    \fn QWinExtras::setWindowExcludedFromPeek(QWidget *window, bool exclude)
+    \fn QtWinExtras::setWindowExcludedFromPeek(QWidget *window, bool exclude)
     \since 5.2
-    \overload QWinExtras::setWindowExcludedFromPeek()
+    \overload QtWinExtras::setWindowExcludedFromPeek()
 */
 
 /*!
@@ -1476,7 +1476,7 @@ QColor QWinExtras::realColorizationColor()
 
     Excludes the specified \a window from Aero Peek if \a exclude is true.
  */
-void QWinExtras::setWindowExcludedFromPeek(QWindow *window, bool exclude)
+void QtWinExtras::setWindowExcludedFromPeek(QWindow *window, bool exclude)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
     BOOL value = exclude;
@@ -1484,9 +1484,9 @@ void QWinExtras::setWindowExcludedFromPeek(QWindow *window, bool exclude)
 }
 
 /*!
-    \fn bool QWinExtras::isWindowExcludedFromPeek(QWidget *window)
+    \fn bool QtWinExtras::isWindowExcludedFromPeek(QWidget *window)
     \since 5.2
-    \overload QWinExtras::isWindowExcludedFromPeek()
+    \overload QtWinExtras::isWindowExcludedFromPeek()
 */
 
 /*!
@@ -1494,7 +1494,7 @@ void QWinExtras::setWindowExcludedFromPeek(QWindow *window, bool exclude)
 
     Returns true if the specified \a window is excluded from Aero Peek.
  */
-bool QWinExtras::isWindowExcludedFromPeek(QWindow *window)
+bool QtWinExtras::isWindowExcludedFromPeek(QWindow *window)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
     BOOL value;
@@ -1503,9 +1503,9 @@ bool QWinExtras::isWindowExcludedFromPeek(QWindow *window)
 }
 
 /*!
-    \fn void QWinExtras::setWindowDisallowPeek(QWidget *window, bool disallow)
+    \fn void QtWinExtras::setWindowDisallowPeek(QWidget *window, bool disallow)
     \since 5.2
-    \overload QWinExtras::setWindowDisallowPeek()
+    \overload QtWinExtras::setWindowDisallowPeek()
 */
 
 /*!
@@ -1517,7 +1517,7 @@ bool QWinExtras::isWindowExcludedFromPeek(QWindow *window)
 
     The default is false.
  */
-void QWinExtras::setWindowDisallowPeek(QWindow *window, bool disallow)
+void QtWinExtras::setWindowDisallowPeek(QWindow *window, bool disallow)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
     BOOL value = disallow;
@@ -1525,9 +1525,9 @@ void QWinExtras::setWindowDisallowPeek(QWindow *window, bool disallow)
 }
 
 /*!
-    \fn bool QWinExtras::isWindowPeekDisallowed(QWidget *window)
+    \fn bool QtWinExtras::isWindowPeekDisallowed(QWidget *window)
     \since 5.2
-    \overload QWinExtras::isWindowPeekDisallowed()
+    \overload QtWinExtras::isWindowPeekDisallowed()
 */
 
 /*!
@@ -1536,7 +1536,7 @@ void QWinExtras::setWindowDisallowPeek(QWindow *window, bool disallow)
     Returns true if Aero Peek is disallowed on the thumbnail of the specified
     \a window.
  */
-bool QWinExtras::isWindowPeekDisallowed(QWindow *window)
+bool QtWinExtras::isWindowPeekDisallowed(QWindow *window)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
     BOOL value;
@@ -1545,9 +1545,9 @@ bool QWinExtras::isWindowPeekDisallowed(QWindow *window)
 }
 
 /*!
-    \fn void QWinExtras::setWindowFlip3DPolicy(QWidget *window, QWinExtras::WindowFlip3DPolicy policy)
+    \fn void QtWinExtras::setWindowFlip3DPolicy(QWidget *window, QtWinExtras::WindowFlip3DPolicy policy)
     \since 5.2
-    \overload QWinExtras::setWindowFlip3DPolicy()
+    \overload QtWinExtras::setWindowFlip3DPolicy()
 */
 
 /*!
@@ -1555,7 +1555,7 @@ bool QWinExtras::isWindowPeekDisallowed(QWindow *window)
 
     Sets the Flip3D policy \a policy for the specified \a window.
  */
-void QWinExtras::setWindowFlip3DPolicy(QWindow *window, QWinExtras::WindowFlip3DPolicy policy)
+void QtWinExtras::setWindowFlip3DPolicy(QWindow *window, QtWinExtras::WindowFlip3DPolicy policy)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
 
@@ -1583,9 +1583,9 @@ void QWinExtras::setWindowFlip3DPolicy(QWindow *window, QWinExtras::WindowFlip3D
 }
 
 /*!
-    \fn QWinExtras::WindowFlip3DPolicy QWinExtras::windowFlip3DPolicy(QWidget *window)
+    \fn QtWinExtras::WindowFlip3DPolicy QtWinExtras::windowFlip3DPolicy(QWidget *window)
     \since 5.2
-    \overload QWinExtras::windowFlip3DPolicy()
+    \overload QtWinExtras::windowFlip3DPolicy()
  */
 
 /*!
@@ -1593,22 +1593,22 @@ void QWinExtras::setWindowFlip3DPolicy(QWindow *window, QWinExtras::WindowFlip3D
 
     Returns the current Flip3D policy for the specified \a window.
  */
-QWinExtras::WindowFlip3DPolicy QWinExtras::windowFlip3DPolicy(QWindow *window)
+QtWinExtras::WindowFlip3DPolicy QtWinExtras::windowFlip3DPolicy(QWindow *window)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
 
     DWORD value;
-    QWinExtras::WindowFlip3DPolicy policy;
+    QtWinExtras::WindowFlip3DPolicy policy;
     qt_DwmGetWindowAttribute(reinterpret_cast<HWND>(window->winId()), qt_DWMWA_FLIP3D_POLICY, &value, sizeof(value));
     switch (value) {
     case qt_DWMFLIP3D_EXCLUDEABOVE :
-        policy = QWinExtras::FlipExcludeAbove;
+        policy = QtWinExtras::FlipExcludeAbove;
         break;
     case qt_DWMFLIP3D_EXCLUDEBELOW :
-        policy = QWinExtras::FlipExcludeBelow;
+        policy = QtWinExtras::FlipExcludeBelow;
         break;
     default :
-        policy = QWinExtras::FlipDefault;
+        policy = QtWinExtras::FlipDefault;
         break;
     }
     return policy;
@@ -1622,9 +1622,9 @@ void qt_ExtendFrameIntoClientArea(QWindow *window, int left, int top, int right,
     qt_DwmExtendFrameIntoClientArea(reinterpret_cast<HWND>(window->winId()), &margins);
 }
 
-/*! \fn void QWinExtras::extendFrameIntoClientArea(QWidget *window, int left, int top, int right, int bottom)
+/*! \fn void QtWinExtras::extendFrameIntoClientArea(QWidget *window, int left, int top, int right, int bottom)
     \since 5.2
-    \overload QWinExtras::extendFrameIntoClientArea()
+    \overload QtWinExtras::extendFrameIntoClientArea()
  */
 
 /*!
@@ -1642,17 +1642,17 @@ void qt_ExtendFrameIntoClientArea(QWindow *window, int left, int top, int right,
     \note If \a window is a QWidget handle, set the
     Qt::WA_NoSystemBackground attribute for your widget.
 
-    \sa QWinExtras::resetExtendedFrame()
+    \sa QtWinExtras::resetExtendedFrame()
  */
-void QWinExtras::extendFrameIntoClientArea(QWindow *window, int left, int top, int right, int bottom)
+void QtWinExtras::extendFrameIntoClientArea(QWindow *window, int left, int top, int right, int bottom)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
     qt_ExtendFrameIntoClientArea(window, left, top, right, bottom);
 }
 
-/*! \fn void QWinExtras::extendFrameIntoClientArea(QWidget *window, const QMargins &margins)
+/*! \fn void QtWinExtras::extendFrameIntoClientArea(QWidget *window, const QMargins &margins)
     \since 5.2
-    \overload QWinExtras::extendFrameIntoClientArea()
+    \overload QtWinExtras::extendFrameIntoClientArea()
 
     Convenience overload that allows passing frame sizes in a \a margins
     structure.
@@ -1660,20 +1660,20 @@ void QWinExtras::extendFrameIntoClientArea(QWindow *window, int left, int top, i
 
 /*!
     \since 5.2
-    \overload QWinExtras::extendFrameIntoClientArea()
+    \overload QtWinExtras::extendFrameIntoClientArea()
 
     Extends the glass frame into the client area of the specified \a window
     using the specified \a margins.
  */
-void QWinExtras::extendFrameIntoClientArea(QWindow *window, const QMargins &margins)
+void QtWinExtras::extendFrameIntoClientArea(QWindow *window, const QMargins &margins)
 {
-    QWinExtras::extendFrameIntoClientArea(window, margins.left(), margins.top(), margins.right(), margins.bottom());
+    QtWinExtras::extendFrameIntoClientArea(window, margins.left(), margins.top(), margins.right(), margins.bottom());
 }
 
 /*!
-    \fn void QWinExtras::resetExtendedFrame(QWidget *window)
+    \fn void QtWinExtras::resetExtendedFrame(QWidget *window)
     \since 5.2
-    \overload QWinExtras::resetExtendedFrame()
+    \overload QtWinExtras::resetExtendedFrame()
  */
 
 /*!
@@ -1687,18 +1687,18 @@ void QWinExtras::extendFrameIntoClientArea(QWindow *window, const QMargins &marg
     \note You must unset the Qt::WA_NoSystemBackground attribute for
     extendFrameIntoClientArea() to work.
 
-    \sa QWinExtras::extendFrameIntoClientArea()
+    \sa QtWinExtras::extendFrameIntoClientArea()
  */
-void QWinExtras::resetExtendedFrame(QWindow *window)
+void QtWinExtras::resetExtendedFrame(QWindow *window)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
     qt_ExtendFrameIntoClientArea(window, 0, 0, 0, 0);
 }
 
 /*!
-    \fn void QWinExtras::enableBlurBehindWindow(QWidget *window, const QRegion &region)
+    \fn void QtWinExtras::enableBlurBehindWindow(QWidget *window, const QRegion &region)
     \since 5.2
-    \overload QWinExtras::enableBlurBehindWindow()
+    \overload QtWinExtras::enableBlurBehindWindow()
  */
 
 /*!
@@ -1709,7 +1709,7 @@ void QWinExtras::resetExtendedFrame(QWindow *window)
 
     \sa disableBlurBehindWindow()
  */
-void QWinExtras::enableBlurBehindWindow(QWindow *window, const QRegion &region)
+void QtWinExtras::enableBlurBehindWindow(QWindow *window, const QRegion &region)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
 
@@ -1730,9 +1730,9 @@ void QWinExtras::enableBlurBehindWindow(QWindow *window, const QRegion &region)
 }
 
 /*!
-    \fn void QWinExtras::enableBlurBehindWindow(QWidget *window)
+    \fn void QtWinExtras::enableBlurBehindWindow(QWidget *window)
     \since 5.2
-    \overload QWinExtras::enableBlurBehindWindow()
+    \overload QtWinExtras::enableBlurBehindWindow()
  */
 
 /*!
@@ -1742,15 +1742,15 @@ void QWinExtras::enableBlurBehindWindow(QWindow *window, const QRegion &region)
 
     \sa disableBlurBehindWindow()
  */
-void QWinExtras::enableBlurBehindWindow(QWindow *window)
+void QtWinExtras::enableBlurBehindWindow(QWindow *window)
 {
-    QWinExtras::enableBlurBehindWindow(window, QRegion());
+    QtWinExtras::enableBlurBehindWindow(window, QRegion());
 }
 
 /*!
-    \fn void QWinExtras::disableBlurBehindWindow(QWidget *window)
+    \fn void QtWinExtras::disableBlurBehindWindow(QWidget *window)
     \since 5.2
-    \overload QWinExtras::disableBlurBehindWindow()
+    \overload QtWinExtras::disableBlurBehindWindow()
  */
 
 /*!
@@ -1760,7 +1760,7 @@ void QWinExtras::enableBlurBehindWindow(QWindow *window)
 
     \sa enableBlurBehindWindow()
  */
-void QWinExtras::disableBlurBehindWindow(QWindow *window)
+void QtWinExtras::disableBlurBehindWindow(QWindow *window)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
     qt_DWM_BLURBEHIND dwmbb = {0, 0, 0, 0};
@@ -1774,7 +1774,7 @@ void QWinExtras::disableBlurBehindWindow(QWindow *window)
 
     Returns the DWM composition state.
  */
-bool QWinExtras::isCompositionEnabled()
+bool QtWinExtras::isCompositionEnabled()
 {
     QWinEventFilter::setup();
 
@@ -1791,7 +1791,7 @@ bool QWinExtras::isCompositionEnabled()
     \note The underlying function was declared deprecated as of Windows 8 and
     takes no effect.
  */
-void QWinExtras::setCompositionEnabled(bool enabled)
+void QtWinExtras::setCompositionEnabled(bool enabled)
 {
     QWinEventFilter::setup();
 
@@ -1804,7 +1804,7 @@ void QWinExtras::setCompositionEnabled(bool enabled)
 
     Returns whether the colorization color is an opaque blend.
  */
-bool QWinExtras::isCompositionOpaque()
+bool QtWinExtras::isCompositionOpaque()
 {
     bool opaque;
     colorizationColor(&opaque);
@@ -1820,7 +1820,7 @@ bool QWinExtras::isCompositionOpaque()
     \l{http://msdn.microsoft.com/en-us/library/windows/desktop/dd378459.aspx}
     {Application User Model IDs}.
  */
-void QWinExtras::setCurrentProcessExplicitAppUserModelID(const QString &id)
+void QtWinExtras::setCurrentProcessExplicitAppUserModelID(const QString &id)
 {
     wchar_t *wid = qt_qstringToNullTerminated(id);
     qt_SetCurrentProcessExplicitAppUserModelID(wid);
@@ -1860,9 +1860,9 @@ ITaskbarList2 *qt_createITaskbarList2()
 }
 
 /*!
-    \fn void QWinExtras::markFullscreenWindow(QWidget *window, bool fullscreen)
+    \fn void QtWinExtras::markFullscreenWindow(QWidget *window, bool fullscreen)
     \since 5.2
-    \overload QWinExtras::markFullscreenWindow()
+    \overload QtWinExtras::markFullscreenWindow()
  */
 
 /*!
@@ -1876,7 +1876,7 @@ ITaskbarList2 *qt_createITaskbarList2()
     taskbar always tries to determine whether a window is running in the
     full-screen mode.
  */
-void QWinExtras::markFullscreenWindow(QWindow *window, bool fullscreen)
+void QtWinExtras::markFullscreenWindow(QWindow *window, bool fullscreen)
 {
     ITaskbarList2 *pTbList = qt_createITaskbarList2();
     if (pTbList) {
@@ -1886,9 +1886,9 @@ void QWinExtras::markFullscreenWindow(QWindow *window, bool fullscreen)
 }
 
 /*!
-    \fn void QWinExtras::taskbarActivateTab(QWidget *window)
+    \fn void QtWinExtras::taskbarActivateTab(QWidget *window)
     \since 5.2
-    \overload QWinExtras::taskbarActivateTab()
+    \overload QtWinExtras::taskbarActivateTab()
  */
 
 /*!
@@ -1896,7 +1896,7 @@ void QWinExtras::markFullscreenWindow(QWindow *window, bool fullscreen)
 
     Activates an item on the taskbar without activating the \a window itself.
  */
-void QWinExtras::taskbarActivateTab(QWindow *window)
+void QtWinExtras::taskbarActivateTab(QWindow *window)
 {
     ITaskbarList *pTbList = qt_createITaskbarList2();
     if (pTbList) {
@@ -1906,9 +1906,9 @@ void QWinExtras::taskbarActivateTab(QWindow *window)
 }
 
 /*!
-    \fn void QWinExtras::taskbarActivateTabAlt(QWidget *window)
+    \fn void QtWinExtras::taskbarActivateTabAlt(QWidget *window)
     \since 5.2
-    \overload QWinExtras::taskbarActivateTabAlt()
+    \overload QtWinExtras::taskbarActivateTabAlt()
  */
 
 /*!
@@ -1917,7 +1917,7 @@ void QWinExtras::taskbarActivateTab(QWindow *window)
     Marks the item that represents the specified \a window on the taskbar
     as active, but does not activate it visually.
  */
-void QWinExtras::taskbarActivateTabAlt(QWindow *window)
+void QtWinExtras::taskbarActivateTabAlt(QWindow *window)
 {
     ITaskbarList *pTbList = qt_createITaskbarList2();
     if (pTbList) {
@@ -1927,9 +1927,9 @@ void QWinExtras::taskbarActivateTabAlt(QWindow *window)
 }
 
 /*!
-    \fn void QWinExtras::taskbarAddTab(QWidget *window)
+    \fn void QtWinExtras::taskbarAddTab(QWidget *window)
     \since 5.2
-    \overload QWinExtras::taskbarAddTab()
+    \overload QtWinExtras::taskbarAddTab()
  */
 
 /*!
@@ -1937,7 +1937,7 @@ void QWinExtras::taskbarActivateTabAlt(QWindow *window)
 
     Adds an item for the specified \a window to the taskbar.
  */
-void QWinExtras::taskbarAddTab(QWindow *window)
+void QtWinExtras::taskbarAddTab(QWindow *window)
 {
     ITaskbarList *pTbList = qt_createITaskbarList2();
     if (pTbList) {
@@ -1947,9 +1947,9 @@ void QWinExtras::taskbarAddTab(QWindow *window)
 }
 
 /*!
-    \fn void QWinExtras::taskbarDeleteTab(QWidget *window)
+    \fn void QtWinExtras::taskbarDeleteTab(QWidget *window)
     \since 5.2
-    \overload QWinExtras::taskbarDeleteTab()
+    \overload QtWinExtras::taskbarDeleteTab()
  */
 
 /*!
@@ -1957,7 +1957,7 @@ void QWinExtras::taskbarAddTab(QWindow *window)
 
     Removes the specified \a window from the taskbar.
  */
-void QWinExtras::taskbarDeleteTab(QWindow *window)
+void QtWinExtras::taskbarDeleteTab(QWindow *window)
 {
     ITaskbarList *pTbList = qt_createITaskbarList3();
     if (pTbList) {
@@ -1967,7 +1967,7 @@ void QWinExtras::taskbarDeleteTab(QWindow *window)
 }
 
 /*!
-    \enum QWinExtras::HBitmapFormat
+    \enum QtWinExtras::HBitmapFormat
 
     \since 5.2
 
@@ -1993,7 +1993,7 @@ void QWinExtras::taskbarDeleteTab(QWindow *window)
 */
 
 /*!
-    \enum QWinExtras::WindowFlip3DPolicy
+    \enum QtWinExtras::WindowFlip3DPolicy
 
     \since 5.2
 

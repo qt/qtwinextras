@@ -195,7 +195,7 @@ static inline ITaskbarList4 *createTaskbarList()
     ITaskbarList4 *result = 0;
     HRESULT hresult = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, IID_ITaskbarList4, reinterpret_cast<void **>(&result));
     if (FAILED(hresult)) {
-        const QString err = QWinExtras::errorStringFromHresult(hresult);
+        const QString err = QtWinExtras::errorStringFromHresult(hresult);
         qWarning("QWinThumbnailToolBar: IID_ITaskbarList4 was not created: %#010x, %s.",
                  (unsigned)hresult, qPrintable(err));
         return 0;
@@ -203,7 +203,7 @@ static inline ITaskbarList4 *createTaskbarList()
     hresult = result->HrInit();
     if (FAILED(hresult)) {
         result->Release();
-        const QString err = QWinExtras::errorStringFromHresult(hresult);
+        const QString err = QtWinExtras::errorStringFromHresult(hresult);
         qWarning("QWinThumbnailToolBar: IID_ITaskbarList4 was not initialized: %#010x, %s.",
                  (unsigned)hresult, qPrintable(err));
         return 0;
@@ -261,7 +261,7 @@ void QWinThumbnailToolBarPrivate::_q_updateToolbar()
         buttons[i].dwFlags = makeNativeButtonFlags(button);
         buttons[i].dwMask  = makeButtonMask(button);
         if (!button->icon().isNull()) {;
-            buttons[i].hIcon = QWinExtras::toHICON(button->icon().pixmap(GetSystemMetrics(SM_CXSMICON)));
+            buttons[i].hIcon = QtWinExtras::toHICON(button->icon().pixmap(GetSystemMetrics(SM_CXSMICON)));
             if (!buttons[i].hIcon)
                 buttons[i].hIcon = (HICON)LoadImage(0, IDI_APPLICATION, IMAGE_ICON, SM_CXSMICON, SM_CYSMICON, LR_SHARED);
         }
@@ -359,7 +359,7 @@ QString QWinThumbnailToolBarPrivate::msgComFailed(const char *function, HRESULT 
     return QString::fromLatin1("QWinThumbnailToolBar: %1() failed: #%2: %3")
             .arg(QLatin1String(function))
             .arg((unsigned)hresult, 10, 16, QLatin1Char('0'))
-            .arg(QWinExtras::errorStringFromHresult(hresult));
+            .arg(QtWinExtras::errorStringFromHresult(hresult));
 }
 
 QT_END_NAMESPACE
