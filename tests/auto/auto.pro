@@ -1,4 +1,5 @@
 TEMPLATE = subdirs
 SUBDIRS += \
     qwinthumbnailtoolbar \
-    qpixmap
+    qpixmap \
+    qwintaskbarbutton
