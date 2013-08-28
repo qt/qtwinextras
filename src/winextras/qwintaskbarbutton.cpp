@@ -170,6 +170,7 @@ QWinTaskbarButton::QWinTaskbarButton(QObject *parent) :
     QObject(parent), d_ptr(new QWinTaskbarButtonPrivate)
 {
     QWinEventFilter::setup();
+    setWindow(qobject_cast<QWindow *>(parent));
 }
 
 /*!
