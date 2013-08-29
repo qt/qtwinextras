@@ -62,7 +62,6 @@ class Q_WINEXTRAS_EXPORT QWinTaskbarProgress : public QObject
 public:
     enum ProgressState {
         NoProgressState,
-        IndeterminateState,
         NormalState,
         PausedState,
         ErrorState

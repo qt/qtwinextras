@@ -85,8 +85,7 @@ private:
     Q_DECLARE_PRIVATE(QWinTaskbarButton)
     QScopedPointer<QWinTaskbarButtonPrivate> d_ptr;
 
-    Q_PRIVATE_SLOT(d_func(), void _q_updateProgressValue())
-    Q_PRIVATE_SLOT(d_func(), void _q_updateProgressState())
+    Q_PRIVATE_SLOT(d_func(), void _q_updateProgress())
 };
 
 QT_END_NAMESPACE

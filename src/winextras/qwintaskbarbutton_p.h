@@ -69,8 +69,7 @@ public:
 
     void updateOverlayIcon();
 
-    void _q_updateProgressValue();
-    void _q_updateProgressState();
+    void _q_updateProgress();
 
     ITaskbarList4 *pTbList;
     QWindow *window;

@@ -74,8 +74,6 @@ QT_BEGIN_NAMESPACE
 
     \value  NoProgressState
             No progress indicator is displayed.
-    \value  IndeterminateState
-            The progress indicator cycles repeatedly.
     \value  NormalState
             The progress indicator is green.
     \value  PausedState
