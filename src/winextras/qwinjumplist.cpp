@@ -533,7 +533,7 @@ int QWinJumpList::capacity() const
 }
 
 /*!
-    \property QWinJumpList::isRecentCategoryShown
+    \property QWinJumpList::recentCategoryShown
     \brief whether to show the known Recent category
 
     The default value of this property is false.
@@ -552,7 +552,7 @@ bool QWinJumpList::isRecentCategoryShown() const
 }
 
 /*!
-    \property QWinJumpList::isFrequentCategoryShown
+    \property QWinJumpList::frequentCategoryShown
     \brief whether to show the known Frequent category
 
     The default value of this property is false.

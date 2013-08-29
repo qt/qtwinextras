@@ -1450,7 +1450,7 @@ QColor QtWinExtras::colorizationColor(bool *opaqueBlend)
     alpha-blended color which often turns out a semitransparent gray rather
     than something similar to what is chosen by the user.
 
-    \sa QtWinExtras::colorizationColor()
+    \sa colorizationColor()
  */
 QColor QtWinExtras::realColorizationColor()
 {
@@ -1642,7 +1642,7 @@ void qt_ExtendFrameIntoClientArea(QWindow *window, int left, int top, int right,
     \note If \a window is a QWidget handle, set the
     Qt::WA_NoSystemBackground attribute for your widget.
 
-    \sa QtWinExtras::resetExtendedFrame()
+    \sa resetExtendedFrame()
  */
 void QtWinExtras::extendFrameIntoClientArea(QWindow *window, int left, int top, int right, int bottom)
 {
@@ -1687,7 +1687,7 @@ void QtWinExtras::extendFrameIntoClientArea(QWindow *window, const QMargins &mar
     \note You must unset the Qt::WA_NoSystemBackground attribute for
     extendFrameIntoClientArea() to work.
 
-    \sa QtWinExtras::extendFrameIntoClientArea()
+    \sa extendFrameIntoClientArea()
  */
 void QtWinExtras::resetExtendedFrame(QWindow *window)
 {
