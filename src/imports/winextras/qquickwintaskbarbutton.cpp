@@ -75,44 +75,14 @@ QQuickWinTaskbarButton::~QQuickWinTaskbarButton()
 {
 }
 
-int QQuickWinTaskbarButton::progressMinimum() const
-{
-    return button->progressBar()->minimum();
-}
-
-void QQuickWinTaskbarButton::setProgressMinimum(int min)
-{
-    button->progressBar()->setMinimum(min);
-}
-
 /*!
-    \qmlproperty int WinTaskbarButton::progressMaximum
+    \qmlproperty string WinTaskbarButton::progress
 
-    The maximum progress value.
+    The task bar progress indicator.
  */
-int QQuickWinTaskbarButton::progressMaximum() const
+QWinTaskbarProgress *QQuickWinTaskbarButton::progress() const
 {
-    return button->progressBar()->maximum();
-}
-
-void QQuickWinTaskbarButton::setProgressMaximum(int max)
-{
-    button->progressBar()->setMaximum(max);
-}
-
-/*!
-    \qmlproperty int WinTaskbarButton::progressValue
-
-    The displayed progress value.
- */
-int QQuickWinTaskbarButton::progressValue() const
-{
-    return button->progressBar()->value();
-}
-
-void QQuickWinTaskbarButton::setProgressValue(int progress)
-{
-    button->progressBar()->setValue(progress);
+    return button->progressBar();
 }
 
 /*!
@@ -145,38 +115,6 @@ void QQuickWinTaskbarButton::setIconDescription(const QString &descr)
 {
     m_iconDescription = descr;
     button->setOverlayIconAccessibilityDescription(m_iconDescription);
-}
-
-/*!
-    \qmlproperty enumeration WinTaskbarButton::progressState
-
-    The state of the progress indicator.
-
-    The state can be one of the following:
-
-    \table
-    \header \li Value \li Description
-    \row \li NoProgressState
-        \li No progress indicator is displayed.
-    \row \li IndeterminateState
-        \li The progress indicator cycles repeatedly.
-    \row \li NormalState
-        \li The progress indicator is green.
-    \row \li PausedState
-        \li The progress indicator turns yellow. Use this state to show that the
-            operation has been paused, but it can be continued.
-    \row \li ErrorState
-        \li The progress indicator turns red.
-    \endtable
- */
-QWinTaskbarProgress::ProgressState QQuickWinTaskbarButton::progressState() const
-{
-    return button->progressBar()->state();
-}
-
-void QQuickWinTaskbarButton::setProgressState(QWinTaskbarProgress::ProgressState state)
-{
-    button->progressBar()->setState(state);
 }
 
 void QQuickWinTaskbarButton::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data)

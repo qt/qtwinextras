@@ -53,31 +53,18 @@ class QQuickWinTaskbarButtonPrivate;
 class QQuickWinTaskbarButton : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(int progressMinimum READ progressMinimum WRITE setProgressMinimum)
-    Q_PROPERTY(int progressMaximum READ progressMaximum WRITE setProgressMaximum)
-    Q_PROPERTY(int progressValue   READ progressValue   WRITE setProgressValue)
     Q_PROPERTY(QString overlayIcon READ overlayIcon WRITE setOverlayIcon)
     Q_PROPERTY(QString iconDescription READ iconDescription WRITE setIconDescription)
-    Q_PROPERTY(QWinTaskbarProgress::ProgressState progressState READ progressState WRITE setProgressState)
+    Q_PROPERTY(QWinTaskbarProgress *progress READ progress CONSTANT)
 
 public:
-    Q_ENUMS(QWinTaskbarButton::ProgressState)
-
     QQuickWinTaskbarButton(QQuickItem *parent = 0);
     ~QQuickWinTaskbarButton();
-    int progressMinimum() const;
-    void setProgressMinimum(int min);
-    int progressMaximum() const;
-    void setProgressMaximum(int max);
-    int progressValue() const;
-    void setProgressValue(int progress);
+    QWinTaskbarProgress *progress() const;
     QString overlayIcon() const;
     void setOverlayIcon(const QString &path);
     QString iconDescription() const;
     void setIconDescription(const QString &descr);
-
-    QWinTaskbarProgress::ProgressState progressState() const;
-    void setProgressState(QWinTaskbarProgress::ProgressState state);
 
 protected:
     void itemChange(ItemChange, const ItemChangeData &) Q_DECL_OVERRIDE;
