@@ -58,12 +58,12 @@ class Q_WINEXTRAS_EXPORT QWinTaskbarProgress : public QObject
     Q_PROPERTY(int maximum READ maximum WRITE setMaximum NOTIFY maximumChanged)
     Q_PROPERTY(ProgressState state READ state WRITE setState NOTIFY stateChanged)
     Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibilityChanged)
+    Q_PROPERTY(bool paused READ isPaused WRITE setPaused NOTIFY pausedChanged)
     Q_ENUMS(ProgressState)
 
 public:
     enum ProgressState {
         NormalState,
-        PausedState,
         ErrorState
     };
 
@@ -75,6 +75,7 @@ public:
     int minimum() const;
     int maximum() const;
     bool isVisible() const;
+    bool isPaused() const;
 
 public Q_SLOTS:
     void setState(ProgressState state);
@@ -86,6 +87,9 @@ public Q_SLOTS:
     void show();
     void hide();
     void setVisible(bool visible);
+    void pause();
+    void resume();
+    void setPaused(bool paused);
 
 Q_SIGNALS:
     void valueChanged(int value);
@@ -93,6 +97,7 @@ Q_SIGNALS:
     void maximumChanged(int maximum);
     void stateChanged(QWinTaskbarProgress::ProgressState state);
     void visibilityChanged(bool visible);
+    void pausedChanged(bool paused);
 
 private:
     Q_DISABLE_COPY(QWinTaskbarProgress)

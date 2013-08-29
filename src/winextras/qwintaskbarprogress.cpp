@@ -74,9 +74,6 @@ QT_BEGIN_NAMESPACE
 
     \value  NormalState
             The progress indicator is green.
-    \value  PausedState
-            The progress indicator turns yellow. Use this state to show that the
-            operation has been paused, but it can be continued.
     \value  ErrorState
             The progress indicator turns red.
  */
@@ -90,11 +87,12 @@ public:
     int minimum;
     int maximum;
     bool visible;
+    bool paused;
     QWinTaskbarProgress::ProgressState state;
 };
 
 QWinTaskbarProgressPrivate::QWinTaskbarProgressPrivate() :
-    value(0), minimum(0), maximum(100), visible(false), state(QWinTaskbarProgress::NormalState)
+    value(0), minimum(0), maximum(100), visible(false), paused(false), state(QWinTaskbarProgress::NormalState)
 {
 }
 
@@ -256,6 +254,44 @@ void QWinTaskbarProgress::reset()
 {
     setValue(minimum());
     setState(NormalState);
+}
+
+/*!
+    \property QWinTaskbarProgress::paused
+    \brief the progress indicator is paused.
+
+    The default value is \c false.
+ */
+bool QWinTaskbarProgress::isPaused() const
+{
+    Q_D(const QWinTaskbarProgress);
+    return d->paused;
+}
+
+void QWinTaskbarProgress::setPaused(bool paused)
+{
+    Q_D(QWinTaskbarProgress);
+    if (paused == d->paused)
+        return;
+
+    d->paused = paused;
+    emit pausedChanged(d->paused);
+}
+
+/*!
+    Pause the progress indicator.
+ */
+void QWinTaskbarProgress::pause()
+{
+    setPaused(true);
+}
+
+/*!
+    Resume the progress indicator.
+ */
+void QWinTaskbarProgress::resume()
+{
+    setPaused(false);
 }
 
 QT_END_NAMESPACE

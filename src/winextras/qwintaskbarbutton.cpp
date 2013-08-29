@@ -74,7 +74,6 @@ static TBPFLAG nativeProgressState(QWinTaskbarProgress::ProgressState state)
     switch (state) {
     default :
     case QWinTaskbarProgress::NormalState:        flag = TBPF_NORMAL; break;
-    case QWinTaskbarProgress::PausedState:        flag = TBPF_PAUSED; break;
     case QWinTaskbarProgress::ErrorState:         flag = TBPF_ERROR; break;
     }
     return flag;
@@ -155,7 +154,7 @@ void QWinTaskbarButtonPrivate::_q_updateProgress()
             const int value = 100.0 * (progressBar->value() - min) / range;
             pTbList->SetProgressValue(handle(), value, 100);
         }
-        pTbList->SetProgressState(handle(), nativeProgressState(progressBar->state()));
+        pTbList->SetProgressState(handle(), progressBar->isPaused() ? TBPF_PAUSED : nativeProgressState(progressBar->state()));
     }
 }
 
@@ -259,6 +258,7 @@ QWinTaskbarProgress *QWinTaskbarButton::progress() const
         QWinTaskbarProgress *pbar = new QWinTaskbarProgress(that);
         connect(pbar, SIGNAL(valueChanged(int)), this, SLOT(_q_updateProgress()));
         connect(pbar, SIGNAL(visibilityChanged(bool)), this, SLOT(_q_updateProgress()));
+        connect(pbar, SIGNAL(pausedChanged(bool)), this, SLOT(_q_updateProgress()));
         connect(pbar, SIGNAL(stateChanged(QWinTaskbarProgress::ProgressState)), this, SLOT(_q_updateProgress()));
         that->d_func()->progressBar = pbar;
         that->d_func()->_q_updateProgress();
