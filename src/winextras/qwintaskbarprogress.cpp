@@ -72,8 +72,6 @@ QT_BEGIN_NAMESPACE
 
     This enum type specifies the state of the progress indicator.
 
-    \value  NoProgressState
-            No progress indicator is displayed.
     \value  NormalState
             The progress indicator is green.
     \value  PausedState
@@ -91,11 +89,12 @@ public:
     int value;
     int minimum;
     int maximum;
+    bool visible;
     QWinTaskbarProgress::ProgressState state;
 };
 
 QWinTaskbarProgressPrivate::QWinTaskbarProgressPrivate() :
-    value(0), minimum(0), maximum(100), state(QWinTaskbarProgress::NoProgressState)
+    value(0), minimum(0), maximum(100), visible(false), state(QWinTaskbarProgress::NormalState)
 {
 }
 
@@ -118,7 +117,7 @@ QWinTaskbarProgress::~QWinTaskbarProgress()
     \property QWinTaskbarProgress::state
     \brief the state of the progress indicator
 
-    The default value is \c NoProgressState.
+    The default value is \c NormalState.
  */
 QWinTaskbarProgress::ProgressState QWinTaskbarProgress::state() const
 {
@@ -195,6 +194,44 @@ void QWinTaskbarProgress::setMaximum(int maximum)
 }
 
 /*!
+    \property QWinTaskbarProgress::visible
+    \brief the progress indicator is visible.
+
+    The default value is \c false.
+ */
+bool QWinTaskbarProgress::isVisible() const
+{
+    Q_D(const QWinTaskbarProgress);
+    return d->visible;
+}
+
+void QWinTaskbarProgress::setVisible(bool visible)
+{
+    Q_D(QWinTaskbarProgress);
+    if (visible == d->visible)
+        return;
+
+    d->visible = visible;
+    emit visibilityChanged(d->visible);
+}
+
+/*!
+    Shows the progress indicator.
+ */
+void QWinTaskbarProgress::show()
+{
+    setVisible(true);
+}
+
+/*!
+    Hides the progress indicator.
+ */
+void QWinTaskbarProgress::hide()
+{
+    setVisible(false);
+}
+
+/*!
     Sets both the \a minimum and \a maximum values.
  */
 void QWinTaskbarProgress::setRange(int minimum, int maximum)
@@ -212,13 +249,13 @@ void QWinTaskbarProgress::setRange(int minimum, int maximum)
 /*!
     Resets the progress indicator.
 
-    This function sets the state to \c NoProgressState and rewinds the
+    This function sets the state to \c NormalState and rewinds the
     value to the minimum value.
  */
 void QWinTaskbarProgress::reset()
 {
     setValue(minimum());
-    setState(NoProgressState);
+    setState(NormalState);
 }
 
 QT_END_NAMESPACE

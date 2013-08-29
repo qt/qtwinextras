@@ -73,7 +73,6 @@ static TBPFLAG nativeProgressState(QWinTaskbarProgress::ProgressState state)
     TBPFLAG flag;
     switch (state) {
     default :
-    case QWinTaskbarProgress::NoProgressState:    flag = TBPF_NOPROGRESS; break;
     case QWinTaskbarProgress::NormalState:        flag = TBPF_NORMAL; break;
     case QWinTaskbarProgress::PausedState:        flag = TBPF_PAUSED; break;
     case QWinTaskbarProgress::ErrorState:         flag = TBPF_ERROR; break;
@@ -138,8 +137,13 @@ void QWinTaskbarButtonPrivate::updateOverlayIcon()
 
 void QWinTaskbarButtonPrivate::_q_updateProgress()
 {
-    if (!pTbList || !window || !progressBar)
+    if (!pTbList || !window)
         return;
+
+    if (!progressBar || !progressBar->isVisible()) {
+        pTbList->SetProgressState(handle(), TBPF_NOPROGRESS);
+        return;
+    }
 
     const int min = progressBar->minimum();
     const int max = progressBar->maximum();
@@ -254,6 +258,7 @@ QWinTaskbarProgress *QWinTaskbarButton::progressBar() const
         QWinTaskbarButton *that = const_cast<QWinTaskbarButton *>(this);
         QWinTaskbarProgress *pbar = new QWinTaskbarProgress(that);
         connect(pbar, SIGNAL(valueChanged(int)), this, SLOT(_q_updateProgress()));
+        connect(pbar, SIGNAL(visibilityChanged(bool)), this, SLOT(_q_updateProgress()));
         connect(pbar, SIGNAL(stateChanged(QWinTaskbarProgress::ProgressState)), this, SLOT(_q_updateProgress()));
         that->d_func()->progressBar = pbar;
         that->d_func()->_q_updateProgress();
