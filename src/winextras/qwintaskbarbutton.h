@@ -57,7 +57,7 @@ class Q_WINEXTRAS_EXPORT QWinTaskbarButton : public QObject
     Q_OBJECT
     Q_PROPERTY(QIcon overlayIcon READ overlayIcon WRITE setOverlayIcon)
     Q_PROPERTY(QString overlayIconAccessibilityDescription READ overlayIconAccessibilityDescription WRITE setOverlayIconAccessibilityDescription)
-    Q_PROPERTY(QWinTaskbarProgress *progressBar READ progressBar)
+    Q_PROPERTY(QWinTaskbarProgress *progress READ progress)
     Q_PROPERTY(QWindow *window READ window WRITE setWindow)
 
 public:
@@ -70,7 +70,7 @@ public:
     QIcon overlayIcon() const;
     QString overlayIconAccessibilityDescription() const;
 
-    QWinTaskbarProgress *progressBar() const;
+    QWinTaskbarProgress *progress() const;
 
     bool eventFilter(QObject *, QEvent *);
 

@@ -82,7 +82,7 @@ QQuickWinTaskbarButton::~QQuickWinTaskbarButton()
  */
 QWinTaskbarProgress *QQuickWinTaskbarButton::progress() const
 {
-    return button->progressBar();
+    return button->progress();
 }
 
 /*!

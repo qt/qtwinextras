@@ -50,7 +50,7 @@ private slots:
     void testWindow();
     void testOverlayIcon();
     void testOverlayIconAccessibilityDescription();
-    void testProgressBar();
+    void testProgress();
 };
 
 void tst_QWinTaskbarButton::testWindow()
@@ -97,10 +97,10 @@ void tst_QWinTaskbarButton::testOverlayIconAccessibilityDescription()
     QVERIFY(btn.overlayIconAccessibilityDescription().isNull());
 }
 
-void tst_QWinTaskbarButton::testProgressBar()
+void tst_QWinTaskbarButton::testProgress()
 {
     QWinTaskbarButton btn;
-    QVERIFY(btn.progressBar());
+    QVERIFY(btn.progress());
 }
 
 QTEST_MAIN(tst_QWinTaskbarButton)

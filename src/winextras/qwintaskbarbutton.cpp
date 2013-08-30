@@ -248,10 +248,10 @@ void QWinTaskbarButton::setOverlayIconAccessibilityDescription(const QString &de
 }
 
 /*!
-    \property QWinTaskbarButton::progressBar
+    \property QWinTaskbarButton::progress
     \brief the progress indicator of the taskbar button
  */
-QWinTaskbarProgress *QWinTaskbarButton::progressBar() const
+QWinTaskbarProgress *QWinTaskbarButton::progress() const
 {
     Q_D(const QWinTaskbarButton);
     if (!d->progressBar) {
