@@ -80,7 +80,7 @@ public Q_SLOTS:
     void setState(ProgressState state);
     void setValue(int value);
     void setMinimum(int minimum);
-    void setMaximum(int minimum);
+    void setMaximum(int maximum);
     void setRange(int minimum, int maximum);
     void reset();
     void show();
