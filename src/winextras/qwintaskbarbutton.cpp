@@ -259,6 +259,8 @@ QWinTaskbarProgress *QWinTaskbarButton::progress() const
         QWinTaskbarButton *that = const_cast<QWinTaskbarButton *>(this);
         QWinTaskbarProgress *pbar = new QWinTaskbarProgress(that);
         connect(pbar, SIGNAL(valueChanged(int)), this, SLOT(_q_updateProgress()));
+        connect(pbar, SIGNAL(minimumChanged(int)), this, SLOT(_q_updateProgress()));
+        connect(pbar, SIGNAL(maximumChanged(int)), this, SLOT(_q_updateProgress()));
         connect(pbar, SIGNAL(visibilityChanged(bool)), this, SLOT(_q_updateProgress()));
         connect(pbar, SIGNAL(pausedChanged(bool)), this, SLOT(_q_updateProgress()));
         connect(pbar, SIGNAL(stateChanged(QWinTaskbarProgress::ProgressState)), this, SLOT(_q_updateProgress()));

@@ -235,12 +235,19 @@ void QWinTaskbarProgress::hide()
 void QWinTaskbarProgress::setRange(int minimum, int maximum)
 {
     Q_D(QWinTaskbarProgress);
-    if (minimum != d->minimum || maximum != d->maximum) {
+    const bool minChanged = minimum != d->minimum;
+    const bool maxChanged = maximum != d->maximum;
+    if (minChanged || maxChanged) {
         d->minimum = minimum;
         d->maximum = qMax(minimum, maximum);
 
         if (d->value < d->minimum || d->value > d->maximum)
             reset();
+
+        if (minChanged)
+            emit minimumChanged(d->minimum);
+        if (maxChanged)
+            emit maximumChanged(d->maximum);
     }
 }
 
