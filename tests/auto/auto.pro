@@ -4,4 +4,5 @@ SUBDIRS += \
     cmake \
     qwinthumbnailtoolbar \
     qpixmap \
-    qwintaskbarbutton
+    qwintaskbarbutton \
+    qwintaskbarprogress
