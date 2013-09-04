@@ -68,15 +68,17 @@ QT_BEGIN_NAMESPACE
     window thumbnail popup.
  */
 
-static TBPFLAG nativeProgressState(QWinTaskbarProgress::ProgressState state)
+static TBPFLAG nativeProgressState(QWinTaskbarProgress *progress)
 {
-    TBPFLAG flag;
-    switch (state) {
-    default :
-    case QWinTaskbarProgress::NormalState:        flag = TBPF_NORMAL; break;
-    case QWinTaskbarProgress::ErrorState:         flag = TBPF_ERROR; break;
-    }
-    return flag;
+    if (!progress || !progress->isVisible())
+        return TBPF_NOPROGRESS;
+    if (progress->isStopped())
+        return TBPF_ERROR;
+    if (progress->isPaused())
+        return TBPF_PAUSED;
+    if (progress->minimum() == 0 && progress->maximum() == 0)
+        return TBPF_INDETERMINATE;
+    return TBPF_NORMAL;
 }
 
 QWinTaskbarButtonPrivate::QWinTaskbarButtonPrivate() : progressBar(0), pTbList(0), window(0)
@@ -141,23 +143,16 @@ void QWinTaskbarButtonPrivate::_q_updateProgress()
     if (!pTbList || !window)
         return;
 
-    if (!progressBar || !progressBar->isVisible()) {
-        pTbList->SetProgressState(handle(), TBPF_NOPROGRESS);
-        return;
-    }
-
-    const int min = progressBar->minimum();
-    const int max = progressBar->maximum();
-    if (min == 0 && max == 0) {
-        pTbList->SetProgressState(handle(), TBPF_INDETERMINATE);
-    } else {
+    if (progressBar) {
+        const int min = progressBar->minimum();
+        const int max = progressBar->maximum();
         const int range = max - min;
         if (range > 0) {
             const int value = 100.0 * (progressBar->value() - min) / range;
             pTbList->SetProgressValue(handle(), value, 100);
         }
-        pTbList->SetProgressState(handle(), progressBar->isPaused() ? TBPF_PAUSED : nativeProgressState(progressBar->state()));
     }
+    pTbList->SetProgressState(handle(), nativeProgressState(progressBar));
 }
 
 /*!
@@ -264,7 +259,7 @@ QWinTaskbarProgress *QWinTaskbarButton::progress() const
         connect(pbar, SIGNAL(maximumChanged(int)), this, SLOT(_q_updateProgress()));
         connect(pbar, SIGNAL(visibilityChanged(bool)), this, SLOT(_q_updateProgress()));
         connect(pbar, SIGNAL(pausedChanged(bool)), this, SLOT(_q_updateProgress()));
-        connect(pbar, SIGNAL(stateChanged(QWinTaskbarProgress::ProgressState)), this, SLOT(_q_updateProgress()));
+        connect(pbar, SIGNAL(stoppedChanged(bool)), this, SLOT(_q_updateProgress()));
         that->d_func()->progressBar = pbar;
         that->d_func()->_q_updateProgress();
     }

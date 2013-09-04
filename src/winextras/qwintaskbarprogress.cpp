@@ -55,27 +55,14 @@ QT_BEGIN_NAMESPACE
  */
 
 /*!
-    \fn void QWinTaskbarProgress::stateChanged(ProgressState state)
-
-    This signal is emitted when the \c state property changes its value.
-    The \a state argument contains the new value.
- */
-
-/*!
     \fn void QWinTaskbarProgress::valueChanged(int value)
 
     This signal is emitted when the progress indicator \a value changes.
  */
 
 /*!
-    \enum QWinTaskbarProgress::ProgressState
-
-    This enum type specifies the state of the progress indicator.
-
-    \value  NormalState
-            The progress indicator is green.
-    \value  ErrorState
-            The progress indicator turns red.
+    \fn void QWinTaskbarProgress::stoppedChanged(bool stopped)
+    \internal (for QWinTaskbarButton and QML compatibility)
  */
 
 class QWinTaskbarProgressPrivate
@@ -88,11 +75,11 @@ public:
     int maximum;
     bool visible;
     bool paused;
-    QWinTaskbarProgress::ProgressState state;
+    bool stopped;
 };
 
 QWinTaskbarProgressPrivate::QWinTaskbarProgressPrivate() :
-    value(0), minimum(0), maximum(100), visible(false), paused(false), state(QWinTaskbarProgress::NormalState)
+    value(0), minimum(0), maximum(100), visible(false), paused(false), stopped(false)
 {
 }
 
@@ -109,28 +96,6 @@ QWinTaskbarProgress::QWinTaskbarProgress(QObject *parent) :
  */
 QWinTaskbarProgress::~QWinTaskbarProgress()
 {
-}
-
-/*!
-    \property QWinTaskbarProgress::state
-    \brief the state of the progress indicator
-
-    The default value is \c NormalState.
- */
-QWinTaskbarProgress::ProgressState QWinTaskbarProgress::state() const
-{
-    Q_D(const QWinTaskbarProgress);
-    return d->state;
-}
-
-void QWinTaskbarProgress::setState(QWinTaskbarProgress::ProgressState state)
-{
-    Q_D(QWinTaskbarProgress);
-    if (state == d->state)
-        return;
-
-    d->state = state;
-    emit stateChanged(d->state);
 }
 
 /*!
@@ -254,13 +219,11 @@ void QWinTaskbarProgress::setRange(int minimum, int maximum)
 /*!
     Resets the progress indicator.
 
-    This function sets the state to \c NormalState and rewinds the
-    value to the minimum value.
+    This function rewinds the value to the minimum value.
  */
 void QWinTaskbarProgress::reset()
 {
     setValue(minimum());
-    setState(NormalState);
 }
 
 /*!
@@ -278,7 +241,7 @@ bool QWinTaskbarProgress::isPaused() const
 void QWinTaskbarProgress::setPaused(bool paused)
 {
     Q_D(QWinTaskbarProgress);
-    if (paused == d->paused)
+    if (paused == d->paused || d->stopped)
         return;
 
     d->paused = paused;
@@ -294,11 +257,41 @@ void QWinTaskbarProgress::pause()
 }
 
 /*!
-    Resume the progress indicator.
+    Resume a paused or stopped progress indicator.
  */
 void QWinTaskbarProgress::resume()
 {
+    Q_D(QWinTaskbarProgress);
     setPaused(false);
+    if (d->stopped) {
+        d->stopped = false;
+        emit stoppedChanged(false);
+    }
+}
+
+/*!
+    \property QWinTaskbarProgress::stopped
+    \brief the progress indicator is stopped.
+
+    The default value is \c false.
+ */
+bool QWinTaskbarProgress::isStopped() const
+{
+    Q_D(const QWinTaskbarProgress);
+    return d->stopped;
+}
+
+/*!
+    Stop the progress indicator.
+ */
+void QWinTaskbarProgress::stop()
+{
+    Q_D(QWinTaskbarProgress);
+    setPaused(false);
+    if (!d->stopped) {
+        d->stopped = true;
+        emit stoppedChanged(true);
+    }
 }
 
 QT_END_NAMESPACE

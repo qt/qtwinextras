@@ -52,6 +52,7 @@ private slots:
     void testRange();
     void testPause();
     void testVisibility();
+    void testStop();
 };
 
 void tst_QWinTaskbarProgress::testValue()
@@ -162,6 +163,12 @@ void tst_QWinTaskbarProgress::testPause()
     QCOMPARE(pausedSpy.count(), 2);
     QCOMPARE(pausedSpy.last().at(0).toBool(), false);
 
+    progress->stop();
+    progress->pause();
+    QVERIFY(!progress->isPaused());
+    QCOMPARE(pausedSpy.count(), 2);
+
+    progress->resume();
     progress->pause();
     QVERIFY(progress->isPaused());
     QCOMPARE(pausedSpy.count(), 3);
@@ -192,6 +199,31 @@ void tst_QWinTaskbarProgress::testVisibility()
     QVERIFY(!progress->isVisible());
     QCOMPARE(visibleSpy.count(), 2);
     QCOMPARE(visibleSpy.last().at(0).toBool(), false);
+}
+
+void tst_QWinTaskbarProgress::testStop()
+{
+    QWinTaskbarButton btn;
+    QWinTaskbarProgress *progress = btn.progress();
+    QVERIFY(progress);
+    QVERIFY(!progress->isStopped());
+
+    QSignalSpy stoppedSpy(progress, SIGNAL(stoppedChanged(bool)));
+    QVERIFY(stoppedSpy.isValid());
+
+    progress->pause();
+    QVERIFY(progress->isPaused());
+    QVERIFY(!progress->isStopped());
+    progress->stop();
+    QVERIFY(!progress->isPaused());
+    QVERIFY(progress->isStopped());
+    QCOMPARE(stoppedSpy.count(), 1);
+    QCOMPARE(stoppedSpy.last().at(0).toBool(), true);
+
+    progress->resume();
+    QVERIFY(!progress->isStopped());
+    QCOMPARE(stoppedSpy.count(), 2);
+    QCOMPARE(stoppedSpy.last().at(0).toBool(), false);
 }
 
 QTEST_MAIN(tst_QWinTaskbarProgress)

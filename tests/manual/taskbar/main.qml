@@ -57,9 +57,9 @@ ApplicationWindow {
         id: taskbar
 
         progress.visible: progressBox.checked
-        progress.minimum: minSpinBox.value
-        progress.maximum: maxSpinBox.value
-        progress.value: valueSlider.value
+        progress.minimum: indeterminateBox.checked ? 0 : minSpinBox.value
+        progress.maximum: indeterminateBox.checked ? 0 : maxSpinBox.value
+        progress.value: indeterminateBox.checked ? 0 : valueSlider.value
 
         overlayIcon: overlayBox.checked && overlayCombo.currentIndex >= 0 ? overlayModel.get(overlayCombo.currentIndex).source : ""
     }
@@ -107,7 +107,7 @@ ApplicationWindow {
             Layout.fillWidth: true
 
             GridLayout {
-                columns: 5
+                columns: 3
                 rowSpacing: 10
                 columnSpacing: 20
                 anchors.fill: parent
@@ -117,21 +117,12 @@ ApplicationWindow {
                 Slider {
                     id: valueSlider
 
-                    value: 50
+                    value: 82
                     stepSize: 1
                     minimumValue: minSpinBox.value
                     maximumValue: maxSpinBox.value
-                    Layout.columnSpan: 3
-                }
-
-                Button {
-                    readonly property string playText: "\u25BA" // BLACK RIGHT-POINTING POINTER
-                    readonly property string pauseText: "\u25AE\u25AE" // BLACK VERTICAL RECTANGLE
-
-                    text: taskbar.progress.paused ? playText : pauseText
-                    onClicked: taskbar.progress.paused ? taskbar.progress.resume() : taskbar.progress.pause()
-                    Layout.fillHeight: true
-                    Layout.rowSpan: 2
+                    enabled: !indeterminateBox.checked
+                    Layout.columnSpan: 2
                 }
 
                 Label { text: "Minimum:" }
@@ -142,7 +133,19 @@ ApplicationWindow {
                     stepSize: 1
                     minimumValue: -1000
                     maximumValue: 1000
+                    enabled: !indeterminateBox.checked
                     Layout.fillWidth: true
+                }
+
+                Button {
+                    readonly property string playSymbol: "\u25BA" // BLACK RIGHT-POINTING POINTER
+                    readonly property string pauseSymbol: "\u25AE\u25AE" // BLACK VERTICAL RECTANGLE
+                    readonly property string stopSymbol: "\u2587" // BLACK SQUARE
+
+                    text: taskbar.progress.stopped ? playSymbol : taskbar.progress.paused ? stopSymbol : pauseSymbol
+                    onClicked: taskbar.progress.stopped ? taskbar.progress.resume() : taskbar.progress.paused ? taskbar.progress.stop() : taskbar.progress.pause()
+                    Layout.fillHeight: true
+                    Layout.rowSpan: 3
                 }
 
                 Label { text: "Maximum:" }
@@ -153,7 +156,15 @@ ApplicationWindow {
                     stepSize: 1
                     minimumValue: -1000
                     maximumValue: 1000
+                    enabled: !indeterminateBox.checked
                     Layout.fillWidth: true
+                }
+
+                Item { Layout.fillWidth: true }
+
+                CheckBox {
+                    id: indeterminateBox
+                    text: "Indeterminate"
                 }
             }
         }
