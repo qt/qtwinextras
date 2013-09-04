@@ -127,6 +127,8 @@ void QWinTaskbarButtonPrivate::updateOverlayIcon()
         pTbList->SetOverlayIcon(handle(), hicon, descrPtr);
     else if (!hicon && !overlayIcon.isNull())
         pTbList->SetOverlayIcon(handle(), (HICON)LoadImage(0, IDI_APPLICATION, IMAGE_ICON, SM_CXSMICON, SM_CYSMICON, LR_SHARED), descrPtr);
+    else
+        pTbList->SetOverlayIcon(handle(), NULL, descrPtr);
 
     if (hicon)
         DeleteObject(hicon);
