@@ -46,7 +46,7 @@
 QT_BEGIN_NAMESPACE
 
 /*!
-    \qmltype WinTaskbarButton
+    \qmltype TaskbarButton
     \instantiates QQuickWinTaskbarButton
     \inqmlmodule QtWinExtras
 
@@ -54,7 +54,7 @@ QT_BEGIN_NAMESPACE
 
     \since QtWinExtras 1.0
 
-    The WinTaskbarButton type enables you to set overlay icons on a taskbar
+    The TaskbarButton type enables you to set overlay icons on a taskbar
     button, to display a progress indicator, and to add a small toolbar to the
     window thumbnail popup.
 
@@ -76,7 +76,7 @@ QQuickWinTaskbarButton::~QQuickWinTaskbarButton()
 }
 
 /*!
-    \qmlproperty string WinTaskbarButton::progress
+    \qmlproperty string TaskbarButton::progress
 
     The task bar progress indicator.
  */
@@ -86,7 +86,7 @@ QWinTaskbarProgress *QQuickWinTaskbarButton::progress() const
 }
 
 /*!
-    \qmlproperty string WinTaskbarButton::icon
+    \qmlproperty string TaskbarButton::icon
 
     The overlay icon path.
  */
@@ -102,7 +102,7 @@ void QQuickWinTaskbarButton::setOverlayIcon(const QString &path)
 }
 
 /*!
-    \qmlproperty int WinTaskbarButton::iconDescription
+    \qmlproperty int TaskbarButton::iconDescription
 
     The accessibility description for the overlay icon.
  */

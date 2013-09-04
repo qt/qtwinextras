@@ -58,9 +58,9 @@ QWinExtrasQmlPlugin::QWinExtrasQmlPlugin(QObject *parent) :
 void QWinExtrasQmlPlugin::registerTypes(const char *uri)
 {
     Q_ASSERT(uri == QLatin1String("QtWinExtras"));
-    qmlRegisterType<QQuickWinDwmFeatures>(uri, 1, 0, "WinDwmFeatures");
-    qmlRegisterType<QQuickWinTaskbarButton>(uri, 1, 0, "WinTaskbarButton");
-    qmlRegisterUncreatableType<QWinTaskbarProgress>(uri, 1, 0, "WinTaskbarProgress", "Cannot create WinTaskbarProgress - use WinTaskbarButton.progress instead.");
+    qmlRegisterType<QQuickWinDwmFeatures>(uri, 1, 0, "DwmFeatures");
+    qmlRegisterType<QQuickWinTaskbarButton>(uri, 1, 0, "TaskbarButton");
+    qmlRegisterUncreatableType<QWinTaskbarProgress>(uri, 1, 0, "TaskbarProgress", "Cannot create TaskbarProgress - use TaskbarButton.progress instead.");
     qmlRegisterType<QQuickJumpList>(uri, 1, 0, "JumpList");
     qmlRegisterType<QQuickJumpListItem>(uri, 1, 0, "JumpListItem");
     qmlRegisterType<QQuickJumpListCategory>(uri, 1, 0, "JumpListCategory");

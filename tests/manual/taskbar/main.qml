@@ -46,14 +46,14 @@ import QtQuick.Controls 1.0
 ApplicationWindow {
     id: window
 
-    title: "WinTaskbarButton"
+    title: "TaskbarButton"
 
     width: column.implicitWidth + 240
     height: column.implicitHeight + 160
     minimumWidth: column.implicitWidth + 40
     minimumHeight: column.implicitHeight + 40
 
-    WinTaskbarButton {
+    TaskbarButton {
         id: taskbar
 
         progress.visible: progressBox.checked
