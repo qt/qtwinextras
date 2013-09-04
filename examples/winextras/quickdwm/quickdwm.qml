@@ -55,11 +55,6 @@ Rectangle {
         flip3DPolicy: WinDwmFeatures.FlipExcludeAbove
     }
 
-    WinTaskbarButton {
-        progressState: WinTaskbarButton.IndeterminateState
-        overlayIcon: "icon.png"
-    }
-
     Window {
         height: 128
         width: 256
