@@ -47,24 +47,45 @@
 
 QT_BEGIN_NAMESPACE
 
+class QQuickWinThumbnailToolButton;
+
 class QQuickWinThumbnailToolBar : public QQuickItem
 {
     Q_OBJECT
+    Q_PROPERTY(int count READ count NOTIFY countChanged)
     Q_PROPERTY(QQmlListProperty<QObject> data READ data)
+    Q_PROPERTY(QQmlListProperty<QQuickWinThumbnailToolButton> buttons READ buttons NOTIFY buttonsChanged)
     Q_CLASSINFO("DefaultProperty", "data")
 
 public:
     explicit QQuickWinThumbnailToolBar(QQuickItem *parent = 0);
     ~QQuickWinThumbnailToolBar();
 
-    QQmlListProperty<QObject> data();
+    int count() const;
 
+    QQmlListProperty<QObject> data();
+    QQmlListProperty<QQuickWinThumbnailToolButton> buttons();
+
+    Q_INVOKABLE void addButton(QQuickWinThumbnailToolButton *button);
+    Q_INVOKABLE void removeButton(QQuickWinThumbnailToolButton *button);
+
+public Q_SLOTS:
+    void clear();
+
+Q_SIGNALS:
+    void countChanged();
+    void buttonsChanged();
+
+protected:
     void itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data);
 
 private:
     static void addData(QQmlListProperty<QObject> *property, QObject *button);
+    static int buttonCount(QQmlListProperty<QQuickWinThumbnailToolButton> *property);
+    static QQuickWinThumbnailToolButton *buttonAt(QQmlListProperty<QQuickWinThumbnailToolButton> *property, int index);
 
     QWinThumbnailToolBar m_toolbar;
+    QList<QQuickWinThumbnailToolButton *> m_buttons;
 };
 
 QT_END_NAMESPACE
