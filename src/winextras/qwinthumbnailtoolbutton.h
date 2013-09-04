@@ -81,7 +81,7 @@ public:
     void setFlat(bool flat);
     bool isFlat() const;
 
-public slots:
+public Q_SLOTS:
     void click();
 
 Q_SIGNALS:
