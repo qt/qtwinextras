@@ -54,3 +54,6 @@ ui_*.h
 debug
 release
 tmp
+
+# Test generated files
+/tests/auto/headersclean/tst_headersclean.cpp
