@@ -102,19 +102,18 @@ void QQuickWinTaskbarButton::setOverlayIcon(const QString &path)
 }
 
 /*!
-    \qmlproperty int TaskbarButton::iconDescription
+    \qmlproperty string TaskbarButton::overlayAccessibleDescription
 
-    The accessibility description for the overlay icon.
+    The description of the overlay for accessibility purposes.
  */
-QString QQuickWinTaskbarButton::iconDescription() const
+QString QQuickWinTaskbarButton::overlayAccessibleDescription() const
 {
-    return m_iconDescription;
+    return button->overlayAccessibleDescription();
 }
 
-void QQuickWinTaskbarButton::setIconDescription(const QString &descr)
+void QQuickWinTaskbarButton::setOverlayAccessibleDescription(const QString &description)
 {
-    m_iconDescription = descr;
-    button->setOverlayIconAccessibilityDescription(m_iconDescription);
+    button->setOverlayAccessibleDescription(description);
 }
 
 void QQuickWinTaskbarButton::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data)

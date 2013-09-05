@@ -49,7 +49,7 @@ class tst_QWinTaskbarButton : public QObject
 private slots:
     void testWindow();
     void testOverlayIcon();
-    void testOverlayIconAccessibilityDescription();
+    void testOverlayAccessibleDescription();
     void testProgress();
 };
 
@@ -85,16 +85,16 @@ void tst_QWinTaskbarButton::testOverlayIcon()
     QVERIFY(btn.overlayIcon().isNull());
 }
 
-void tst_QWinTaskbarButton::testOverlayIconAccessibilityDescription()
+void tst_QWinTaskbarButton::testOverlayAccessibleDescription()
 {
     QWinTaskbarButton btn;
-    QVERIFY(btn.overlayIconAccessibilityDescription().isNull());
+    QVERIFY(btn.overlayAccessibleDescription().isNull());
 
-    btn.setOverlayIconAccessibilityDescription(QStringLiteral("Qt"));
-    QCOMPARE(btn.overlayIconAccessibilityDescription(), QStringLiteral("Qt"));
+    btn.setOverlayAccessibleDescription(QStringLiteral("Qt"));
+    QCOMPARE(btn.overlayAccessibleDescription(), QStringLiteral("Qt"));
 
-    btn.setOverlayIconAccessibilityDescription(QString());
-    QVERIFY(btn.overlayIconAccessibilityDescription().isNull());
+    btn.setOverlayAccessibleDescription(QString());
+    QVERIFY(btn.overlayAccessibleDescription().isNull());
 }
 
 void tst_QWinTaskbarButton::testProgress()

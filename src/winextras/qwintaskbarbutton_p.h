@@ -62,7 +62,7 @@ public:
 
     QPointer<QWinTaskbarProgress> progressBar;
     QIcon overlayIcon;
-    QString overlayIconDescription;
+    QString overlayAccessibleDescription;
 
     HWND handle();
     int iconSize() const;

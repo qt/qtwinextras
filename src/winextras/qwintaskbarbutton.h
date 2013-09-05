@@ -56,7 +56,7 @@ class Q_WINEXTRAS_EXPORT QWinTaskbarButton : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QIcon overlayIcon READ overlayIcon WRITE setOverlayIcon RESET clearOverlayIcon)
-    Q_PROPERTY(QString overlayIconAccessibilityDescription READ overlayIconAccessibilityDescription WRITE setOverlayIconAccessibilityDescription)
+    Q_PROPERTY(QString overlayAccessibleDescription READ overlayAccessibleDescription WRITE setOverlayAccessibleDescription)
     Q_PROPERTY(QWinTaskbarProgress *progress READ progress)
     Q_PROPERTY(QWindow *window READ window WRITE setWindow)
 
@@ -68,7 +68,7 @@ public:
     QWindow *window() const;
 
     QIcon overlayIcon() const;
-    QString overlayIconAccessibilityDescription() const;
+    QString overlayAccessibleDescription() const;
 
     QWinTaskbarProgress *progress() const;
 
@@ -76,7 +76,7 @@ public:
 
 public Q_SLOTS:
     void setOverlayIcon(const QIcon &icon);
-    void setOverlayIconAccessibilityDescription(const QString &description);
+    void setOverlayAccessibleDescription(const QString &description);
 
     void clearOverlayIcon();
 

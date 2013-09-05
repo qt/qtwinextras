@@ -116,9 +116,9 @@ void QWinTaskbarButtonPrivate::updateOverlayIcon()
 
     wchar_t *descrPtr = 0;
     HICON hicon = 0;
-    if (!overlayIconDescription.isEmpty()) {
-        descrPtr = new wchar_t[overlayIconDescription.length() + 1];
-        descrPtr[overlayIconDescription.toWCharArray(descrPtr)] = 0;
+    if (!overlayAccessibleDescription.isEmpty()) {
+        descrPtr = new wchar_t[overlayAccessibleDescription.length() + 1];
+        descrPtr[overlayAccessibleDescription.toWCharArray(descrPtr)] = 0;
     }
     if (!overlayIcon.isNull())
         hicon = QtWinExtras::toHICON(overlayIcon.pixmap(iconSize()));
@@ -226,25 +226,25 @@ void QWinTaskbarButton::setOverlayIcon(const QIcon &icon)
  */
 void QWinTaskbarButton::clearOverlayIcon()
 {
-    setOverlayIconAccessibilityDescription(QString());
+    setOverlayAccessibleDescription(QString());
     setOverlayIcon(QIcon());
 }
 
 /*!
-    \property QWinTaskbarButton::overlayIconAccessibilityDescription
-    \brief the overlay icon accessibility description text
+    \property QWinTaskbarButton::overlayAccessibleDescription
+    \brief the description of the overlay for accessibility purposes
  */
-QString QWinTaskbarButton::overlayIconAccessibilityDescription() const
+QString QWinTaskbarButton::overlayAccessibleDescription() const
 {
     Q_D(const QWinTaskbarButton);
-    return d->overlayIconDescription;
+    return d->overlayAccessibleDescription;
 }
 
-void QWinTaskbarButton::setOverlayIconAccessibilityDescription(const QString &description)
+void QWinTaskbarButton::setOverlayAccessibleDescription(const QString &description)
 {
     Q_D(QWinTaskbarButton);
 
-    d->overlayIconDescription = description;
+    d->overlayAccessibleDescription = description;
     d->updateOverlayIcon();
 }
 

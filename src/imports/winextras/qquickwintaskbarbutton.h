@@ -54,7 +54,7 @@ class QQuickWinTaskbarButton : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(QString overlayIcon READ overlayIcon WRITE setOverlayIcon)
-    Q_PROPERTY(QString iconDescription READ iconDescription WRITE setIconDescription)
+    Q_PROPERTY(QString overlayAccessibleDescription READ overlayAccessibleDescription WRITE setOverlayAccessibleDescription)
     Q_PROPERTY(QWinTaskbarProgress *progress READ progress CONSTANT)
 
 public:
@@ -63,8 +63,8 @@ public:
     QWinTaskbarProgress *progress() const;
     QString overlayIcon() const;
     void setOverlayIcon(const QString &path);
-    QString iconDescription() const;
-    void setIconDescription(const QString &descr);
+    QString overlayAccessibleDescription() const;
+    void setOverlayAccessibleDescription(const QString &description);
 
 protected:
     void itemChange(ItemChange, const ItemChangeData &) Q_DECL_OVERRIDE;
@@ -72,7 +72,6 @@ protected:
 private:
     QWinTaskbarButton *button;
     QString m_iconPath;
-    QString m_iconDescription;
 };
 
 QT_END_NAMESPACE
