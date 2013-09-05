@@ -56,8 +56,8 @@ class QWinJumpListPrivate;
 class Q_WINEXTRAS_EXPORT QWinJumpList : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int recentCategoryShown READ isRecentCategoryShown WRITE setRecentCategoryShown)
-    Q_PROPERTY(int frequentCategoryShown READ isFrequentCategoryShown WRITE setFrequentCategoryShown)
+    Q_PROPERTY(bool recentCategoryShown READ isRecentCategoryShown WRITE setRecentCategoryShown)
+    Q_PROPERTY(bool frequentCategoryShown READ isFrequentCategoryShown WRITE setFrequentCategoryShown)
 
 public:
     explicit QWinJumpList(QObject *parent = 0);
