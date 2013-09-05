@@ -55,7 +55,7 @@ class QWinTaskbarButtonPrivate;
 class Q_WINEXTRAS_EXPORT QWinTaskbarButton : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QIcon overlayIcon READ overlayIcon WRITE setOverlayIcon)
+    Q_PROPERTY(QIcon overlayIcon READ overlayIcon WRITE setOverlayIcon RESET clearOverlayIcon)
     Q_PROPERTY(QString overlayIconAccessibilityDescription READ overlayIconAccessibilityDescription WRITE setOverlayIconAccessibilityDescription)
     Q_PROPERTY(QWinTaskbarProgress *progress READ progress)
     Q_PROPERTY(QWindow *window READ window WRITE setWindow)
