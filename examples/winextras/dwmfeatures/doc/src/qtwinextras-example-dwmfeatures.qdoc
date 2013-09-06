@@ -31,6 +31,8 @@
     \example dwmfeatures
     \brief Demonstrates managing Windows DWM features.
 
+    \image peek-on.png
+
     This example shows how to use Desktop Window Manager (DWM) features
     provided by the \l{Qt Windows Extras} module. These include
     controlling the \l{DWM and Glass Frame}{Glass Frame} and \l{Aero Peek}

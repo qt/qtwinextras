@@ -31,6 +31,8 @@
     \example jumplistexample
     \brief Demonstrates managing jump lists for Windows task bar buttons.
 
+    \image qtwinextras-examples-jumplist.png
+
     This example shows how to implement a \l{Jump Lists}{jump list}
     for the Windows task bar button of a Qt application.
 */

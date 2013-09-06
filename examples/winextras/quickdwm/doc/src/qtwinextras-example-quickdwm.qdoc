@@ -31,6 +31,8 @@
     \example quickdwm
     \brief Demonstrates managing Windows DWM features from QML.
 
+    \image glass.png
+
     This example shows how to use the
     \l{Qt Windows Extras QML Types}{QML types} provided by the
     \l{Qt Windows Extras} module to manage Desktop Windows
