@@ -41,6 +41,7 @@
 
 #include <QtTest/QtTest>
 #include <QWinTaskbarButton>
+#include <QWinTaskbarProgress>
 
 class tst_QWinTaskbarButton : public QObject
 {
@@ -101,6 +102,13 @@ void tst_QWinTaskbarButton::testProgress()
 {
     QWinTaskbarButton btn;
     QVERIFY(btn.progress());
+    QVERIFY(btn.progress()->objectName().isEmpty());
+
+    btn.progress()->setObjectName(QStringLiteral("DEAD"));
+    delete btn.progress();
+
+    QVERIFY(btn.progress());
+    QVERIFY(btn.progress()->objectName().isEmpty());
 }
 
 QTEST_MAIN(tst_QWinTaskbarButton)
