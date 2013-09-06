@@ -95,29 +95,29 @@ bool ExampleWidget::event(QEvent *e)
 
 void ExampleWidget::onDisallowPeekClicked()
 {
-    QtWinExtras::setWindowDisallowPeek(this, ui->btnPeekDisallow->isChecked());
+    QtWin::setWindowDisallowPeek(this, ui->btnPeekDisallow->isChecked());
 }
 
 void ExampleWidget::onExcludeFromPeekClicked()
 {
-    QtWinExtras::setWindowExcludedFromPeek(this, ui->btnPeekExclude->isChecked());
+    QtWin::setWindowExcludedFromPeek(this, ui->btnPeekExclude->isChecked());
 }
 
 void ExampleWidget::onFlip3DPolicyChanged()
 {
-    QtWinExtras::WindowFlip3DPolicy policy;
+    QtWin::WindowFlip3DPolicy policy;
     if (ui->radioFlipAbove->isChecked())
-        policy = QtWinExtras::FlipExcludeAbove;
+        policy = QtWin::FlipExcludeAbove;
     else if (ui->radioFlipBelow->isChecked())
-        policy = QtWinExtras::FlipExcludeBelow;
+        policy = QtWin::FlipExcludeBelow;
     else
-        policy = QtWinExtras::FlipDefault;
-    QtWinExtras::setWindowFlip3DPolicy(this, policy);
+        policy = QtWin::FlipDefault;
+    QtWin::setWindowFlip3DPolicy(this, policy);
 }
 
 void ExampleWidget::onGlassMarginsChanged()
 {
-    if (!QtWinExtras::isCompositionEnabled())
+    if (!QtWin::isCompositionEnabled())
         return;
 
     // what you see here is the only way to force widget to redraw itself
@@ -133,7 +133,7 @@ void ExampleWidget::onGlassMarginsChanged()
         resize(modified);
 
         setAttribute(Qt::WA_NoSystemBackground);
-        QtWinExtras::extendFrameIntoClientArea(this,
+        QtWin::extendFrameIntoClientArea(this,
                                          ui->frameTop->value(),
                                          ui->frameRight->value(),
                                          ui->frameBottom->value(),
@@ -145,7 +145,7 @@ void ExampleWidget::onGlassMarginsChanged()
         ui->groupBox_3->setAutoFillBackground(true);
         ui->groupBox_4->setAutoFillBackground(true);
     } else {
-        QtWinExtras::extendFrameIntoClientArea(this,
+        QtWin::extendFrameIntoClientArea(this,
                                          ui->frameLeft->value(),
                                          ui->frameTop->value(),
                                          ui->frameRight->value(),
@@ -163,7 +163,7 @@ void ExampleWidget::onResetGlassFrameClicked()
     ui->frameBottom->setValue(0);
     ui->frameLeft->setValue(0);
 
-    QtWinExtras::resetExtendedFrame(this);
+    QtWin::resetExtendedFrame(this);
     setAttribute(Qt::WA_NoSystemBackground, false);
 
     QSize original = size();

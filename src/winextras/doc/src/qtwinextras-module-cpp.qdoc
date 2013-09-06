@@ -34,7 +34,7 @@
     \ingroup technology-apis
     \qtvariable winextras
 
-    The QWinExtras namespace contains Windows-specific functions for type
+    The QtWin namespace contains Windows-specific functions for type
     conversions and DWM glass frame manipulation.
 
     The classes enable you to use features introduced with Windows 7, such as

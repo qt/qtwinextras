@@ -78,28 +78,28 @@ QQuickWinDwmFeatures::~QQuickWinDwmFeatures()
 
 void QQuickWinDwmFeatures::setCompositionEnabled(bool enabled)
 {
-    QtWinExtras::setCompositionEnabled(enabled);
+    QtWin::setCompositionEnabled(enabled);
 }
 
 bool QQuickWinDwmFeatures::isCompositionEnabled() const
 {
-    return QtWinExtras::isCompositionEnabled();
+    return QtWin::isCompositionEnabled();
 }
 
 QColor QQuickWinDwmFeatures::colorizationColor() const
 {
-    return QtWinExtras::colorizationColor();
+    return QtWin::colorizationColor();
 }
 
 QColor QQuickWinDwmFeatures::realColorizationColor() const
 {
-    return QtWinExtras::realColorizationColor();
+    return QtWin::realColorizationColor();
 }
 
 bool QQuickWinDwmFeatures::colorizationOpaqueBlend() const
 {
     bool opaque;
-    QtWinExtras::colorizationColor(&opaque);
+    QtWin::colorizationColor(&opaque);
     return opaque;
 }
 
@@ -185,7 +185,7 @@ bool QQuickWinDwmFeatures::excludedFromPeek() const
 {
     Q_D(const QQuickWinDwmFeatures);
     if (window())
-        return QtWinExtras::isWindowExcludedFromPeek(window());
+        return QtWin::isWindowExcludedFromPeek(window());
     else
         return d->peekExcluded;
 }
@@ -206,7 +206,7 @@ bool QQuickWinDwmFeatures::peekDisallowed() const
 {
     Q_D(const QQuickWinDwmFeatures);
     if (window())
-        return QtWinExtras::isWindowPeekDisallowed(window());
+        return QtWin::isWindowPeekDisallowed(window());
     else
         return d->peekDisallowed;
 }
@@ -220,7 +220,7 @@ void QQuickWinDwmFeatures::setPeekDisallowed(bool disallow)
 /*!
     \enum QQuickWinDwmFeatures::Flip3DPolicy
 
-    See QtWinExtras::WindowFlip3DPolicy.
+    See QtWin::WindowFlip3DPolicy.
  */
 
 /*!
@@ -232,7 +232,7 @@ QQuickWinDwmFeatures::Flip3DPolicy QQuickWinDwmFeatures::flip3DPolicy() const
 {
     Q_D(const QQuickWinDwmFeatures);
     if (window())
-        return static_cast<Flip3DPolicy>(QtWinExtras::windowFlip3DPolicy(window()));
+        return static_cast<Flip3DPolicy>(QtWin::windowFlip3DPolicy(window()));
     else
         return static_cast<Flip3DPolicy>(d->flipPolicy);
 }
@@ -306,13 +306,13 @@ void QQuickWinDwmFeaturesPrivate::update()
             q->window()->setColor(Qt::transparent);
         }
         if (peekExcluded)
-            QtWinExtras::setWindowExcludedFromPeek(w, peekExcluded);
+            QtWin::setWindowExcludedFromPeek(w, peekExcluded);
         if (peekDisallowed)
-            QtWinExtras::setWindowDisallowPeek(w, peekDisallowed);
+            QtWin::setWindowDisallowPeek(w, peekDisallowed);
         if (flipPolicy != QQuickWinDwmFeatures::FlipDefault)
-            QtWinExtras::setWindowFlip3DPolicy(w, static_cast<QtWinExtras::WindowFlip3DPolicy>(flipPolicy));
+            QtWin::setWindowFlip3DPolicy(w, static_cast<QtWin::WindowFlip3DPolicy>(flipPolicy));
         if (topMargin || rightMargin || bottomMargin || leftMargin)
-            QtWinExtras::extendFrameIntoClientArea(w, leftMargin, topMargin, rightMargin, bottomMargin);
+            QtWin::extendFrameIntoClientArea(w, leftMargin, topMargin, rightMargin, bottomMargin);
     }
 }
 

@@ -95,7 +95,7 @@ void tst_QPixmap::toHBITMAP()
     QPixmap pm(100, 100);
     pm.fill(QColor(red, green, blue));
 
-    const HBITMAP bitmap = QtWinExtras::toHBITMAP(pm);
+    const HBITMAP bitmap = QtWin::toHBITMAP(pm);
 
     QVERIFY(bitmap != 0);
 
@@ -145,7 +145,7 @@ void tst_QPixmap::fromHBITMAP()
     const HGDIOBJ oldBrush = SelectObject(bitmapDc, CreateSolidBrush(RGB(red, green, blue)));
     Rectangle(bitmapDc, 0, 0, 100, 100);
 
-    const QPixmap pixmap = QtWinExtras::fromHBITMAP(bitmap);
+    const QPixmap pixmap = QtWin::fromHBITMAP(bitmap);
     QCOMPARE(pixmap.width(), 100);
     QCOMPARE(pixmap.height(), 100);
 
@@ -233,7 +233,7 @@ void tst_QPixmap::toHICON()
 
     const HDC displayDc = GetDC(0);
     const HDC bitmapDc = CreateCompatibleDC(displayDc);
-    const HBITMAP bitmap = QtWinExtras::toHBITMAP(empty, QtWinExtras::HBitmapAlpha);
+    const HBITMAP bitmap = QtWin::toHBITMAP(empty, QtWin::HBitmapAlpha);
     SelectObject(bitmapDc, bitmap);
 
     const QString imageFileName = pngFileName(image, width, height);
@@ -242,14 +242,14 @@ void tst_QPixmap::toHICON()
     const QImage imageFromFile = QImage(imageFileName).convertToFormat(QImage::Format_ARGB32_Premultiplied);
     QVERIFY(!imageFromFile.isNull());
 
-    const HICON icon = QtWinExtras::toHICON(QPixmap::fromImage(imageFromFile));
+    const HICON icon = QtWin::toHICON(QPixmap::fromImage(imageFromFile));
 
     DrawIconEx(bitmapDc, 0, 0, icon, width, height, 0, 0, DI_NORMAL);
 
     DestroyIcon(icon);
     DeleteDC(bitmapDc);
 
-    const QImage imageFromHICON = QtWinExtras::fromHBITMAP(bitmap, QtWinExtras::HBitmapAlpha).toImage();
+    const QImage imageFromHICON = QtWin::fromHBITMAP(bitmap, QtWin::HBitmapAlpha).toImage();
     QVERIFY(!imageFromHICON.isNull());
 
     ReleaseDC(0, displayDc);
@@ -275,7 +275,7 @@ void tst_QPixmap::fromHICON()
     QVERIFY2(QFileInfo(iconFileName).exists(), qPrintable(iconFileName));
 
     const HICON icon = (HICON)LoadImage(0, (wchar_t*)(iconFileName).utf16(), IMAGE_ICON, width, height, LR_LOADFROMFILE);
-    const QImage imageFromHICON = QtWinExtras::fromHICON(icon).toImage();
+    const QImage imageFromHICON = QtWin::fromHICON(icon).toImage();
     DestroyIcon(icon);
 
     const QString imageFileName = pngFileName(image, width, height);

@@ -60,7 +60,7 @@ class QWindow;
 class QString;
 class QMargins;
 
-namespace QtWinExtras
+namespace QtWin
 {
 
 enum HBitmapFormat
@@ -126,7 +126,7 @@ void Q_WINEXTRAS_EXPORT taskbarDeleteTab(QWindow *);
 
 #include <QtWidgets/qwidget.h>
 
-namespace QtWinExtras
+namespace QtWin
 {
 
 inline void setWindowExcludedFromPeek(QWidget *window, bool exclude)
@@ -243,7 +243,7 @@ inline void taskbarDeleteTab(QWidget *window)
 
 #ifdef Q_QDOC
 
-namespace QtWinExtras
+namespace QtWin
 {
 
 HBITMAP createMask(const QBitmap &bitmap);
