@@ -46,18 +46,46 @@ QT_BEGIN_NAMESPACE
 /*!
     \class QWinTaskbarProgress
     \inmodule QtWinExtras
-    \brief The QWinTaskbarProgress class represents the Windows taskbar progress indicator.
+    \brief The QWinTaskbarProgress class represents a progress indicator in the Windows taskbar.
 
     \since 5.2
 
-    The QWinTaskbarProgress class enables you to to display a progress indicator
-    on a taskbar button.
+    A progress indicator is used to give the user an indication of the progress
+    of an operation and to reassure them that the application is still running.
+
+    The progress indicator uses the concept of \e steps. It is set up by specifying
+    the minimum and maximum possible step values, and it will display the percentage
+    of steps that have been completed when you later give it the current step value.
+    The percentage is calculated by dividing the progress (value() - minimum())
+    divided by maximum() - minimum().
+
+    The minimum and maximum number of steps can be specified by calling setMinimum()
+    and setMaximum(). The current number of steps is set with setValue(). The progress
+    indicator can be rewound to the beginning with reset().
+
+    If minimum and maximum both are set to \c 0, the indicator shows up as a busy
+    (indeterminate) indicator instead of a percentage of steps. This is useful when
+    it is not possible to determine the number of steps.
+
+    \table
+    \row \li \inlineimage taskbar-progress.png Screenshot of a progress indicator
+         \li A progress indicator at 50%.
+    \row \li \inlineimage taskbar-progress-paused.png Screenshot of a paused progress indicator
+         \li A paused progress indicator at 50%.
+    \row \li \inlineimage taskbar-progress-stopped.png Screenshot of a stopped progress indicator
+        \li A stopped progress indicator at 50%.
+    \row \li \inlineimage taskbar-progress-indeterminate.png Screenshot of an indeterminate progress indicator
+         \li An indeterminate progress indicator.
+    \endtable
+
+    \note The final appearance of the progress indicator varies depending on the active Windows theme.
+
+    \sa QWinTaskbarButton
  */
 
 /*!
-    \fn void QWinTaskbarProgress::valueChanged(int value)
-
-    This signal is emitted when the progress indicator \a value changes.
+    \fn void QWinTaskbarProgress::pausedChanged(bool paused)
+    \internal (for QWinTaskbarButton and QML compatibility)
  */
 
 /*!
@@ -158,7 +186,7 @@ void QWinTaskbarProgress::setMaximum(int maximum)
 
 /*!
     \property QWinTaskbarProgress::visible
-    \brief the progress indicator is visible.
+    \brief whether the progress indicator is visible.
 
     The default value is \c false.
  */
@@ -228,9 +256,16 @@ void QWinTaskbarProgress::reset()
 
 /*!
     \property QWinTaskbarProgress::paused
-    \brief the progress indicator is paused.
+    \brief whether the progress indicator is paused.
 
     The default value is \c false.
+
+    The final appearance of a paused progress indicator depends on the active
+    Windows theme. Typically, a paused progress indicator turns yellow to indicate
+    that the progress is currently paused. Unlike a \l stopped progress indicator,
+    a paused progress should not be used to indicate an error.
+
+    \sa pause(), resume()
  */
 bool QWinTaskbarProgress::isPaused() const
 {
@@ -249,7 +284,9 @@ void QWinTaskbarProgress::setPaused(bool paused)
 }
 
 /*!
-    Pause the progress indicator.
+    Pauses the progress indicator.
+
+    \sa paused
  */
 void QWinTaskbarProgress::pause()
 {
@@ -257,7 +294,9 @@ void QWinTaskbarProgress::pause()
 }
 
 /*!
-    Resume a paused or stopped progress indicator.
+    Resumes a paused or stopped progress indicator.
+
+    \sa paused, stopped
  */
 void QWinTaskbarProgress::resume()
 {
@@ -271,9 +310,16 @@ void QWinTaskbarProgress::resume()
 
 /*!
     \property QWinTaskbarProgress::stopped
-    \brief the progress indicator is stopped.
+    \brief whether the progress indicator is stopped.
 
     The default value is \c false.
+
+    The final appearance of a stopped progress indicator depends on the active
+    Windows theme. Typically, a stopped progress indicator turns red to indicate
+    that the progress is currently stopped. Unlike a \l paused progress indicator,
+    a stopped progress may be used to indicate an error.
+
+    \sa stop(), resume()
  */
 bool QWinTaskbarProgress::isStopped() const
 {
@@ -282,7 +328,9 @@ bool QWinTaskbarProgress::isStopped() const
 }
 
 /*!
-    Stop the progress indicator.
+    Stops the progress indicator.
+
+    \sa stopped
  */
 void QWinTaskbarProgress::stop()
 {

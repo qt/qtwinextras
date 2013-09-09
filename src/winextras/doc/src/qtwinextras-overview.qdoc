@@ -83,10 +83,19 @@
 
     \section2 Overlay Icons and Progress Indicators
 
-    You can use the QWinTaskbarButton class to set overlay icons and to display
-    a progress indicator on a taskbar button. The overlay icons indicate changes
-    in the state of the application. The progress indicator shows how
-    time-consuming tasks are progressing.
+    You can use the QWinTaskbarButton class to set an overlay icon and the
+    QWinTaskbarProgress class to display a progress indicator on a taskbar button.
+    An overlay icon indicates change in the state of the application. A progress
+    indicator shows how time-consuming tasks are progressing.
+
+    \image taskbar-button.png Taskbar Button
+
+    \section3 Taskbar Example
+
+    The following example code illustrates how to use the QWinTaskbarButton
+    and QWinTaskbarProgress classes to adjust the look of the taskbar button:
+
+    \snippet code/taskbar.cpp taskbar_cpp
 
     \section2 Jump Lists
 
