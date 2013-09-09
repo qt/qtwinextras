@@ -56,4 +56,5 @@ release
 tmp
 
 # Test generated files
+/tests/auto/cmake/build
 /tests/auto/headersclean/tst_headersclean.cpp
