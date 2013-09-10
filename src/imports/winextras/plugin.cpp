@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -39,11 +40,11 @@
  **
  ****************************************************************************/
 
-#include "qquickwindwmfeatures.h"
-#include "qquickwintaskbarbutton.h"
-#include "qquickjumplist.h"
-#include "qquickwinthumbnailtoolbar.h"
-#include "qquickwinthumbnailtoolbutton.h"
+#include "qquickdwmfeatures_p.h"
+#include "qquicktaskbarbutton_p.h"
+#include "qquickjumplist_p.h"
+#include "qquickthumbnailtoolbar_p.h"
+#include "qquickthumbnailtoolbutton_p.h"
 
 #include <QtQml/QtQml>
 
@@ -58,14 +59,14 @@ public:
     void registerTypes(const char *uri) Q_DECL_OVERRIDE
     {
         Q_ASSERT(uri == QLatin1String("QtWinExtras"));
-        qmlRegisterType<QQuickWinDwmFeatures>(uri, 1, 0, "DwmFeatures");
-        qmlRegisterType<QQuickWinTaskbarButton>(uri, 1, 0, "TaskbarButton");
+        qmlRegisterType<QQuickDwmFeatures>(uri, 1, 0, "DwmFeatures");
+        qmlRegisterType<QQuickTaskbarButton>(uri, 1, 0, "TaskbarButton");
         qmlRegisterUncreatableType<QWinTaskbarProgress>(uri, 1, 0, "TaskbarProgress", "Cannot create TaskbarProgress - use TaskbarButton.progress instead.");
         qmlRegisterType<QQuickJumpList>(uri, 1, 0, "JumpList");
         qmlRegisterType<QQuickJumpListItem>(uri, 1, 0, "JumpListItem");
         qmlRegisterType<QQuickJumpListCategory>(uri, 1, 0, "JumpListCategory");
-        qmlRegisterType<QQuickWinThumbnailToolBar>(uri, 1, 0, "ThumbnailToolBar");
-        qmlRegisterType<QQuickWinThumbnailToolButton>(uri, 1, 0, "ThumbnailToolButton");
+        qmlRegisterType<QQuickThumbnailToolBar>(uri, 1, 0, "ThumbnailToolBar");
+        qmlRegisterType<QQuickThumbnailToolButton>(uri, 1, 0, "ThumbnailToolButton");
     }
 };
 

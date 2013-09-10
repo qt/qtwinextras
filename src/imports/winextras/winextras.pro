@@ -11,22 +11,22 @@ QML_FILES += \
     JumpListSeparator.qml
 
 HEADERS += \
-    qquickwindwmfeatures.h \
-    qquickwindwmfeatures_p.h \
-    qquickwintaskbarbutton.h \
-    qquickjumplist.h \
-    qquickwinthumbnailtoolbar.h \
-    qquickwinthumbnailtoolbutton.h \
-    qwiniconloader.h
+    qquickdwmfeatures_p.h \
+    qquickdwmfeatures_p_p.h \
+    qquicktaskbarbutton_p.h \
+    qquickjumplist_p.h \
+    qquickthumbnailtoolbar_p.h \
+    qquickthumbnailtoolbutton_p.h \
+    qquickiconloader_p.h
 
 SOURCES += \
     plugin.cpp \
-    qquickwindwmfeatures.cpp \
-    qquickwintaskbarbutton.cpp \
+    qquickdwmfeatures.cpp \
+    qquicktaskbarbutton.cpp \
     qquickjumplist.cpp \
-    qquickwinthumbnailtoolbar.cpp \
-    qquickwinthumbnailtoolbutton.cpp \
-    qwiniconloader.cpp
+    qquickthumbnailtoolbar.cpp \
+    qquickthumbnailtoolbutton.cpp \
+    qquickiconloader.cpp
 
 OTHER_FILES += \
     qmldir \

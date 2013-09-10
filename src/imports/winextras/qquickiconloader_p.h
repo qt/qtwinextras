@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -39,37 +40,41 @@
  **
  ****************************************************************************/
 
-#ifndef QQUICKWINDWMFEATURES_P_H
-#define QQUICKWINDWMFEATURES_P_H
+#ifndef QQUICKICONLOADER_P_H
+#define QQUICKICONLOADER_P_H
 
-#include "qquickwindwmfeatures.h"
+#include <QObject>
+#include <QIcon>
 
 QT_BEGIN_NAMESPACE
 
-class QQuickWinDwmFeaturesPrivate
+class QIcon;
+class QQmlEngine;
+class QNetworkReply;
+
+class QQuickIconLoader : public QObject
 {
+    Q_OBJECT
+
 public:
-    QQuickWinDwmFeaturesPrivate(QQuickWinDwmFeatures *parent);
-    int topMargin;
-    int rightMargin;
-    int bottomMargin;
-    int leftMargin;
+    explicit QQuickIconLoader(QObject *parent = 0);
+    void load(const QUrl &url, QQmlEngine *engine);
+    QIcon icon() const;
 
-    bool peekDisallowed;
-    bool peekExcluded;
-    QQuickWinDwmFeatures::Flip3DPolicy flipPolicy;
+Q_SIGNALS:
+    void finished();
 
-    void update();
+private Q_SLOTS:
+    void onRequestFinished(QNetworkReply*);
 
 private:
-    QQuickWinDwmFeatures *q_ptr;
-    bool formatSet;
-    bool frameUpdateScheduled;
-    bool attributesUpdateScheduled;
+    void loadFromFile(const QUrl &url);
+    void loadFromNetwork(const QUrl &url, QQmlEngine *engine);
+    void loadFromImageProvider(const QUrl &url, QQmlEngine *engine);
 
-    Q_DECLARE_PUBLIC(QQuickWinDwmFeatures)
+    QIcon m_icon;
 };
 
 QT_END_NAMESPACE
 
-#endif // QQUICKWINDWMFEATURES_P_H
+#endif // QQUICKICONLOADER_P_H

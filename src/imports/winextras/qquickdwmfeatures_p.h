@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -39,17 +40,17 @@
  **
  ****************************************************************************/
 
-#ifndef QQUICKWINDWMFEATURES_H
-#define QQUICKWINDWMFEATURES_H
+#ifndef QQUICKDWMFEATURES_P_H
+#define QQUICKDWMFEATURES_P_H
 
 #include <QQuickItem>
 #include <QWinFunctions>
 
 QT_BEGIN_NAMESPACE
 
-class QQuickWinDwmFeaturesPrivate;
+class QQuickDwmFeaturesPrivate;
 
-class QQuickWinDwmFeatures : public QQuickItem
+class QQuickDwmFeatures : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(bool isCompositionEnabled READ isCompositionEnabled WRITE setCompositionEnabled NOTIFY isCompositionEnabledChanged)
@@ -74,8 +75,8 @@ public:
 
     Q_ENUMS(Flip3DPolicy)
 
-    explicit QQuickWinDwmFeatures(QQuickItem *parent = 0);
-    ~QQuickWinDwmFeatures();
+    explicit QQuickDwmFeatures(QQuickItem *parent = 0);
+    ~QQuickDwmFeatures();
 
     void setCompositionEnabled(bool enabled);
     bool isCompositionEnabled() const;
@@ -101,7 +102,7 @@ public:
 
     bool eventFilter(QObject *, QEvent *) Q_DECL_OVERRIDE;
 
-    static QQuickWinDwmFeatures *qmlAttachedProperties(QObject *object);
+    static QQuickDwmFeatures *qmlAttachedProperties(QObject *object);
 
 Q_SIGNALS:
     void colorizationColorChanged();
@@ -113,13 +114,13 @@ protected:
     void itemChange(ItemChange, const ItemChangeData &) Q_DECL_OVERRIDE;
 
 private:
-    QScopedPointer<QQuickWinDwmFeaturesPrivate> d_ptr;
+    QScopedPointer<QQuickDwmFeaturesPrivate> d_ptr;
 
-    Q_DECLARE_PRIVATE(QQuickWinDwmFeatures)
+    Q_DECLARE_PRIVATE(QQuickDwmFeatures)
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPEINFO(QQuickWinDwmFeatures, QML_HAS_ATTACHED_PROPERTIES)
+QML_DECLARE_TYPEINFO(QQuickDwmFeatures, QML_HAS_ATTACHED_PROPERTIES)
 
-#endif // QQUICKWINDWMFEATURES_H
+#endif // QQUICKDWMFEATURES_P_H

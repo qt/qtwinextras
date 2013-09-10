@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -39,55 +40,41 @@
  **
  ****************************************************************************/
 
-#ifndef QQUICKWINTHUMBNAILTOOLBAR_H
-#define QQUICKWINTHUMBNAILTOOLBAR_H
+#ifndef QQUICKTASKBARBUTTON_P_H
+#define QQUICKTASKBARBUTTON_P_H
 
 #include <QQuickItem>
-#include <QWinThumbnailToolBar>
+#include <QWinTaskbarButton>
+#include <QWinTaskbarProgress>
 
 QT_BEGIN_NAMESPACE
 
-class QQuickWinThumbnailToolButton;
+class QQuickTaskbarButtonPrivate;
 
-class QQuickWinThumbnailToolBar : public QQuickItem
+class QQuickTaskbarButton : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(int count READ count NOTIFY countChanged)
-    Q_PROPERTY(QQmlListProperty<QObject> data READ data)
-    Q_PROPERTY(QQmlListProperty<QQuickWinThumbnailToolButton> buttons READ buttons NOTIFY buttonsChanged)
-    Q_CLASSINFO("DefaultProperty", "data")
+    Q_PROPERTY(QString overlayIcon READ overlayIcon WRITE setOverlayIcon)
+    Q_PROPERTY(QString overlayAccessibleDescription READ overlayAccessibleDescription WRITE setOverlayAccessibleDescription)
+    Q_PROPERTY(QWinTaskbarProgress *progress READ progress CONSTANT)
 
 public:
-    explicit QQuickWinThumbnailToolBar(QQuickItem *parent = 0);
-    ~QQuickWinThumbnailToolBar();
-
-    int count() const;
-
-    QQmlListProperty<QObject> data();
-    QQmlListProperty<QQuickWinThumbnailToolButton> buttons();
-
-    Q_INVOKABLE void addButton(QQuickWinThumbnailToolButton *button);
-    Q_INVOKABLE void removeButton(QQuickWinThumbnailToolButton *button);
-
-public Q_SLOTS:
-    void clear();
-
-Q_SIGNALS:
-    void countChanged();
-    void buttonsChanged();
+    QQuickTaskbarButton(QQuickItem *parent = 0);
+    ~QQuickTaskbarButton();
+    QWinTaskbarProgress *progress() const;
+    QString overlayIcon() const;
+    void setOverlayIcon(const QString &path);
+    QString overlayAccessibleDescription() const;
+    void setOverlayAccessibleDescription(const QString &description);
 
 protected:
-    void itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data);
+    void itemChange(ItemChange, const ItemChangeData &) Q_DECL_OVERRIDE;
 
 private:
-    static void addData(QQmlListProperty<QObject> *property, QObject *button);
-    static int buttonCount(QQmlListProperty<QQuickWinThumbnailToolButton> *property);
-    static QQuickWinThumbnailToolButton *buttonAt(QQmlListProperty<QQuickWinThumbnailToolButton> *property, int index);
-
-    QWinThumbnailToolBar m_toolbar;
-    QList<QQuickWinThumbnailToolButton *> m_buttons;
+    QWinTaskbarButton *button;
+    QString m_iconPath;
 };
 
 QT_END_NAMESPACE
 
-#endif // QQUICKWINTHUMBNAILTOOLBAR_H
+#endif // QQUICKTASKBARBUTTON_P_H

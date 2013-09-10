@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -39,8 +40,8 @@
  **
  ****************************************************************************/
 
-#include "qquickwinthumbnailtoolbar.h"
-#include "qquickwinthumbnailtoolbutton.h"
+#include "qquickthumbnailtoolbar_p.h"
+#include "qquickthumbnailtoolbutton_p.h"
 
 #include <QQuickWindow>
 #include <QQmlEngine>
@@ -49,7 +50,7 @@ QT_BEGIN_NAMESPACE
 
 /*!
     \qmltype ThumbnailToolBar
-    \instantiates QQuickWinThumbnailToolBar
+    \instantiates QQuickThumbnailToolBar
     \inqmlmodule QtWinExtras
 
     \brief Allows manipulating the window's thumbnail toolbar.
@@ -65,31 +66,31 @@ QT_BEGIN_NAMESPACE
     \since QtWinExtras 1.0
  */
 
-QQuickWinThumbnailToolBar::QQuickWinThumbnailToolBar(QQuickItem *parent) :
+QQuickThumbnailToolBar::QQuickThumbnailToolBar(QQuickItem *parent) :
     QQuickItem(parent)
 {
 }
 
-QQuickWinThumbnailToolBar::~QQuickWinThumbnailToolBar()
+QQuickThumbnailToolBar::~QQuickThumbnailToolBar()
 {
 }
 
-int QQuickWinThumbnailToolBar::count() const
+int QQuickThumbnailToolBar::count() const
 {
     return m_toolbar.count();
 }
 
-QQmlListProperty<QObject> QQuickWinThumbnailToolBar::data()
+QQmlListProperty<QObject> QQuickThumbnailToolBar::data()
 {
-    return QQmlListProperty<QObject>(this, 0, &QQuickWinThumbnailToolBar::addData, 0, 0, 0);
+    return QQmlListProperty<QObject>(this, 0, &QQuickThumbnailToolBar::addData, 0, 0, 0);
 }
 
-QQmlListProperty<QQuickWinThumbnailToolButton> QQuickWinThumbnailToolBar::buttons()
+QQmlListProperty<QQuickThumbnailToolButton> QQuickThumbnailToolBar::buttons()
 {
-    return QQmlListProperty<QQuickWinThumbnailToolButton>(this, 0, &QQuickWinThumbnailToolBar::buttonCount, &QQuickWinThumbnailToolBar::buttonAt);
+    return QQmlListProperty<QQuickThumbnailToolButton>(this, 0, &QQuickThumbnailToolBar::buttonCount, &QQuickThumbnailToolBar::buttonAt);
 }
 
-void QQuickWinThumbnailToolBar::addButton(QQuickWinThumbnailToolButton *button)
+void QQuickThumbnailToolBar::addButton(QQuickThumbnailToolButton *button)
 {
     if (!m_buttons.contains(button)) {
         m_toolbar.addButton(button->m_button);
@@ -99,7 +100,7 @@ void QQuickWinThumbnailToolBar::addButton(QQuickWinThumbnailToolButton *button)
     }
 }
 
-void QQuickWinThumbnailToolBar::removeButton(QQuickWinThumbnailToolButton *button)
+void QQuickThumbnailToolBar::removeButton(QQuickThumbnailToolButton *button)
 {
     if (m_buttons.removeOne(button)) {
         m_toolbar.removeButton(button->m_button);
@@ -108,27 +109,27 @@ void QQuickWinThumbnailToolBar::removeButton(QQuickWinThumbnailToolButton *butto
     }
 }
 
-void QQuickWinThumbnailToolBar::clear()
+void QQuickThumbnailToolBar::clear()
 {
     m_toolbar.clear();
-    foreach (QQuickWinThumbnailToolButton *button, m_buttons)
+    foreach (QQuickThumbnailToolButton *button, m_buttons)
         button->deleteLater();
     m_buttons.clear();
     emit countChanged();
     emit buttonsChanged();
 }
 
-void QQuickWinThumbnailToolBar::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data)
+void QQuickThumbnailToolBar::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data)
 {
     if (change == ItemSceneChange)
         m_toolbar.setWindow(data.window);
     QQuickItem::itemChange(change, data);
 }
 
-void QQuickWinThumbnailToolBar::addData(QQmlListProperty<QObject> *property, QObject *object)
+void QQuickThumbnailToolBar::addData(QQmlListProperty<QObject> *property, QObject *object)
 {
-    if (QQuickWinThumbnailToolButton *button = qobject_cast<QQuickWinThumbnailToolButton *>(object)) {
-        QQuickWinThumbnailToolBar *quickThumbbar = static_cast<QQuickWinThumbnailToolBar *>(property->object);
+    if (QQuickThumbnailToolButton *button = qobject_cast<QQuickThumbnailToolButton *>(object)) {
+        QQuickThumbnailToolBar *quickThumbbar = static_cast<QQuickThumbnailToolBar *>(property->object);
         quickThumbbar->m_toolbar.addButton(button->m_button);
         quickThumbbar->m_buttons.append(button);
         emit quickThumbbar->countChanged();
@@ -136,14 +137,14 @@ void QQuickWinThumbnailToolBar::addData(QQmlListProperty<QObject> *property, QOb
     }
 }
 
-int QQuickWinThumbnailToolBar::buttonCount(QQmlListProperty<QQuickWinThumbnailToolButton> *property)
+int QQuickThumbnailToolBar::buttonCount(QQmlListProperty<QQuickThumbnailToolButton> *property)
 {
-    return static_cast<QQuickWinThumbnailToolBar *>(property->object)->count();
+    return static_cast<QQuickThumbnailToolBar *>(property->object)->count();
 }
 
-QQuickWinThumbnailToolButton *QQuickWinThumbnailToolBar::buttonAt(QQmlListProperty<QQuickWinThumbnailToolButton> *property, int index)
+QQuickThumbnailToolButton *QQuickThumbnailToolBar::buttonAt(QQmlListProperty<QQuickThumbnailToolButton> *property, int index)
 {
-    return static_cast<QQuickWinThumbnailToolBar *>(property->object)->m_buttons.value(index);
+    return static_cast<QQuickThumbnailToolBar *>(property->object)->m_buttons.value(index);
 }
 
 QT_END_NAMESPACE

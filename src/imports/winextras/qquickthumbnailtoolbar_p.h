@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -39,89 +40,55 @@
  **
  ****************************************************************************/
 
-#include "qquickwintaskbarbutton.h"
-#include <QtWinExtras/private/qwintaskbarbutton_p.h>
-#include <QQuickWindow>
+#ifndef QQUICKTHUMBNAILTOOLBAR_P_H
+#define QQUICKTHUMBNAILTOOLBAR_P_H
+
+#include <QQuickItem>
+#include <QWinThumbnailToolBar>
 
 QT_BEGIN_NAMESPACE
 
-/*!
-    \qmltype TaskbarButton
-    \instantiates QQuickWinTaskbarButton
-    \inqmlmodule QtWinExtras
+class QQuickThumbnailToolButton;
 
-    \brief Manages Windows taskbar buttons.
-
-    \since QtWinExtras 1.0
-
-    The TaskbarButton type enables you to set overlay icons on a taskbar
-    button, to display a progress indicator, and to add a small toolbar to the
-    window thumbnail popup.
-
-    \sa QWinTaskbarButton
- */
-
-/*!
-    \class QQuickWinTaskbarButton
-    \internal
- */
-
-QQuickWinTaskbarButton::QQuickWinTaskbarButton(QQuickItem *parent) :
-    QQuickItem(parent), button(new QWinTaskbarButton(this))
+class QQuickThumbnailToolBar : public QQuickItem
 {
-}
+    Q_OBJECT
+    Q_PROPERTY(int count READ count NOTIFY countChanged)
+    Q_PROPERTY(QQmlListProperty<QObject> data READ data)
+    Q_PROPERTY(QQmlListProperty<QQuickThumbnailToolButton> buttons READ buttons NOTIFY buttonsChanged)
+    Q_CLASSINFO("DefaultProperty", "data")
 
-QQuickWinTaskbarButton::~QQuickWinTaskbarButton()
-{
-}
+public:
+    explicit QQuickThumbnailToolBar(QQuickItem *parent = 0);
+    ~QQuickThumbnailToolBar();
 
-/*!
-    \qmlproperty string TaskbarButton::progress
+    int count() const;
 
-    The task bar progress indicator.
- */
-QWinTaskbarProgress *QQuickWinTaskbarButton::progress() const
-{
-    return button->progress();
-}
+    QQmlListProperty<QObject> data();
+    QQmlListProperty<QQuickThumbnailToolButton> buttons();
 
-/*!
-    \qmlproperty string TaskbarButton::icon
+    Q_INVOKABLE void addButton(QQuickThumbnailToolButton *button);
+    Q_INVOKABLE void removeButton(QQuickThumbnailToolButton *button);
 
-    The overlay icon path.
- */
-QString QQuickWinTaskbarButton::overlayIcon() const
-{
-    return m_iconPath;
-}
+public Q_SLOTS:
+    void clear();
 
-void QQuickWinTaskbarButton::setOverlayIcon(const QString &path)
-{
-    m_iconPath = path;
-    button->setOverlayIcon(QIcon(m_iconPath));
-}
+Q_SIGNALS:
+    void countChanged();
+    void buttonsChanged();
 
-/*!
-    \qmlproperty string TaskbarButton::overlayAccessibleDescription
+protected:
+    void itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data);
 
-    The description of the overlay for accessibility purposes.
- */
-QString QQuickWinTaskbarButton::overlayAccessibleDescription() const
-{
-    return button->overlayAccessibleDescription();
-}
+private:
+    static void addData(QQmlListProperty<QObject> *property, QObject *button);
+    static int buttonCount(QQmlListProperty<QQuickThumbnailToolButton> *property);
+    static QQuickThumbnailToolButton *buttonAt(QQmlListProperty<QQuickThumbnailToolButton> *property, int index);
 
-void QQuickWinTaskbarButton::setOverlayAccessibleDescription(const QString &description)
-{
-    button->setOverlayAccessibleDescription(description);
-}
-
-void QQuickWinTaskbarButton::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data)
-{
-    if (change == ItemSceneChange) {
-        button->setWindow(data.window);
-    }
-    QQuickItem::itemChange(change, data);
-}
+    QWinThumbnailToolBar m_toolbar;
+    QList<QQuickThumbnailToolButton *> m_buttons;
+};
 
 QT_END_NAMESPACE
+
+#endif // QQUICKTHUMBNAILTOOLBAR_P_H

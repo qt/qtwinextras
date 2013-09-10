@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -39,7 +40,7 @@
  **
  ****************************************************************************/
 
-#include "qquickwinthumbnailtoolbutton.h"
+#include "qquickthumbnailtoolbutton_p.h"
 
 #include <QWinThumbnailToolButton>
 
@@ -47,7 +48,7 @@ QT_BEGIN_NAMESPACE
 
 /*!
     \qmltype ThumbnailToolButton
-    \instantiates QQuickWinThumbnailToolButton
+    \instantiates QQuickThumbnailToolButton
     \inqmlmodule QtWinExtras
 
     \brief Represents a button in a thumbnail toolbar.
@@ -61,14 +62,14 @@ QT_BEGIN_NAMESPACE
     This signal is emitted when the user clicks the button. The corresponding handler is \c onClicked.
 */
 
-QQuickWinThumbnailToolButton::QQuickWinThumbnailToolButton(QObject *parent) :
+QQuickThumbnailToolButton::QQuickThumbnailToolButton(QObject *parent) :
     QObject(parent), m_button(new QWinThumbnailToolButton(this))
 {
     connect(m_button, SIGNAL(clicked()), SIGNAL(clicked()));
     connect(&m_loader, SIGNAL(finished()), SLOT(iconLoaded()));
 }
 
-QQuickWinThumbnailToolButton::~QQuickWinThumbnailToolButton()
+QQuickThumbnailToolButton::~QQuickThumbnailToolButton()
 {
 }
 
@@ -77,7 +78,7 @@ QQuickWinThumbnailToolButton::~QQuickWinThumbnailToolButton()
 
     The button icon path.
  */
-void QQuickWinThumbnailToolButton::setIconSource(const QUrl &iconSource)
+void QQuickThumbnailToolButton::setIconSource(const QUrl &iconSource)
 {
     if (m_iconSource != iconSource) {
         m_iconSource = iconSource;
@@ -86,7 +87,7 @@ void QQuickWinThumbnailToolButton::setIconSource(const QUrl &iconSource)
     }
 }
 
-QUrl QQuickWinThumbnailToolButton::iconSource()
+QUrl QQuickThumbnailToolButton::iconSource()
 {
     return m_iconSource;
 }
@@ -96,7 +97,7 @@ QUrl QQuickWinThumbnailToolButton::iconSource()
 
     The tooltip of the button.
  */
-void QQuickWinThumbnailToolButton::setTooltip(const QString &tooltip)
+void QQuickThumbnailToolButton::setTooltip(const QString &tooltip)
 {
     if (m_button->toolTip() != tooltip) {
         m_button->setToolTip(tooltip);
@@ -104,7 +105,7 @@ void QQuickWinThumbnailToolButton::setTooltip(const QString &tooltip)
     }
 }
 
-QString QQuickWinThumbnailToolButton::tooltip() const
+QString QQuickThumbnailToolButton::tooltip() const
 {
     return m_button->toolTip();
 }
@@ -116,7 +117,7 @@ QString QQuickWinThumbnailToolButton::tooltip() const
 
     By default, this property is set to true.
  */
-void QQuickWinThumbnailToolButton::setEnabled(bool enabled)
+void QQuickThumbnailToolButton::setEnabled(bool enabled)
 {
     if (m_button->isEnabled() != enabled) {
         m_button->setEnabled(enabled);
@@ -124,7 +125,7 @@ void QQuickWinThumbnailToolButton::setEnabled(bool enabled)
     }
 }
 
-bool QQuickWinThumbnailToolButton::isEnabled() const
+bool QQuickThumbnailToolButton::isEnabled() const
 {
     return m_button->isEnabled();
 }
@@ -139,7 +140,7 @@ bool QQuickWinThumbnailToolButton::isEnabled() const
 
     By default, this property is set to true.
  */
-void QQuickWinThumbnailToolButton::setInteractive(bool interactive)
+void QQuickThumbnailToolButton::setInteractive(bool interactive)
 {
     if (m_button->isInteractive() != interactive) {
         m_button->setInteractive(interactive);
@@ -147,7 +148,7 @@ void QQuickWinThumbnailToolButton::setInteractive(bool interactive)
     }
 }
 
-bool QQuickWinThumbnailToolButton::isInteractive() const
+bool QQuickThumbnailToolButton::isInteractive() const
 {
     return m_button->isInteractive();
 }
@@ -159,7 +160,7 @@ bool QQuickWinThumbnailToolButton::isInteractive() const
 
     By default, this property is set to true.
  */
-void QQuickWinThumbnailToolButton::setVisible(bool visible)
+void QQuickThumbnailToolButton::setVisible(bool visible)
 {
     if (m_button->isVisible() != visible) {
         m_button->setVisible(visible);
@@ -167,7 +168,7 @@ void QQuickWinThumbnailToolButton::setVisible(bool visible)
     }
 }
 
-bool QQuickWinThumbnailToolButton::isVisible() const
+bool QQuickThumbnailToolButton::isVisible() const
 {
     return m_button->isVisible();
 }
@@ -179,7 +180,7 @@ bool QQuickWinThumbnailToolButton::isVisible() const
 
     By default, this property is set to false.
  */
-void QQuickWinThumbnailToolButton::setDismissOnClick(bool dismiss)
+void QQuickThumbnailToolButton::setDismissOnClick(bool dismiss)
 {
     if (m_button->dismissOnClick() != dismiss) {
         m_button->setDismissOnClick(dismiss);
@@ -187,7 +188,7 @@ void QQuickWinThumbnailToolButton::setDismissOnClick(bool dismiss)
     }
 }
 
-bool QQuickWinThumbnailToolButton::dismissOnClick() const
+bool QQuickThumbnailToolButton::dismissOnClick() const
 {
     return m_button->dismissOnClick();
 }
@@ -199,7 +200,7 @@ bool QQuickWinThumbnailToolButton::dismissOnClick() const
 
     By default, this property is set to false.
  */
-void QQuickWinThumbnailToolButton::setFlat(bool flat)
+void QQuickThumbnailToolButton::setFlat(bool flat)
 {
     if (m_button->isFlat() != flat) {
         m_button->setFlat(flat);
@@ -207,12 +208,12 @@ void QQuickWinThumbnailToolButton::setFlat(bool flat)
     }
 }
 
-bool QQuickWinThumbnailToolButton::isFlat() const
+bool QQuickThumbnailToolButton::isFlat() const
 {
     return m_button->isFlat();
 }
 
-void QQuickWinThumbnailToolButton::iconLoaded()
+void QQuickThumbnailToolButton::iconLoaded()
 {
     QIcon icon = m_loader.icon();
     if (!icon.isNull())

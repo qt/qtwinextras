@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -39,7 +40,7 @@
  **
  ****************************************************************************/
 
-#include "qquickjumplist.h"
+#include "qquickjumplist_p.h"
 #include <QIcon>
 
 QT_BEGIN_NAMESPACE

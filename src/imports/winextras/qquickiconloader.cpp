@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -39,7 +40,7 @@
  **
  ****************************************************************************/
 
-#include "qwiniconloader.h"
+#include "qquickiconloader_p.h"
 
 #include <QUrl>
 #include <QQmlEngine>
@@ -55,12 +56,12 @@
 
 QT_BEGIN_NAMESPACE
 
-QWinIconLoader::QWinIconLoader(QObject *parent) :
+QQuickIconLoader::QQuickIconLoader(QObject *parent) :
     QObject(parent)
 {
 }
 
-void QWinIconLoader::load(const QUrl &url, QQmlEngine *engine)
+void QQuickIconLoader::load(const QUrl &url, QQmlEngine *engine)
 {
     m_icon = QIcon();
     QString scheme = url.scheme();
@@ -72,12 +73,12 @@ void QWinIconLoader::load(const QUrl &url, QQmlEngine *engine)
         loadFromImageProvider(url, engine);
 }
 
-QIcon QWinIconLoader::icon() const
+QIcon QQuickIconLoader::icon() const
 {
     return m_icon;
 }
 
-void QWinIconLoader::onRequestFinished(QNetworkReply *reply)
+void QQuickIconLoader::onRequestFinished(QNetworkReply *reply)
 {
     disconnect(reply->manager(), 0, this, 0);
     if (reply->error() == QNetworkReply::NoError) {
@@ -93,7 +94,7 @@ void QWinIconLoader::onRequestFinished(QNetworkReply *reply)
     reply->deleteLater();
 }
 
-void QWinIconLoader::loadFromFile(const QUrl &url)
+void QQuickIconLoader::loadFromFile(const QUrl &url)
 {
     QString path = QQmlFile::urlToLocalFileOrQrc(url);
     if (QFileInfo(path).exists()) {
@@ -102,7 +103,7 @@ void QWinIconLoader::loadFromFile(const QUrl &url)
     }
 }
 
-void QWinIconLoader::loadFromNetwork(const QUrl &url, QQmlEngine *engine)
+void QQuickIconLoader::loadFromNetwork(const QUrl &url, QQmlEngine *engine)
 {
     QNetworkRequest request(url);
     QNetworkAccessManager *manager = engine->networkAccessManager();
@@ -120,7 +121,7 @@ static inline QString imageId(const QUrl &url)
     return url.toString(QUrl::RemoveScheme | QUrl::RemoveAuthority).mid(1);
 }
 
-void QWinIconLoader::loadFromImageProvider(const QUrl &url, QQmlEngine *engine)
+void QQuickIconLoader::loadFromImageProvider(const QUrl &url, QQmlEngine *engine)
 {
     const QString providerId = url.host();
     const QString imageId = url.toString(QUrl::RemoveScheme | QUrl::RemoveAuthority).mid(1);

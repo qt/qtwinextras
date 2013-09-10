@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -39,8 +40,8 @@
  **
  ****************************************************************************/
 
-#include "qquickwindwmfeatures.h"
-#include "qquickwindwmfeatures_p.h"
+#include "qquickdwmfeatures_p.h"
+#include "qquickdwmfeatures_p_p.h"
 
 #include <QtWinExtras/private/qwineventfilter_p.h>
 #include <QWinEvent>
@@ -49,54 +50,54 @@
 QT_BEGIN_NAMESPACE
 
 /*!
-    \qmltype WinDwmFeatures
-    \instantiates QQuickWinDwmFeatures
+    \qmltype DwmFeatures
+    \instantiates QQuickDwmFeatures
     \inqmlmodule QtWinExtras
 
     \brief Enables you to manage the Windows DWM features.
 
     \since QtWinExtras 1.0
 
-    The WinDwmFeatures type enables you to extend a glass frame into the client
+    The DwmFeatures type enables you to extend a glass frame into the client
     area, as well as to control the behavior of Aero Peek and Flip3D.
  */
 
 /*!
-    \class QQuickWinDwmFeatures
+    \class QQuickDwmFeatures
     \internal
  */
 
-QQuickWinDwmFeatures::QQuickWinDwmFeatures(QQuickItem *parent) :
-    QQuickItem(parent), d_ptr(new QQuickWinDwmFeaturesPrivate(this))
+QQuickDwmFeatures::QQuickDwmFeatures(QQuickItem *parent) :
+    QQuickItem(parent), d_ptr(new QQuickDwmFeaturesPrivate(this))
 {
     QWinEventFilter::setup();
 }
 
-QQuickWinDwmFeatures::~QQuickWinDwmFeatures()
+QQuickDwmFeatures::~QQuickDwmFeatures()
 {
 }
 
-void QQuickWinDwmFeatures::setCompositionEnabled(bool enabled)
+void QQuickDwmFeatures::setCompositionEnabled(bool enabled)
 {
     QtWin::setCompositionEnabled(enabled);
 }
 
-bool QQuickWinDwmFeatures::isCompositionEnabled() const
+bool QQuickDwmFeatures::isCompositionEnabled() const
 {
     return QtWin::isCompositionEnabled();
 }
 
-QColor QQuickWinDwmFeatures::colorizationColor() const
+QColor QQuickDwmFeatures::colorizationColor() const
 {
     return QtWin::colorizationColor();
 }
 
-QColor QQuickWinDwmFeatures::realColorizationColor() const
+QColor QQuickDwmFeatures::realColorizationColor() const
 {
     return QtWin::realColorizationColor();
 }
 
-bool QQuickWinDwmFeatures::colorizationOpaqueBlend() const
+bool QQuickDwmFeatures::colorizationOpaqueBlend() const
 {
     bool opaque;
     QtWin::colorizationColor(&opaque);
@@ -104,146 +105,146 @@ bool QQuickWinDwmFeatures::colorizationOpaqueBlend() const
 }
 
 /*!
-    \qmlproperty int WinDwmFeatures::topGlassMargin
+    \qmlproperty int DwmFeatures::topGlassMargin
 
     The top glass frame margin. The default value is 0.
  */
-void QQuickWinDwmFeatures::setTopGlassMargin(int margin)
+void QQuickDwmFeatures::setTopGlassMargin(int margin)
 {
-    Q_D(QQuickWinDwmFeatures);
+    Q_D(QQuickDwmFeatures);
     d->topMargin = margin;
     d->update();
 }
 
 /*!
-    \qmlproperty int WinDwmFeatures::rightGlassMargin
+    \qmlproperty int DwmFeatures::rightGlassMargin
 
     The right glass frame margin. The default value is 0.
  */
-void QQuickWinDwmFeatures::setRightGlassMargin(int margin)
+void QQuickDwmFeatures::setRightGlassMargin(int margin)
 {
-    Q_D(QQuickWinDwmFeatures);
+    Q_D(QQuickDwmFeatures);
     d->rightMargin = margin;
     d->update();
 }
 
 /*!
-    \qmlproperty int WinDwmFeatures::bottomGlassMargin
+    \qmlproperty int DwmFeatures::bottomGlassMargin
 
     The bottom glass frame margin. The default value is 0.
  */
-void QQuickWinDwmFeatures::setBottomGlassMargin(int margin)
+void QQuickDwmFeatures::setBottomGlassMargin(int margin)
 {
-    Q_D(QQuickWinDwmFeatures);
+    Q_D(QQuickDwmFeatures);
     d->bottomMargin = margin;
     d->update();
 }
 
 /*!
-    \qmlproperty int WinDwmFeatures::leftGlassMargin
+    \qmlproperty int DwmFeatures::leftGlassMargin
 
     The left glass frame margin. The default value is 0.
  */
-void QQuickWinDwmFeatures::setLeftGlassMargin(int margin)
+void QQuickDwmFeatures::setLeftGlassMargin(int margin)
 {
-    Q_D(QQuickWinDwmFeatures);
+    Q_D(QQuickDwmFeatures);
     d->leftMargin = margin;
     d->update();
 }
 
-int QQuickWinDwmFeatures::topGlassMargin() const
+int QQuickDwmFeatures::topGlassMargin() const
 {
-    Q_D(const QQuickWinDwmFeatures);
+    Q_D(const QQuickDwmFeatures);
     return d->topMargin;
 }
 
-int QQuickWinDwmFeatures::rightGlassMargin() const
+int QQuickDwmFeatures::rightGlassMargin() const
 {
-    Q_D(const QQuickWinDwmFeatures);
+    Q_D(const QQuickDwmFeatures);
     return d->rightMargin;
 }
 
-int QQuickWinDwmFeatures::bottomGlassMargin() const
+int QQuickDwmFeatures::bottomGlassMargin() const
 {
-    Q_D(const QQuickWinDwmFeatures);
+    Q_D(const QQuickDwmFeatures);
     return d->bottomMargin;
 }
 
-int QQuickWinDwmFeatures::leftGlassMargin() const
+int QQuickDwmFeatures::leftGlassMargin() const
 {
-    Q_D(const QQuickWinDwmFeatures);
+    Q_D(const QQuickDwmFeatures);
     return d->leftMargin;
 }
 
 /*!
-    \qmlproperty bool WinDwmFeatures::excludedFromPeek
+    \qmlproperty bool DwmFeatures::excludedFromPeek
 
     Specifies whether the window is excluded from Aero Peek.
     The default value is false.
  */
-bool QQuickWinDwmFeatures::excludedFromPeek() const
+bool QQuickDwmFeatures::excludedFromPeek() const
 {
-    Q_D(const QQuickWinDwmFeatures);
+    Q_D(const QQuickDwmFeatures);
     if (window())
         return QtWin::isWindowExcludedFromPeek(window());
     else
         return d->peekExcluded;
 }
 
-void QQuickWinDwmFeatures::setExcludedFromPeek(bool exclude)
+void QQuickDwmFeatures::setExcludedFromPeek(bool exclude)
 {
-    Q_D(QQuickWinDwmFeatures);
+    Q_D(QQuickDwmFeatures);
     d->peekExcluded = exclude;
 }
 
 /*!
-    \qmlproperty bool WinDwmFeatures::peekDisallowed
+    \qmlproperty bool DwmFeatures::peekDisallowed
 
     Set this value to true if you want to forbid Aero Peek when the user hovers
     the mouse over the window thumbnail. The default value is false.
 */
-bool QQuickWinDwmFeatures::peekDisallowed() const
+bool QQuickDwmFeatures::peekDisallowed() const
 {
-    Q_D(const QQuickWinDwmFeatures);
+    Q_D(const QQuickDwmFeatures);
     if (window())
         return QtWin::isWindowPeekDisallowed(window());
     else
         return d->peekDisallowed;
 }
 
-void QQuickWinDwmFeatures::setPeekDisallowed(bool disallow)
+void QQuickDwmFeatures::setPeekDisallowed(bool disallow)
 {
-    Q_D(QQuickWinDwmFeatures);
+    Q_D(QQuickDwmFeatures);
     d->peekDisallowed = disallow;
 }
 
 /*!
-    \enum QQuickWinDwmFeatures::Flip3DPolicy
+    \enum QQuickDwmFeatures::Flip3DPolicy
 
     See QtWin::WindowFlip3DPolicy.
  */
 
 /*!
-    \qmlproperty WinDwmFeatures::Flip3DPolicy WinDwmFeatures::flip3DPolicy
+    \qmlproperty DwmFeatures::Flip3DPolicy DwmFeatures::flip3DPolicy
 
     The current Flip3D policy for the window.
  */
-QQuickWinDwmFeatures::Flip3DPolicy QQuickWinDwmFeatures::flip3DPolicy() const
+QQuickDwmFeatures::Flip3DPolicy QQuickDwmFeatures::flip3DPolicy() const
 {
-    Q_D(const QQuickWinDwmFeatures);
+    Q_D(const QQuickDwmFeatures);
     if (window())
         return static_cast<Flip3DPolicy>(QtWin::windowFlip3DPolicy(window()));
     else
         return static_cast<Flip3DPolicy>(d->flipPolicy);
 }
 
-void QQuickWinDwmFeatures::setFlip3DPolicy(QQuickWinDwmFeatures::Flip3DPolicy policy)
+void QQuickDwmFeatures::setFlip3DPolicy(QQuickDwmFeatures::Flip3DPolicy policy)
 {
-    Q_D(QQuickWinDwmFeatures);
+    Q_D(QQuickDwmFeatures);
     d->flipPolicy = policy;
 }
 
-bool QQuickWinDwmFeatures::eventFilter(QObject *object, QEvent *event)
+bool QQuickDwmFeatures::eventFilter(QObject *object, QEvent *event)
 {
     bool filterOut = false;
     if (object == window()) {
@@ -263,9 +264,9 @@ bool QQuickWinDwmFeatures::eventFilter(QObject *object, QEvent *event)
         return filterOut;
 }
 
-QQuickWinDwmFeatures *QQuickWinDwmFeatures::qmlAttachedProperties(QObject *parentObject)
+QQuickDwmFeatures *QQuickDwmFeatures::qmlAttachedProperties(QObject *parentObject)
 {
-    QQuickWinDwmFeatures *featuresObj = new QQuickWinDwmFeatures();
+    QQuickDwmFeatures *featuresObj = new QQuickDwmFeatures();
     QQuickItem *parentItem = qobject_cast<QQuickItem *>(parentObject);
     if (parentItem)
         featuresObj->setParentItem(parentItem);
@@ -274,9 +275,9 @@ QQuickWinDwmFeatures *QQuickWinDwmFeatures::qmlAttachedProperties(QObject *paren
     return featuresObj;
 }
 
-void QQuickWinDwmFeatures::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data)
+void QQuickDwmFeatures::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data)
 {
-    Q_D(QQuickWinDwmFeatures);
+    Q_D(QQuickDwmFeatures);
     if (change == ItemSceneChange && data.window) {
         d->update();
         data.window->installEventFilter(this);
@@ -286,16 +287,16 @@ void QQuickWinDwmFeatures::itemChange(QQuickItem::ItemChange change, const QQuic
 
 
 
-QQuickWinDwmFeaturesPrivate::QQuickWinDwmFeaturesPrivate(QQuickWinDwmFeatures *parent) :
+QQuickDwmFeaturesPrivate::QQuickDwmFeaturesPrivate(QQuickDwmFeatures *parent) :
     topMargin(0), rightMargin(0), bottomMargin(0), leftMargin(0),
-    peekDisallowed(false), peekExcluded(false), flipPolicy(QQuickWinDwmFeatures::FlipDefault),
+    peekDisallowed(false), peekExcluded(false), flipPolicy(QQuickDwmFeatures::FlipDefault),
     q_ptr(parent), formatSet(false), frameUpdateScheduled(false), attributesUpdateScheduled(false)
 {
 }
 
-void QQuickWinDwmFeaturesPrivate::update()
+void QQuickDwmFeaturesPrivate::update()
 {
-    Q_Q(QQuickWinDwmFeatures);
+    Q_Q(QQuickDwmFeatures);
     QWindow *w = q->window();
     if (w) {
         if (!formatSet) {
@@ -309,7 +310,7 @@ void QQuickWinDwmFeaturesPrivate::update()
             QtWin::setWindowExcludedFromPeek(w, peekExcluded);
         if (peekDisallowed)
             QtWin::setWindowDisallowPeek(w, peekDisallowed);
-        if (flipPolicy != QQuickWinDwmFeatures::FlipDefault)
+        if (flipPolicy != QQuickDwmFeatures::FlipDefault)
             QtWin::setWindowFlip3DPolicy(w, static_cast<QtWin::WindowFlip3DPolicy>(flipPolicy));
         if (topMargin || rightMargin || bottomMargin || leftMargin)
             QtWin::extendFrameIntoClientArea(w, leftMargin, topMargin, rightMargin, bottomMargin);

@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -39,41 +40,37 @@
  **
  ****************************************************************************/
 
-#ifndef QQUICKWINTASKBARBUTTON_H
-#define QQUICKWINTASKBARBUTTON_H
+#ifndef QQUICKDWMFEATURES_P_P_H
+#define QQUICKDWMFEATURES_P_P_H
 
-#include <QQuickItem>
-#include <QWinTaskbarButton>
-#include <QWinTaskbarProgress>
+#include "qquickdwmfeatures_p.h"
 
 QT_BEGIN_NAMESPACE
 
-class QQuickWinTaskbarButtonPrivate;
-
-class QQuickWinTaskbarButton : public QQuickItem
+class QQuickDwmFeaturesPrivate
 {
-    Q_OBJECT
-    Q_PROPERTY(QString overlayIcon READ overlayIcon WRITE setOverlayIcon)
-    Q_PROPERTY(QString overlayAccessibleDescription READ overlayAccessibleDescription WRITE setOverlayAccessibleDescription)
-    Q_PROPERTY(QWinTaskbarProgress *progress READ progress CONSTANT)
-
 public:
-    QQuickWinTaskbarButton(QQuickItem *parent = 0);
-    ~QQuickWinTaskbarButton();
-    QWinTaskbarProgress *progress() const;
-    QString overlayIcon() const;
-    void setOverlayIcon(const QString &path);
-    QString overlayAccessibleDescription() const;
-    void setOverlayAccessibleDescription(const QString &description);
+    QQuickDwmFeaturesPrivate(QQuickDwmFeatures *parent);
+    int topMargin;
+    int rightMargin;
+    int bottomMargin;
+    int leftMargin;
 
-protected:
-    void itemChange(ItemChange, const ItemChangeData &) Q_DECL_OVERRIDE;
+    bool peekDisallowed;
+    bool peekExcluded;
+    QQuickDwmFeatures::Flip3DPolicy flipPolicy;
+
+    void update();
 
 private:
-    QWinTaskbarButton *button;
-    QString m_iconPath;
+    QQuickDwmFeatures *q_ptr;
+    bool formatSet;
+    bool frameUpdateScheduled;
+    bool attributesUpdateScheduled;
+
+    Q_DECLARE_PUBLIC(QQuickDwmFeatures)
 };
 
 QT_END_NAMESPACE
 
-#endif // QQUICKWINTASKBARBUTTON_H
+#endif // QQUICKDWMFEATURES_P_P_H

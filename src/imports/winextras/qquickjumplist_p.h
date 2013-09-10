@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -39,8 +40,8 @@
  **
  ****************************************************************************/
 
-#ifndef QQUICKJUMPLIST_H
-#define QQUICKJUMPLIST_H
+#ifndef QQUICKJUMPLIST_P_H
+#define QQUICKJUMPLIST_P_H
 
 #include <QQuickItem>
 #include <QQmlListProperty>
@@ -128,4 +129,4 @@ private:
 
 QT_END_NAMESPACE
 
-#endif // QQUICKJUMPLIST_H
+#endif // QQUICKJUMPLIST_P_H

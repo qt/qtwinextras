@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -39,41 +40,68 @@
  **
  ****************************************************************************/
 
-#ifndef QWINICONLOADER_H
-#define QWINICONLOADER_H
+#ifndef QQUICKTHUMBNAILTOOLBUTTON_P_H
+#define QQUICKTHUMBNAILTOOLBUTTON_P_H
 
-#include <QObject>
-#include <QIcon>
+#include <QQuickItem>
+#include <QWinThumbnailToolBar>
+#include <QUrl>
+
+#include "qquickiconloader_p.h"
 
 QT_BEGIN_NAMESPACE
 
-class QIcon;
-class QQmlEngine;
-class QNetworkReply;
-
-class QWinIconLoader : public QObject
+class QQuickThumbnailToolButton : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QUrl iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
+    Q_PROPERTY(QString tooltip READ tooltip WRITE setTooltip NOTIFY tooltipChanged)
+    Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
+    Q_PROPERTY(bool interactive READ isInteractive WRITE setInteractive NOTIFY interactiveChanged)
+    Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibleChanged)
+    Q_PROPERTY(bool dismissOnClick READ dismissOnClick WRITE setDismissOnClick NOTIFY dismissOnClickChanged)
+    Q_PROPERTY(bool flat READ isFlat WRITE setFlat NOTIFY flatChanged)
 
 public:
-    explicit QWinIconLoader(QObject *parent = 0);
-    void load(const QUrl &url, QQmlEngine *engine);
-    QIcon icon() const;
+    explicit QQuickThumbnailToolButton(QObject *parent = 0);
+    ~QQuickThumbnailToolButton();
+
+    void setIconSource(const QUrl &iconSource);
+    QUrl iconSource();
+    void setTooltip(const QString &tooltip);
+    QString tooltip() const;
+    void setEnabled(bool isEnabled);
+    bool isEnabled() const;
+    void setInteractive(bool isInteractive);
+    bool isInteractive() const;
+    void setVisible(bool isVisible);
+    bool isVisible() const;
+    void setDismissOnClick(bool dismiss);
+    bool dismissOnClick() const;
+    void setFlat(bool flat);
+    bool isFlat() const;
 
 Q_SIGNALS:
-    void finished();
+    void clicked();
+    void iconSourceChanged();
+    void tooltipChanged();
+    void enabledChanged();
+    void interactiveChanged();
+    void visibleChanged();
+    void dismissOnClickChanged();
+    void flatChanged();
 
 private Q_SLOTS:
-    void onRequestFinished(QNetworkReply*);
+    void iconLoaded();
 
 private:
-    void loadFromFile(const QUrl &url);
-    void loadFromNetwork(const QUrl &url, QQmlEngine *engine);
-    void loadFromImageProvider(const QUrl &url, QQmlEngine *engine);
+    QUrl m_iconSource;
+    QWinThumbnailToolButton *m_button;
+    QQuickIconLoader m_loader;
 
-    QIcon m_icon;
+    friend class QQuickThumbnailToolBar;
 };
 
 QT_END_NAMESPACE
 
-#endif // QWINICONLOADER_H
+#endif // QQUICKTHUMBNAILTOOLBUTTON_P_H
