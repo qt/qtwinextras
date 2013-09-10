@@ -69,7 +69,7 @@ Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON(HICON icon);
 /*!
     \namespace QtWin
     \inmodule QtWinExtras
-    \brief The QtWinExtras namespace contains miscellaneous Windows-specific functions.
+    \brief The QtWin namespace contains miscellaneous Windows-specific functions.
     \inheaderfile QWinFunctions
 
  */
