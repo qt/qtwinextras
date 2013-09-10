@@ -11,7 +11,6 @@ QML_FILES += \
     JumpListSeparator.qml
 
 HEADERS += \
-    qwinextrasplugin.h \
     qquickwindwmfeatures.h \
     qquickwindwmfeatures_p.h \
     qquickwintaskbarbutton.h \
@@ -21,7 +20,7 @@ HEADERS += \
     qwiniconloader.h
 
 SOURCES += \
-    qwinextrasplugin.cpp \
+    plugin.cpp \
     qquickwindwmfeatures.cpp \
     qquickwintaskbarbutton.cpp \
     qquickjumplist.cpp \

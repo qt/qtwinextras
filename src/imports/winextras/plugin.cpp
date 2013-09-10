@@ -39,7 +39,6 @@
  **
  ****************************************************************************/
 
-#include "qwinextrasplugin.h"
 #include "qquickwindwmfeatures.h"
 #include "qquickwintaskbarbutton.h"
 #include "qquickjumplist.h"
@@ -50,22 +49,26 @@
 
 QT_BEGIN_NAMESPACE
 
-QWinExtrasQmlPlugin::QWinExtrasQmlPlugin(QObject *parent) :
-    QQmlExtensionPlugin(parent)
+class QWinExtrasQmlPlugin : public QQmlExtensionPlugin
 {
-}
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
 
-void QWinExtrasQmlPlugin::registerTypes(const char *uri)
-{
-    Q_ASSERT(uri == QLatin1String("QtWinExtras"));
-    qmlRegisterType<QQuickWinDwmFeatures>(uri, 1, 0, "DwmFeatures");
-    qmlRegisterType<QQuickWinTaskbarButton>(uri, 1, 0, "TaskbarButton");
-    qmlRegisterUncreatableType<QWinTaskbarProgress>(uri, 1, 0, "TaskbarProgress", "Cannot create TaskbarProgress - use TaskbarButton.progress instead.");
-    qmlRegisterType<QQuickJumpList>(uri, 1, 0, "JumpList");
-    qmlRegisterType<QQuickJumpListItem>(uri, 1, 0, "JumpListItem");
-    qmlRegisterType<QQuickJumpListCategory>(uri, 1, 0, "JumpListCategory");
-    qmlRegisterType<QQuickWinThumbnailToolBar>(uri, 1, 0, "ThumbnailToolBar");
-    qmlRegisterType<QQuickWinThumbnailToolButton>(uri, 1, 0, "ThumbnailToolButton");
-}
+public:
+    void registerTypes(const char *uri) Q_DECL_OVERRIDE
+    {
+        Q_ASSERT(uri == QLatin1String("QtWinExtras"));
+        qmlRegisterType<QQuickWinDwmFeatures>(uri, 1, 0, "DwmFeatures");
+        qmlRegisterType<QQuickWinTaskbarButton>(uri, 1, 0, "TaskbarButton");
+        qmlRegisterUncreatableType<QWinTaskbarProgress>(uri, 1, 0, "TaskbarProgress", "Cannot create TaskbarProgress - use TaskbarButton.progress instead.");
+        qmlRegisterType<QQuickJumpList>(uri, 1, 0, "JumpList");
+        qmlRegisterType<QQuickJumpListItem>(uri, 1, 0, "JumpListItem");
+        qmlRegisterType<QQuickJumpListCategory>(uri, 1, 0, "JumpListCategory");
+        qmlRegisterType<QQuickWinThumbnailToolBar>(uri, 1, 0, "ThumbnailToolBar");
+        qmlRegisterType<QQuickWinThumbnailToolButton>(uri, 1, 0, "ThumbnailToolButton");
+    }
+};
 
 QT_END_NAMESPACE
+
+#include "plugin.moc"
