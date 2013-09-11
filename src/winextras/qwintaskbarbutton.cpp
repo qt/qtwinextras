@@ -43,6 +43,7 @@
 #include "qwintaskbarbutton_p.h"
 #include "qwintaskbarprogress.h"
 #include "qwinfunctions.h"
+#include "qwinfunctions_p.h"
 #include "qwineventfilter_p.h"
 #include "qwinevent.h"
 #include "winshobjidl_p.h"
@@ -118,10 +119,8 @@ void QWinTaskbarButtonPrivate::updateOverlayIcon()
 
     wchar_t *descrPtr = 0;
     HICON hicon = 0;
-    if (!overlayAccessibleDescription.isEmpty()) {
-        descrPtr = new wchar_t[overlayAccessibleDescription.length() + 1];
-        descrPtr[overlayAccessibleDescription.toWCharArray(descrPtr)] = 0;
-    }
+    if (!overlayAccessibleDescription.isEmpty())
+        descrPtr = qt_qstringToNullTerminated(overlayAccessibleDescription);
     if (!overlayIcon.isNull())
         hicon = QtWin::toHICON(overlayIcon.pixmap(iconSize()));
 
