@@ -62,6 +62,7 @@ public:
         qmlRegisterType<QQuickDwmFeatures>(uri, 1, 0, "DwmFeatures");
         qmlRegisterType<QQuickTaskbarButton>(uri, 1, 0, "TaskbarButton");
         qmlRegisterUncreatableType<QWinTaskbarProgress>(uri, 1, 0, "TaskbarProgress", "Cannot create TaskbarProgress - use TaskbarButton.progress instead.");
+        qmlRegisterUncreatableType<QQuickTaskbarOverlay>(uri, 1, 0, "TaskbarOverlay", "Cannot create TaskbarOverlay - use TaskbarButton.overlay instead.");
         qmlRegisterType<QQuickJumpList>(uri, 1, 0, "JumpList");
         qmlRegisterType<QQuickJumpListItem>(uri, 1, 0, "JumpListItem");
         qmlRegisterType<QQuickJumpListCategory>(uri, 1, 0, "JumpListCategory");

@@ -47,32 +47,59 @@
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
 
+#include "qquickiconloader_p.h"
+
 QT_BEGIN_NAMESPACE
 
 class QQuickTaskbarButtonPrivate;
 
+class QQuickTaskbarOverlay : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(QUrl iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
+    Q_PROPERTY(QString accessibleDescription READ accessibleDescription WRITE setAccessibleDescription NOTIFY accessibleDescriptionChanged)
+
+public:
+    explicit QQuickTaskbarOverlay(QWinTaskbarButton *button, QObject *parent = 0);
+
+    QUrl iconSource() const;
+    void setIconSource(const QUrl &iconSource);
+
+    QString accessibleDescription() const;
+    void setAccessibleDescription(const QString &description);
+
+Q_SIGNALS:
+    void iconSourceChanged();
+    void accessibleDescriptionChanged();
+
+private Q_SLOTS:
+    void iconLoaded();
+
+private:
+    QUrl m_iconSource;
+    QQuickIconLoader m_loader;
+    QWinTaskbarButton *m_button;
+};
+
 class QQuickTaskbarButton : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(QString overlayIcon READ overlayIcon WRITE setOverlayIcon)
-    Q_PROPERTY(QString overlayAccessibleDescription READ overlayAccessibleDescription WRITE setOverlayAccessibleDescription)
+    Q_PROPERTY(QQuickTaskbarOverlay *overlay  READ overlay CONSTANT)
     Q_PROPERTY(QWinTaskbarProgress *progress READ progress CONSTANT)
 
 public:
-    QQuickTaskbarButton(QQuickItem *parent = 0);
+    explicit QQuickTaskbarButton(QQuickItem *parent = 0);
     ~QQuickTaskbarButton();
+
+    QQuickTaskbarOverlay *overlay() const;
     QWinTaskbarProgress *progress() const;
-    QString overlayIcon() const;
-    void setOverlayIcon(const QString &path);
-    QString overlayAccessibleDescription() const;
-    void setOverlayAccessibleDescription(const QString &description);
 
 protected:
     void itemChange(ItemChange, const ItemChangeData &) Q_DECL_OVERRIDE;
 
 private:
-    QWinTaskbarButton *button;
-    QString m_iconPath;
+    QWinTaskbarButton *m_button;
+    QQuickTaskbarOverlay *m_overlay;
 };
 
 QT_END_NAMESPACE

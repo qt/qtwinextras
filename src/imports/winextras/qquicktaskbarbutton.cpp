@@ -41,7 +41,6 @@
  ****************************************************************************/
 
 #include "qquicktaskbarbutton_p.h"
-#include <QtWinExtras/private/qwintaskbarbutton_p.h>
 #include <QQuickWindow>
 
 QT_BEGIN_NAMESPACE
@@ -55,20 +54,64 @@ QT_BEGIN_NAMESPACE
 
     \since QtWinExtras 1.0
 
-    The TaskbarButton type enables you to set overlay icons on a taskbar
-    button, to display a progress indicator, and to add a small toolbar to the
-    window thumbnail popup.
+    The TaskbarButton type enables you to set an overlay icon and to display
+    a progress indicator on a taskbar button. An overlay icon indicates change
+    in the state of the application. A progress indicator shows how time-consuming
+    tasks are progressing.
 
-    \sa QWinTaskbarButton
+    \section3 Example
+
+    The following example illustrates how to use TaskbarButton in QML:
+
+    \snippet code/taskbar.qml taskbar_qml
+
+    \image taskbar-button.png Taskbar Button
+
+    \sa QWinTaskbarButton, QWinTaskbarProgress
  */
 
-/*!
-    \class QQuickTaskbarButton
-    \internal
- */
+QQuickTaskbarOverlay::QQuickTaskbarOverlay(QWinTaskbarButton *button, QObject *parent) :
+    QObject(parent), m_button(button)
+{
+    connect(&m_loader, SIGNAL(finished()), SLOT(iconLoaded()));
+}
 
-QQuickTaskbarButton::QQuickTaskbarButton(QQuickItem *parent) :
-    QQuickItem(parent), button(new QWinTaskbarButton(this))
+QUrl QQuickTaskbarOverlay::iconSource() const
+{
+    return m_iconSource;
+}
+
+void QQuickTaskbarOverlay::setIconSource(const QUrl &iconSource)
+{
+    if (m_iconSource != iconSource) {
+        m_iconSource = iconSource;
+        emit iconSourceChanged();
+        m_loader.load(m_iconSource, qmlEngine(parent()));
+    }
+}
+
+QString QQuickTaskbarOverlay::accessibleDescription() const
+{
+    return m_button->overlayAccessibleDescription();
+}
+
+void QQuickTaskbarOverlay::setAccessibleDescription(const QString &description)
+{
+    if (accessibleDescription() != description) {
+        m_button->setOverlayAccessibleDescription(description);
+        emit accessibleDescriptionChanged();
+    }
+}
+
+void QQuickTaskbarOverlay::iconLoaded()
+{
+    QIcon icon = m_loader.icon();
+    if (!icon.isNull())
+        m_button->setOverlayIcon(icon);
+}
+
+QQuickTaskbarButton::QQuickTaskbarButton(QQuickItem *parent) : QQuickItem(parent),
+    m_button(new QWinTaskbarButton(this)), m_overlay(new QQuickTaskbarOverlay(m_button, this))
 {
 }
 
@@ -77,50 +120,37 @@ QQuickTaskbarButton::~QQuickTaskbarButton()
 }
 
 /*!
-    \qmlproperty string TaskbarButton::progress
+    \qmlproperty int TaskbarButton::progress.value
+    \qmlproperty int TaskbarButton::progress.minimum
+    \qmlproperty int TaskbarButton::progress.maximum
+    \qmlproperty bool TaskbarButton::progress.visible
+    \qmlproperty bool TaskbarButton::progress.paused
+    \qmlproperty bool TaskbarButton::progress.stopped
 
-    The task bar progress indicator.
+    The taskbar progress indicator.
+
+    \sa QWinTaskbarProgress
  */
 QWinTaskbarProgress *QQuickTaskbarButton::progress() const
 {
-    return button->progress();
+    return m_button->progress();
 }
 
 /*!
-    \qmlproperty string TaskbarButton::icon
+    \qmlproperty url TaskbarButton::overlay.iconSource
+    \qmlproperty string TaskbarButton::overlay.accessibleDescription
 
-    The overlay icon path.
+    The overlay icon and a description of the overlay for accessibility purposes.
  */
-QString QQuickTaskbarButton::overlayIcon() const
+QQuickTaskbarOverlay *QQuickTaskbarButton::overlay() const
 {
-    return m_iconPath;
-}
-
-void QQuickTaskbarButton::setOverlayIcon(const QString &path)
-{
-    m_iconPath = path;
-    button->setOverlayIcon(QIcon(m_iconPath));
-}
-
-/*!
-    \qmlproperty string TaskbarButton::overlayAccessibleDescription
-
-    The description of the overlay for accessibility purposes.
- */
-QString QQuickTaskbarButton::overlayAccessibleDescription() const
-{
-    return button->overlayAccessibleDescription();
-}
-
-void QQuickTaskbarButton::setOverlayAccessibleDescription(const QString &description)
-{
-    button->setOverlayAccessibleDescription(description);
+    return m_overlay;
 }
 
 void QQuickTaskbarButton::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data)
 {
     if (change == ItemSceneChange) {
-        button->setWindow(data.window);
+        m_button->setWindow(data.window);
     }
     QQuickItem::itemChange(change, data);
 }

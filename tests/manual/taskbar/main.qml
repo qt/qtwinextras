@@ -61,7 +61,8 @@ ApplicationWindow {
         progress.maximum: indeterminateBox.checked ? 0 : maxSpinBox.value
         progress.value: indeterminateBox.checked ? 0 : valueSlider.value
 
-        overlayIcon: overlayBox.checked && overlayCombo.currentIndex >= 0 ? overlayModel.get(overlayCombo.currentIndex).source : ""
+        overlay.iconSource: overlayBox.checked && overlayCombo.currentIndex >= 0 ? overlayModel.get(overlayCombo.currentIndex).source : ""
+        overlay.accessibleDescription: "TaskbarButton"
     }
 
     ColumnLayout {
@@ -88,11 +89,12 @@ ApplicationWindow {
                 textRole: "name"
                 model: ListModel {
                     id: overlayModel
-                    ListElement { name: "Qt logo (64)"; source: ":/qt-project.org/qmessagebox/images/qtlogo-64.png" }
-                    ListElement { name: "Up (16)"; source: ":/qt-project.org/styles/commonstyle/images/up-16.png" }
-                    ListElement { name: "Left (32)"; source: ":/qt-project.org/styles/commonstyle/images/left-32.png" }
-                    ListElement { name: "Right (32)"; source: ":/qt-project.org/styles/commonstyle/images/right-32.png" }
-                    ListElement { name: "Down (128)"; source: ":/qt-project.org/styles/commonstyle/images/down-128.png" }
+                    ListElement { name: "Qt logo (64)"; source: "qrc:/qt-project.org/qmessagebox/images/qtlogo-64.png" }
+                    ListElement { name: "Up (16)"; source: "qrc:/qt-project.org/styles/commonstyle/images/up-16.png" }
+                    ListElement { name: "Left (32)"; source: "qrc:/qt-project.org/styles/commonstyle/images/left-32.png" }
+                    ListElement { name: "Right (32)"; source: "qrc:/qt-project.org/styles/commonstyle/images/right-32.png" }
+                    ListElement { name: "Down (128)"; source: "qrc:/qt-project.org/styles/commonstyle/images/down-128.png" }
+                    ListElement { name: "Remote"; source: "http://qt-project.org/images/qt13a/Qt-logo.png" }
                     ListElement { name: "Non-existing"; source: "do not crash explorer" }
                 }
             }
