@@ -52,7 +52,7 @@ Rectangle {
         id: dwmfeatures
         bottomGlassMargin: compositionEnabled ? 30 : 0
         excludedFromPeek: true
-        flip3DPolicy: DwmFeatures.FlipExcludeAbove
+        flip3DPolicy: QtWin.FlipExcludeAbove
     }
 
     Window {

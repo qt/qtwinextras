@@ -59,6 +59,7 @@ public:
     void registerTypes(const char *uri) Q_DECL_OVERRIDE
     {
         Q_ASSERT(uri == QLatin1String("QtWinExtras"));
+        qmlRegisterUncreatableType<QtWin>(uri, 1, 0, "QtWin", "Cannot create an instance of the QtWin namespace.");
         qmlRegisterType<QQuickDwmFeatures>(uri, 1, 0, "DwmFeatures");
         qmlRegisterType<QQuickTaskbarButton>(uri, 1, 0, "TaskbarButton");
         qmlRegisterUncreatableType<QWinTaskbarProgress>(uri, 1, 0, "TaskbarProgress", "Cannot create TaskbarProgress - use TaskbarButton.progress instead.");

@@ -63,17 +63,9 @@ class QQuickDwmFeatures : public QQuickItem
     Q_PROPERTY(int leftGlassMargin READ leftGlassMargin WRITE setLeftGlassMargin NOTIFY leftGlassMarginChanged)
     Q_PROPERTY(bool excludedFromPeek READ isExcludedFromPeek WRITE setExcludedFromPeek NOTIFY excludedFromPeekChanged)
     Q_PROPERTY(bool peekDisallowed READ isPeekDisallowed WRITE setPeekDisallowed NOTIFY peekDisallowedChanged)
-    Q_PROPERTY(Flip3DPolicy flip3DPolicy READ flip3DPolicy WRITE setFlip3DPolicy NOTIFY flip3DPolicyChanged)
-    Q_ENUMS(Flip3DPolicy)
+    Q_PROPERTY(QtWin::WindowFlip3DPolicy flip3DPolicy READ flip3DPolicy WRITE setFlip3DPolicy NOTIFY flip3DPolicyChanged)
 
 public:
-    enum Flip3DPolicy // keep sync with QtWin::WindowFlip3DPolicy
-    {
-        FlipDefault,
-        FlipExcludeBelow,
-        FlipExcludeAbove
-    };
-
     explicit QQuickDwmFeatures(QQuickItem *parent = 0);
     ~QQuickDwmFeatures();
 
@@ -96,8 +88,8 @@ public:
     void setExcludedFromPeek(bool exclude);
     bool isPeekDisallowed() const;
     void setPeekDisallowed(bool disallow);
-    Flip3DPolicy flip3DPolicy() const;
-    void setFlip3DPolicy(Flip3DPolicy policy);
+    QtWin::WindowFlip3DPolicy flip3DPolicy() const;
+    void setFlip3DPolicy(QtWin::WindowFlip3DPolicy policy);
 
     bool eventFilter(QObject *, QEvent *) Q_DECL_OVERRIDE;
 

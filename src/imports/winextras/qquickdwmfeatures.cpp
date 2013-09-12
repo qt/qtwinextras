@@ -245,26 +245,20 @@ void QQuickDwmFeatures::setPeekDisallowed(bool disallow)
 }
 
 /*!
-    \enum QQuickDwmFeatures::Flip3DPolicy
-
-    See QtWin::WindowFlip3DPolicy.
- */
-
-/*!
-    \qmlproperty DwmFeatures::Flip3DPolicy DwmFeatures::flip3DPolicy
+    \qmlproperty QtWin::WindowFlip3DPolicy DwmFeatures::flip3DPolicy
 
     The current Flip3D policy for the window.
  */
-QQuickDwmFeatures::Flip3DPolicy QQuickDwmFeatures::flip3DPolicy() const
+QtWin::WindowFlip3DPolicy QQuickDwmFeatures::flip3DPolicy() const
 {
     Q_D(const QQuickDwmFeatures);
     if (window())
-        return static_cast<Flip3DPolicy>(QtWin::windowFlip3DPolicy(window()));
+        return QtWin::windowFlip3DPolicy(window());
     else
-        return static_cast<Flip3DPolicy>(d->flipPolicy);
+        return d->flipPolicy;
 }
 
-void QQuickDwmFeatures::setFlip3DPolicy(QQuickDwmFeatures::Flip3DPolicy policy)
+void QQuickDwmFeatures::setFlip3DPolicy(QtWin::WindowFlip3DPolicy policy)
 {
     Q_D(QQuickDwmFeatures);
     if (d->flipPolicy == policy)
@@ -314,7 +308,7 @@ void QQuickDwmFeatures::itemChange(QQuickItem::ItemChange change, const QQuickIt
 
 QQuickDwmFeaturesPrivate::QQuickDwmFeaturesPrivate(QQuickDwmFeatures *parent) :
     topMargin(0), rightMargin(0), bottomMargin(0), leftMargin(0),
-    peekDisallowed(false), peekExcluded(false), flipPolicy(QQuickDwmFeatures::FlipDefault),
+    peekDisallowed(false), peekExcluded(false), flipPolicy(QtWin::FlipDefault),
     q_ptr(parent), formatSet(false)
 {
 }
@@ -335,8 +329,8 @@ void QQuickDwmFeaturesPrivate::update()
             QtWin::setWindowExcludedFromPeek(w, peekExcluded);
         if (peekDisallowed)
             QtWin::setWindowDisallowPeek(w, peekDisallowed);
-        if (flipPolicy != QQuickDwmFeatures::FlipDefault)
-            QtWin::setWindowFlip3DPolicy(w, static_cast<QtWin::WindowFlip3DPolicy>(flipPolicy));
+        if (flipPolicy != QtWin::FlipDefault)
+            QtWin::setWindowFlip3DPolicy(w, flipPolicy);
         if (topMargin || rightMargin || bottomMargin || leftMargin)
             QtWin::extendFrameIntoClientArea(w, leftMargin, topMargin, rightMargin, bottomMargin);
     }
