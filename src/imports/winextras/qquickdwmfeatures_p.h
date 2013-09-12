@@ -53,27 +53,26 @@ class QQuickDwmFeaturesPrivate;
 class QQuickDwmFeatures : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(bool isCompositionEnabled READ isCompositionEnabled WRITE setCompositionEnabled NOTIFY isCompositionEnabledChanged)
+    Q_PROPERTY(bool compositionEnabled READ isCompositionEnabled WRITE setCompositionEnabled NOTIFY compositionEnabledChanged)
     Q_PROPERTY(QColor colorizationColor READ colorizationColor NOTIFY colorizationColorChanged)
     Q_PROPERTY(QColor realColorizationColor READ realColorizationColor NOTIFY realColorizationColorChanged)
     Q_PROPERTY(bool colorizationOpaqueBlend READ colorizationOpaqueBlend NOTIFY colorizationOpaqueBlendChanged)
-    Q_PROPERTY(int topGlassMargin    READ topGlassMargin    WRITE setTopGlassMargin)
-    Q_PROPERTY(int rightGlassMargin  READ rightGlassMargin  WRITE setRightGlassMargin)
-    Q_PROPERTY(int bottomGlassMargin READ bottomGlassMargin WRITE setBottomGlassMargin)
-    Q_PROPERTY(int leftGlassMargin   READ leftGlassMargin   WRITE setLeftGlassMargin)
-    Q_PROPERTY(bool excludedFromPeek READ excludedFromPeek WRITE setExcludedFromPeek)
-    Q_PROPERTY(bool peekDisallowed   READ peekDisallowed   WRITE setPeekDisallowed)
-    Q_PROPERTY(Flip3DPolicy flip3DPolicy READ flip3DPolicy WRITE setFlip3DPolicy)
+    Q_PROPERTY(int topGlassMargin READ topGlassMargin WRITE setTopGlassMargin NOTIFY topGlassMarginChanged)
+    Q_PROPERTY(int rightGlassMargin READ rightGlassMargin WRITE setRightGlassMargin NOTIFY rightGlassMarginChanged)
+    Q_PROPERTY(int bottomGlassMargin READ bottomGlassMargin WRITE setBottomGlassMargin NOTIFY bottomGlassMarginChanged)
+    Q_PROPERTY(int leftGlassMargin READ leftGlassMargin WRITE setLeftGlassMargin NOTIFY leftGlassMarginChanged)
+    Q_PROPERTY(bool excludedFromPeek READ isExcludedFromPeek WRITE setExcludedFromPeek NOTIFY excludedFromPeekChanged)
+    Q_PROPERTY(bool peekDisallowed READ isPeekDisallowed WRITE setPeekDisallowed NOTIFY peekDisallowedChanged)
+    Q_PROPERTY(Flip3DPolicy flip3DPolicy READ flip3DPolicy WRITE setFlip3DPolicy NOTIFY flip3DPolicyChanged)
+    Q_ENUMS(Flip3DPolicy)
 
 public:
-    enum Flip3DPolicy // keep sync with Qt::WindowFlip3DPolicy
+    enum Flip3DPolicy // keep sync with QtWin::WindowFlip3DPolicy
     {
         FlipDefault,
         FlipExcludeBelow,
         FlipExcludeAbove
     };
-
-    Q_ENUMS(Flip3DPolicy)
 
     explicit QQuickDwmFeatures(QQuickItem *parent = 0);
     ~QQuickDwmFeatures();
@@ -93,9 +92,9 @@ public:
     int bottomGlassMargin() const;
     int leftGlassMargin() const;
 
-    bool excludedFromPeek() const;
+    bool isExcludedFromPeek() const;
     void setExcludedFromPeek(bool exclude);
-    bool peekDisallowed() const;
+    bool isPeekDisallowed() const;
     void setPeekDisallowed(bool disallow);
     Flip3DPolicy flip3DPolicy() const;
     void setFlip3DPolicy(Flip3DPolicy policy);
@@ -107,8 +106,15 @@ public:
 Q_SIGNALS:
     void colorizationColorChanged();
     void realColorizationColorChanged();
-    void isCompositionEnabledChanged();
+    void compositionEnabledChanged();
     void colorizationOpaqueBlendChanged();
+    void topGlassMarginChanged();
+    void rightGlassMarginChanged();
+    void bottomGlassMarginChanged();
+    void leftGlassMarginChanged();
+    void excludedFromPeekChanged();
+    void peekDisallowedChanged();
+    void flip3DPolicyChanged();
 
 protected:
     void itemChange(ItemChange, const ItemChangeData &) Q_DECL_OVERRIDE;

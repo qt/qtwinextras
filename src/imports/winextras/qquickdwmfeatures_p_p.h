@@ -65,8 +65,6 @@ public:
 private:
     QQuickDwmFeatures *q_ptr;
     bool formatSet;
-    bool frameUpdateScheduled;
-    bool attributesUpdateScheduled;
 
     Q_DECLARE_PUBLIC(QQuickDwmFeatures)
 };

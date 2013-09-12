@@ -48,11 +48,11 @@ Rectangle {
     height: 130
     color: "transparent"
 
-    WinDwmFeatures {
+    DwmFeatures {
         id: dwmfeatures
-        bottomGlassMargin: isCompositionEnabled ? 30 : 0
+        bottomGlassMargin: compositionEnabled ? 30 : 0
         excludedFromPeek: true
-        flip3DPolicy: WinDwmFeatures.FlipExcludeAbove
+        flip3DPolicy: DwmFeatures.FlipExcludeAbove
     }
 
     Window {
@@ -65,8 +65,8 @@ Rectangle {
         visible: true
         title: "Sheet of glass"
 
-        WinDwmFeatures {
-            bottomGlassMargin: isCompositionEnabled ? -1 : 0
+        DwmFeatures {
+            bottomGlassMargin: compositionEnabled ? -1 : 0
         }
     }
 
@@ -77,7 +77,7 @@ Rectangle {
 
         Rectangle {
             id: rectColorization
-            color: WinDwmFeatures.colorizationColor
+            color: DwmFeatures.colorizationColor
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
@@ -92,7 +92,7 @@ Rectangle {
 
         Rectangle {
             id: rectRealColorization
-            color: WinDwmFeatures.realColorizationColor
+            color: DwmFeatures.realColorizationColor
             anchors.top: rectColorization.bottom
             anchors.left: parent.left
             anchors.right: parent.right
@@ -122,7 +122,7 @@ Rectangle {
 
             Text {
                 anchors.centerIn: parent
-                text: "DWM composition is " + (WinDwmFeatures.isCompositionEnabled ? "enabled" : "disabled")
+                text: "DWM composition is " + (DwmFeatures.compositionEnabled ? "enabled" : "disabled")
                 font.pointSize: 12
             }
 
@@ -130,14 +130,14 @@ Rectangle {
                 id: mouseComposition
                 anchors.fill: parent
                 hoverEnabled: true
-                onClicked: WinDwmFeatures.isCompositionEnabled = !WinDwmFeatures.isCompositionEnabled
+                onClicked: DwmFeatures.compositionEnabled = !DwmFeatures.compositionEnabled
             }
         }
     }
 
     Rectangle {
         id: transparentBottom
-        color: WinDwmFeatures.isCompositionEnabled ? "transparent" : "#EEE"
+        color: DwmFeatures.compositionEnabled ? "transparent" : "#EEE"
         height: dwmfeatures.bottomGlassMargin
         anchors.bottom: parent.bottom
         anchors.left: parent.left
@@ -146,7 +146,7 @@ Rectangle {
         Text {
             id: textOnGlass
             anchors.centerIn: parent
-            text: "Text on glass" + (WinDwmFeatures.isCompositionEnabled ? "" : " (potentially)")
+            text: "Text on glass" + (DwmFeatures.compositionEnabled ? "" : " (potentially)")
             font.pointSize: 12
         }
     }

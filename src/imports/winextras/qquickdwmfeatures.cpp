@@ -112,8 +112,12 @@ bool QQuickDwmFeatures::colorizationOpaqueBlend() const
 void QQuickDwmFeatures::setTopGlassMargin(int margin)
 {
     Q_D(QQuickDwmFeatures);
+    if (d->topMargin == margin)
+        return;
+
     d->topMargin = margin;
     d->update();
+    emit topGlassMarginChanged();
 }
 
 /*!
@@ -124,8 +128,12 @@ void QQuickDwmFeatures::setTopGlassMargin(int margin)
 void QQuickDwmFeatures::setRightGlassMargin(int margin)
 {
     Q_D(QQuickDwmFeatures);
+    if (d->rightMargin == margin)
+        return;
+
     d->rightMargin = margin;
     d->update();
+    emit rightGlassMarginChanged();
 }
 
 /*!
@@ -136,8 +144,12 @@ void QQuickDwmFeatures::setRightGlassMargin(int margin)
 void QQuickDwmFeatures::setBottomGlassMargin(int margin)
 {
     Q_D(QQuickDwmFeatures);
+    if (d->bottomMargin == margin)
+        return;
+
     d->bottomMargin = margin;
     d->update();
+    emit rightGlassMarginChanged();
 }
 
 /*!
@@ -148,8 +160,12 @@ void QQuickDwmFeatures::setBottomGlassMargin(int margin)
 void QQuickDwmFeatures::setLeftGlassMargin(int margin)
 {
     Q_D(QQuickDwmFeatures);
+    if (d->leftMargin == margin)
+        return;
+
     d->leftMargin = margin;
     d->update();
+    emit leftGlassMarginChanged();
 }
 
 int QQuickDwmFeatures::topGlassMargin() const
@@ -182,7 +198,7 @@ int QQuickDwmFeatures::leftGlassMargin() const
     Specifies whether the window is excluded from Aero Peek.
     The default value is false.
  */
-bool QQuickDwmFeatures::excludedFromPeek() const
+bool QQuickDwmFeatures::isExcludedFromPeek() const
 {
     Q_D(const QQuickDwmFeatures);
     if (window())
@@ -194,7 +210,12 @@ bool QQuickDwmFeatures::excludedFromPeek() const
 void QQuickDwmFeatures::setExcludedFromPeek(bool exclude)
 {
     Q_D(QQuickDwmFeatures);
+    if (d->peekExcluded == exclude)
+        return;
+
     d->peekExcluded = exclude;
+    d->update();
+    emit excludedFromPeekChanged();
 }
 
 /*!
@@ -203,7 +224,7 @@ void QQuickDwmFeatures::setExcludedFromPeek(bool exclude)
     Set this value to true if you want to forbid Aero Peek when the user hovers
     the mouse over the window thumbnail. The default value is false.
 */
-bool QQuickDwmFeatures::peekDisallowed() const
+bool QQuickDwmFeatures::isPeekDisallowed() const
 {
     Q_D(const QQuickDwmFeatures);
     if (window())
@@ -215,7 +236,12 @@ bool QQuickDwmFeatures::peekDisallowed() const
 void QQuickDwmFeatures::setPeekDisallowed(bool disallow)
 {
     Q_D(QQuickDwmFeatures);
+    if (d->peekDisallowed == disallow)
+        return;
+
     d->peekDisallowed = disallow;
+    d->update();
+    emit peekDisallowedChanged();
 }
 
 /*!
@@ -241,27 +267,26 @@ QQuickDwmFeatures::Flip3DPolicy QQuickDwmFeatures::flip3DPolicy() const
 void QQuickDwmFeatures::setFlip3DPolicy(QQuickDwmFeatures::Flip3DPolicy policy)
 {
     Q_D(QQuickDwmFeatures);
+    if (d->flipPolicy == policy)
+        return;
+
     d->flipPolicy = policy;
+    d->update();
+    emit flip3DPolicyChanged();
 }
 
 bool QQuickDwmFeatures::eventFilter(QObject *object, QEvent *event)
 {
-    bool filterOut = false;
     if (object == window()) {
         if (event->type() == QWinEvent::CompositionChange) {
-            emit isCompositionEnabledChanged();
-            filterOut = true;
+            emit compositionEnabledChanged();
         } else if (event->type() == QWinEvent::ColorizationChange) {
             emit colorizationColorChanged();
             emit realColorizationColorChanged();
             emit colorizationOpaqueBlendChanged();
-            filterOut = true;
         }
     }
-    if (!filterOut)
-        return QQuickItem::eventFilter(object, event);
-    else
-        return filterOut;
+    return QQuickItem::eventFilter(object, event);
 }
 
 QQuickDwmFeatures *QQuickDwmFeatures::qmlAttachedProperties(QObject *parentObject)
@@ -290,7 +315,7 @@ void QQuickDwmFeatures::itemChange(QQuickItem::ItemChange change, const QQuickIt
 QQuickDwmFeaturesPrivate::QQuickDwmFeaturesPrivate(QQuickDwmFeatures *parent) :
     topMargin(0), rightMargin(0), bottomMargin(0), leftMargin(0),
     peekDisallowed(false), peekExcluded(false), flipPolicy(QQuickDwmFeatures::FlipDefault),
-    q_ptr(parent), formatSet(false), frameUpdateScheduled(false), attributesUpdateScheduled(false)
+    q_ptr(parent), formatSet(false)
 {
 }
 
