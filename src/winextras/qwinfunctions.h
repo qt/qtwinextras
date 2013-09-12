@@ -63,12 +63,18 @@ class QWindow;
 class QString;
 class QMargins;
 
+#ifdef Q_QDOC
+namespace QtWin
+{
+#else
 class Q_WINEXTRAS_EXPORT QtWin
 {
     Q_GADGET
     Q_ENUMS(HBitmapFormat WindowFlip3DPolicy)
 
 public:
+#endif // !Q_QDOC
+
     enum HBitmapFormat
     {
         HBitmapNoAlpha,
@@ -236,50 +242,6 @@ public:
     }
 #endif // QT_WIDGETS_LIB
 };
-
-#ifdef Q_QDOC
-
-namespace QtWin
-{
-
-HBITMAP createMask(const QBitmap &bitmap);
-HBITMAP toHBITMAP(const QPixmap &p, HBitmapFormat format = HBitmapNoAlpha);
-QPixmap fromHBITMAP(HBITMAP bitmap, HBitmapFormat format = HBitmapNoAlpha);
-HICON toHICON(const QPixmap &p);
-QImage imageFromHBITMAP(HDC hdc, HBITMAP bitmap, int w, int h);
-QPixmap fromHICON(HICON icon);
-HRGN toHRGN(const QRegion &region);
-QRegion fromHRGN(HRGN hrgn);
-QString stringFromHresult(HRESULT hresult);
-QString errorStringFromHresult(HRESULT hresult);
-QColor colorizationColor(bool *opaqueBlend = 0);
-QColor realColorizationColor();
-void setWindowExcludedFromPeek(QWindow *window, bool exclude);
-bool isWindowExcludedFromPeek(QWindow *window);
-void setWindowDisallowPeek(QWindow *window, bool disallow);
-bool isWindowPeekDisallowed(QWindow *window);
-void setWindowFlip3DPolicy(QWindow *window, WindowFlip3DPolicy policy);
-WindowFlip3DPolicy windowFlip3DPolicy(QWindow *);
-void extendFrameIntoClientArea(QWindow *window, int left, int top, int right, int bottom);
-void extendFrameIntoClientArea(QWindow *window, const QMargins &margins);
-void resetExtendedFrame(QWindow *window);
-void enableBlurBehindWindow(QWindow *window, const QRegion &region);
-void enableBlurBehindWindow(QWindow *window);
-void disableBlurBehindWindow(QWindow *window);
-
-bool isCompositionEnabled();
-void setCompositionEnabled(bool enabled);
-bool isCompositionOpaque();
-void setCurrentProcessExplicitAppUserModelID(const QString &id);
-void markFullscreenWindow(QWindow *, bool fullscreen = true);
-void taskbarActivateTab(QWindow *);
-void taskbarActivateTabAlt(QWindow *);
-void taskbarAddTab(QWindow *);
-void taskbarDeleteTab(QWindow *);
-
-}
-
-#endif // #ifdef Q_DOC
 
 QT_END_NAMESPACE
 
