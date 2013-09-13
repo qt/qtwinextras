@@ -48,6 +48,7 @@
 #include <QIcon>
 #include <QWinJumpList>
 #include <QWinJumpListItem>
+#include <QWinJumpListCategory>
 
 QT_BEGIN_NAMESPACE
 

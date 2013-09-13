@@ -40,52 +40,35 @@
  **
  ****************************************************************************/
 
-#ifndef QWINJUMPLISTITEM_H
-#define QWINJUMPLISTITEM_H
+#ifndef QWINJUMPLISTITEM_P_H
+#define QWINJUMPLISTITEM_P_H
 
-#include <QtGui/qicon.h>
-#include <QtCore/qobject.h>
-#include <QtCore/qstringlist.h>
-#include <QtCore/qscopedpointer.h>
-#include <QtWinExtras/qwinextrasglobal.h>
+#include "qwinjumplistitem.h"
 
 QT_BEGIN_NAMESPACE
 
-class QWinJumpListItemPrivate;
+class QWinJumpListCategory;
 
-class Q_WINEXTRAS_EXPORT QWinJumpListItem
+class QWinJumpListItemPrivate
 {
 public:
-    enum Type {
-        Destination,
-        Link,
-        Separator
-    };
+    static QWinJumpListItemPrivate *get(QWinJumpListItem *item)
+    {
+        return item->d_func();
+    }
 
-    explicit QWinJumpListItem(Type type);
-    ~QWinJumpListItem();
+    void invalidate();
 
-    void setType(Type type);
-    Type type() const;
-    void setFilePath(const QString &filePath);
-    QString filePath() const;
-    void setWorkingDirectory(const QString &workingDirectory);
-    QString workingDirectory() const;
-    void setIcon(const QIcon &icon);
-    QIcon icon() const;
-    void setTitle(const QString &title);
-    QString title() const;
-    void setDescription(const QString &description);
-    QString description() const;
-    void setArguments(const QStringList &arguments);
-    QStringList arguments() const;
-
-private:
-    Q_DISABLE_COPY(QWinJumpListItem)
-    Q_DECLARE_PRIVATE(QWinJumpListItem)
-    QScopedPointer<QWinJumpListItemPrivate> d_ptr;
+    QString filePath;
+    QString workingDirectory;
+    QString title;
+    QString description;
+    QIcon icon;
+    QStringList arguments;
+    QWinJumpListItem::Type type;
+    QWinJumpListCategory *category;
 };
 
 QT_END_NAMESPACE
 
-#endif // QWINJUMPLISTITEM_H
+#endif // QWINJUMPLISTITEM_P_H

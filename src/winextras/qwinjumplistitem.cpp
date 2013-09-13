@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -40,6 +41,8 @@
  ****************************************************************************/
 
 #include "qwinjumplistitem.h"
+#include "qwinjumplistitem_p.h"
+#include "qwinjumplistcategory_p.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -47,24 +50,27 @@ QT_BEGIN_NAMESPACE
     \class QWinJumpListItem
     \inmodule QtWinExtras
     \since 5.2
-    \inheaderfile QWinJumpList
-    \brief The QWinJumpListItem class represents a Jump List destination or link.
-
-    Objects of this class are returned by QWinJumpList::removedDestinations()
-    and can also be used to add items to a Jump List.
+    \brief The QWinJumpListItem class represents a jump list item.
  */
 
-class QWinJumpListItemPrivate
+/*!
+    \enum QWinJumpListItem::Type
+
+    This enum describes the available QWinJumpListItem types.
+
+    \value  Destination
+            Item acts as a link to a file that the application can open.
+    \value  Link
+            Item represents a link to an application.
+    \value  Separator
+            Item is a separator. Only tasks category supports separators.
+ */
+
+void QWinJumpListItemPrivate::invalidate()
 {
-public:
-    QString filePath;
-    QString workingDirectory;
-    QString title;
-    QString description;
-    QIcon icon;
-    QStringList arguments;
-    QWinJumpListItem::Type type;
-};
+    if (category)
+        QWinJumpListCategoryPrivate::get(category)->invalidate();
+}
 
 /*!
     Constructs a QWinJumpListItem with the specified \a type.
@@ -73,6 +79,7 @@ QWinJumpListItem::QWinJumpListItem(QWinJumpListItem::Type type) :
     d_ptr(new QWinJumpListItemPrivate)
 {
     d_ptr->type = type;
+    d_ptr->category = 0;
 }
 
 /*!
@@ -88,7 +95,10 @@ QWinJumpListItem::~QWinJumpListItem()
 void QWinJumpListItem::setType(QWinJumpListItem::Type type)
 {
     Q_D(QWinJumpListItem);
-    d->type = type;
+    if (d->type != type) {
+        d->type = type;
+        d->invalidate();
+    }
 }
 
 /*!
@@ -120,7 +130,10 @@ QWinJumpListItem::Type QWinJumpListItem::type() const
 void QWinJumpListItem::setFilePath(const QString &filePath)
 {
     Q_D(QWinJumpListItem);
-    d->filePath = filePath;
+    if (d->filePath != filePath) {
+        d->filePath = filePath;
+        d->invalidate();
+    }
 }
 
 /*!
@@ -142,7 +155,10 @@ QString QWinJumpListItem::filePath() const
 void QWinJumpListItem::setWorkingDirectory(const QString &workingDirectory)
 {
     Q_D(QWinJumpListItem);
-    d->workingDirectory = workingDirectory;
+    if (d->workingDirectory != workingDirectory) {
+        d->workingDirectory = workingDirectory;
+        d->invalidate();
+    }
 }
 
 /*!
@@ -162,7 +178,10 @@ QString QWinJumpListItem::workingDirectory() const
 void QWinJumpListItem::setIcon(const QIcon &icon)
 {
     Q_D(QWinJumpListItem);
-    d->icon = icon;
+    if (d->icon.cacheKey() != icon.cacheKey()) {
+        d->icon = icon;
+        d->invalidate();
+    }
 }
 
 /*!
@@ -182,7 +201,10 @@ QIcon QWinJumpListItem::icon() const
 void QWinJumpListItem::setTitle(const QString &title)
 {
     Q_D(QWinJumpListItem);
-    d->title = title;
+    if (d->title != title) {
+        d->title = title;
+        d->invalidate();
+    }
 }
 
 /*!
@@ -202,7 +224,10 @@ QString QWinJumpListItem::title() const
 void QWinJumpListItem::setDescription(const QString &description)
 {
     Q_D(QWinJumpListItem);
-    d->description = description;
+    if (d->description != description) {
+        d->description = description;
+        d->invalidate();
+    }
 }
 
 /*!
@@ -224,7 +249,10 @@ QString QWinJumpListItem::description() const
 void QWinJumpListItem::setArguments(const QStringList &arguments)
 {
     Q_D(QWinJumpListItem);
-    d->arguments = arguments;
+    if (d->arguments != arguments) {
+        d->arguments = arguments;
+        d->invalidate();
+    }
 }
 
 /*!

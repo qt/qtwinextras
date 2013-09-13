@@ -49,6 +49,7 @@
 #include <QMessageBox>
 #include <QWinJumpList>
 #include <QWinJumpListItem>
+#include <QWinJumpListCategory>
 #include <QDebug>
 
 ExampleWidget::ExampleWidget(QWidget *parent) :
@@ -104,28 +105,24 @@ void ExampleWidget::showFile(const QString &path)
 void ExampleWidget::updateJumpList()
 {
     QWinJumpList jumplist;
-    jumplist.begin();
-    if (ui->cbShowFrequent->isChecked())
-        jumplist.setFrequentCategoryShown(true);
-    if (ui->cbShowRecent->isChecked())
-        jumplist.setRecentCategoryShown(true);
-    jumplist.beginTasks();
+    jumplist.recent()->setVisible(ui->cbShowRecent->isChecked());
+    jumplist.frequent()->setVisible(ui->cbShowFrequent->isChecked());
     if (ui->cbRunFullscreen->isChecked()) {
         QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Link);
         item->setTitle(ui->cbRunFullscreen->text());
         item->setFilePath(QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));
         item->setArguments(QStringList("-fullscreen"));
         item->setIcon(style()->standardIcon(QStyle::SP_TitleBarMaxButton));
-        jumplist.addItem(item);
+        jumplist.tasks()->addItem(item);
     }
     if (ui->cbRunFusion->isChecked()) {
-        jumplist.addLink(style()->standardIcon(QStyle::SP_DesktopIcon), ui->cbRunFusion->text(), QDir::toNativeSeparators(QCoreApplication::applicationFilePath()), (QStringList() << "-style" << "fusion"));
+        jumplist.tasks()->addLink(style()->standardIcon(QStyle::SP_DesktopIcon), ui->cbRunFusion->text(), QDir::toNativeSeparators(QCoreApplication::applicationFilePath()), (QStringList() << "-style" << "fusion"));
     }
     if (ui->cbRunText->isChecked()) {
-        jumplist.addSeparator();
-        jumplist.addLink(ui->cbRunText->text(), QDir::toNativeSeparators(QCoreApplication::applicationFilePath()), QStringList("-text"));
+        jumplist.tasks()->addSeparator();
+        jumplist.tasks()->addLink(ui->cbRunText->text(), QDir::toNativeSeparators(QCoreApplication::applicationFilePath()), QStringList("-text"));
     }
-    jumplist.commit();
+    jumplist.tasks()->setVisible(!jumplist.tasks()->isEmpty());
 }
 
 void ExampleWidget::openFile()

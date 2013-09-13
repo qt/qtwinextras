@@ -207,4 +207,39 @@ public:
 
 #endif
 
+#ifndef __IApplicationDocumentLists_INTERFACE_DEFINED__
+#define __IApplicationDocumentLists_INTERFACE_DEFINED__
+
+enum APPDOCLISTTYPE {
+    ADLT_RECENT = 0,
+    ADLT_FREQUENT
+};
+
+extern const GUID IID_IApplicationDocumentLists;
+extern const GUID CLSID_ApplicationDocumentLists;
+
+struct IApplicationDocumentLists : public IUnknown
+{
+public:
+    virtual HRESULT STDMETHODCALLTYPE SetAppID(LPCWSTR pszAppID) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetList(APPDOCLISTTYPE listtype, UINT cItemsDesired, REFIID riid, void **ppv) = 0;
+};
+#endif
+
+#ifndef __IApplicationDestinations_INTERFACE_DEFINED__
+#define __IApplicationDestinations_INTERFACE_DEFINED__
+
+extern const GUID IID_IApplicationDestinations;
+extern const GUID CLSID_ApplicationDestinations;
+
+struct IApplicationDestinations : public IUnknown
+{
+public:
+    virtual HRESULT STDMETHODCALLTYPE SetAppID(LPCWSTR pszAppID) = 0;
+    virtual HRESULT STDMETHODCALLTYPE RemoveDestination(IUnknown *punk) = 0;
+    virtual HRESULT STDMETHODCALLTYPE RemoveAllDestinations( void) = 0;
+};
+
+#endif
+
 #endif // ITASKBARLIST_H

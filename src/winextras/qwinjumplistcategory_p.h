@@ -40,52 +40,39 @@
  **
  ****************************************************************************/
 
-#ifndef QWINJUMPLISTITEM_H
-#define QWINJUMPLISTITEM_H
+#ifndef QWINJUMPLISTCATEGORY_P_H
+#define QWINJUMPLISTCATEGORY_P_H
 
-#include <QtGui/qicon.h>
-#include <QtCore/qobject.h>
-#include <QtCore/qstringlist.h>
-#include <QtCore/qscopedpointer.h>
-#include <QtWinExtras/qwinextrasglobal.h>
+#include "qwinjumplistcategory.h"
+#include "winshobjidl_p.h"
 
 QT_BEGIN_NAMESPACE
 
-class QWinJumpListItemPrivate;
+class QWinJumpList;
 
-class Q_WINEXTRAS_EXPORT QWinJumpListItem
+class QWinJumpListCategoryPrivate
 {
 public:
-    enum Type {
-        Destination,
-        Link,
-        Separator
-    };
+    static QWinJumpListCategoryPrivate *get(QWinJumpListCategory *category)
+    {
+        return category->d_func();
+    }
 
-    explicit QWinJumpListItem(Type type);
-    ~QWinJumpListItem();
+    static QWinJumpListCategory *create(QWinJumpListCategory::Type type, QWinJumpList *jumpList);
 
-    void setType(Type type);
-    Type type() const;
-    void setFilePath(const QString &filePath);
-    QString filePath() const;
-    void setWorkingDirectory(const QString &workingDirectory);
-    QString workingDirectory() const;
-    void setIcon(const QIcon &icon);
-    QIcon icon() const;
-    void setTitle(const QString &title);
-    QString title() const;
-    void setDescription(const QString &description);
-    QString description() const;
-    void setArguments(const QStringList &arguments);
-    QStringList arguments() const;
+    void invalidate();
+    void loadRecents();
+    void addRecent(QWinJumpListItem *item);
+    void clearRecents();
 
-private:
-    Q_DISABLE_COPY(QWinJumpListItem)
-    Q_DECLARE_PRIVATE(QWinJumpListItem)
-    QScopedPointer<QWinJumpListItemPrivate> d_ptr;
+    bool visible;
+    QString title;
+    QWinJumpList *jumpList;
+    QWinJumpListCategory::Type type;
+    QList<QWinJumpListItem *> items;
+    IApplicationDocumentLists *pDocList;
 };
 
 QT_END_NAMESPACE
 
-#endif // QWINJUMPLISTITEM_H
+#endif // QWINJUMPLISTCATEGORY_P_H

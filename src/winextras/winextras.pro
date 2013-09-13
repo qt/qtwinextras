@@ -9,6 +9,7 @@ SOURCES += \
     qwintaskbarprogress.cpp \
     windowsguidsdefs.cpp \
     qwinjumplist.cpp \
+    qwinjumplistcategory.cpp \
     qwinjumplistitem.cpp \
     qwineventfilter.cpp \
     qwinthumbnailtoolbar.cpp \
@@ -23,7 +24,11 @@ HEADERS += \
     qwintaskbarbutton.h \
     qwintaskbarprogress.h \
     qwinjumplist.h \
+    qwinjumplist_p.h \
+    qwinjumplistcategory.h \
+    qwinjumplistcategory_p.h \
     qwinjumplistitem.h \
+    qwinjumplistitem_p.h \
     winshobjidl_p.h \
     winpropkey_p.h \
     qwineventfilter_p.h \
@@ -35,7 +40,7 @@ HEADERS += \
 
 QMAKE_DOCS = $$PWD/doc/qtwinextras.qdocconf
 
-LIBS += -lole32 -lshlwapi
+LIBS += -lole32 -lshlwapi -lshell32
 LIBS -= -luuid
 
 OTHER_FILES += \

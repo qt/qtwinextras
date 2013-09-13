@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -49,49 +50,35 @@
 
 QT_BEGIN_NAMESPACE
 
-class QIcon;
 class QWinJumpListItem;
 class QWinJumpListPrivate;
+class QWinJumpListCategory;
 
 class Q_WINEXTRAS_EXPORT QWinJumpList : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(bool recentCategoryShown READ isRecentCategoryShown WRITE setRecentCategoryShown)
-    Q_PROPERTY(bool frequentCategoryShown READ isFrequentCategoryShown WRITE setFrequentCategoryShown)
 
 public:
     explicit QWinJumpList(QObject *parent = 0);
     ~QWinJumpList();
 
+    QWinJumpListCategory *recent() const;
+    QWinJumpListCategory *frequent() const;
+    QWinJumpListCategory *tasks() const;
+
+    QList<QWinJumpListCategory *> categories() const;
+    void addCategory(QWinJumpListCategory *category);
+    QWinJumpListCategory *addCategory(const QString &title, const QList<QWinJumpListItem *> items = QList<QWinJumpListItem *>());
+
 public Q_SLOTS:
-    bool begin();
-    bool commit();
-    bool abort();
-    bool clear();
-
-public:
-    bool setApplicationId(const QString &);
-    QList<QWinJumpListItem *> removedDestinations() const;
-    int capacity() const;
-
-    void setRecentCategoryShown(bool);
-    bool isRecentCategoryShown() const;
-    void setFrequentCategoryShown(bool);
-    bool isFrequentCategoryShown() const;
-
-    void beginCategory(const QString &title);
-    void beginTasks();
-
-    bool addItem(QWinJumpListItem *item);
-    QWinJumpListItem *addDestination(const QString &filePath);
-    QWinJumpListItem *addLink(const QString &title, const QString &executablePath, const QStringList &arguments = QStringList());
-    QWinJumpListItem *addLink(const QIcon &icon, const QString &title, const QString &executablePath, const QStringList &arguments = QStringList());
-    QWinJumpListItem *addSeparator();
+    void clear();
 
 private:
     Q_DISABLE_COPY(QWinJumpList)
     Q_DECLARE_PRIVATE(QWinJumpList)
     QScopedPointer<QWinJumpListPrivate> d_ptr;
+
+    Q_PRIVATE_SLOT(d_func(), void _q_rebuild())
 };
 
 QT_END_NAMESPACE

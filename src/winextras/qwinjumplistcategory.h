@@ -40,52 +40,59 @@
  **
  ****************************************************************************/
 
-#ifndef QWINJUMPLISTITEM_H
-#define QWINJUMPLISTITEM_H
+#ifndef QWINJUMPLISTCATEGORY_H
+#define QWINJUMPLISTCATEGORY_H
 
 #include <QtGui/qicon.h>
-#include <QtCore/qobject.h>
+#include <QtCore/qstring.h>
 #include <QtCore/qstringlist.h>
 #include <QtCore/qscopedpointer.h>
 #include <QtWinExtras/qwinextrasglobal.h>
 
 QT_BEGIN_NAMESPACE
 
-class QWinJumpListItemPrivate;
+class QWinJumpListItem;
+class QWinJumpListCategoryPrivate;
 
-class Q_WINEXTRAS_EXPORT QWinJumpListItem
+class Q_WINEXTRAS_EXPORT QWinJumpListCategory
 {
 public:
     enum Type {
-        Destination,
-        Link,
-        Separator
+        Custom,
+        Recent,
+        Frequent,
+        Tasks
     };
 
-    explicit QWinJumpListItem(Type type);
-    ~QWinJumpListItem();
+    explicit QWinJumpListCategory(const QString &title = QString());
+    ~QWinJumpListCategory();
 
-    void setType(Type type);
     Type type() const;
-    void setFilePath(const QString &filePath);
-    QString filePath() const;
-    void setWorkingDirectory(const QString &workingDirectory);
-    QString workingDirectory() const;
-    void setIcon(const QIcon &icon);
-    QIcon icon() const;
-    void setTitle(const QString &title);
+
+    bool isVisible() const;
+    void setVisible(bool visible);
+
     QString title() const;
-    void setDescription(const QString &description);
-    QString description() const;
-    void setArguments(const QStringList &arguments);
-    QStringList arguments() const;
+    void setTitle(const QString &title);
+
+    int count() const;
+    bool isEmpty() const;
+    QList<QWinJumpListItem *> items() const;
+
+    void addItem(QWinJumpListItem *item);
+    QWinJumpListItem *addDestination(const QString &filePath);
+    QWinJumpListItem *addLink(const QString &title, const QString &executablePath, const QStringList &arguments = QStringList());
+    QWinJumpListItem *addLink(const QIcon &icon, const QString &title, const QString &executablePath, const QStringList &arguments = QStringList());
+    QWinJumpListItem *addSeparator();
+
+    void clear();
 
 private:
-    Q_DISABLE_COPY(QWinJumpListItem)
-    Q_DECLARE_PRIVATE(QWinJumpListItem)
-    QScopedPointer<QWinJumpListItemPrivate> d_ptr;
+    Q_DISABLE_COPY(QWinJumpListCategory)
+    Q_DECLARE_PRIVATE(QWinJumpListCategory)
+    QScopedPointer<QWinJumpListCategoryPrivate> d_ptr;
 };
 
 QT_END_NAMESPACE
 
-#endif // QWINJUMPLISTITEM_H
+#endif // QWINJUMPLISTCATEGORY_H

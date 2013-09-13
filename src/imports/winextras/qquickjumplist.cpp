@@ -124,24 +124,19 @@ void QQuickJumpList::componentComplete()
 {
     QQuickItem::componentComplete();
     QWinJumpList jumplist;
-    jumplist.begin();
-    jumplist.setFrequentCategoryShown(frequentCategoryShown);
-    jumplist.setRecentCategoryShown(recentCategoryShown);
+    jumplist.frequent()->setVisible(frequentCategoryShown);
+    jumplist.recent()->setVisible(recentCategoryShown);
     if (!taskList.isEmpty()) {
-        jumplist.beginTasks();
         Q_FOREACH (QQuickJumpListItem *item, taskList)
-            jumplist.addItem(item->toJumpListItem());
+            jumplist.tasks()->addItem(item->toJumpListItem());
         taskList.clear();
     }
     if (!categoryList.isEmpty()) {
         Q_FOREACH (QQuickJumpListCategory *category, categoryList) {
-            jumplist.beginCategory(category->title());
             QList<QWinJumpListItem *> items = category->toItemList();
-            Q_FOREACH (QWinJumpListItem *item, items)
-                jumplist.addItem(item);
+            jumplist.addCategory(category->title(), items);
         }
     }
-    jumplist.commit();
 }
 
 void QQuickJumpList::appendTaskItem(QQmlListProperty<QQuickJumpListItem> *property, QQuickJumpListItem *value)
@@ -242,11 +237,8 @@ int QQuickJumpListItem::type() const
 
 QWinJumpListItem *QQuickJumpListItem::toJumpListItem() const
 {
-    QWinJumpListItem *item = new QWinJumpListItem();
+    QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Separator);
     switch (m_type) {
-    case ItemTypeSeparator :
-        item->setType(QWinJumpListItem::Separator);
-        break;
     case ItemTypeDestination :
         item->setType(QWinJumpListItem::Destination);
         item->setFilePath(property("filePath").toString());
