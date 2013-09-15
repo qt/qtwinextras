@@ -89,6 +89,7 @@ public:
     QWinJumpListCategory *frequent;
     QWinJumpListCategory *tasks;
     QList<QWinJumpListCategory *> categories;
+    QString identifier;
     bool dirty;
 };
 

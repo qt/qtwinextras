@@ -242,4 +242,16 @@ public:
 
 #endif
 
+#if (defined _MSC_VER && _MSC_VER < 1600) || defined(Q_CC_MINGW)
+
+typedef struct SHARDAPPIDINFOLINK
+{
+    IShellLink *psl;        // An IShellLink instance that when launched opens a recently used item in the specified
+                            // application. This link is not added to the recent docs folder, but will be added to the
+                            // specified application's destination list.
+    PCWSTR pszAppID;        // The id of the application that should be associated with this recent doc.
+} SHARDAPPIDINFOLINK;
+
+#endif
+
 #endif // ITASKBARLIST_H

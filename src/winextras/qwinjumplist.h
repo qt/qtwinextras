@@ -57,10 +57,14 @@ class QWinJumpListCategory;
 class Q_WINEXTRAS_EXPORT QWinJumpList : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString identifier READ identifier WRITE setIdentifier)
 
 public:
     explicit QWinJumpList(QObject *parent = 0);
     ~QWinJumpList();
+
+    QString identifier() const;
+    void setIdentifier(const QString &identifier);
 
     QWinJumpListCategory *recent() const;
     QWinJumpListCategory *frequent() const;

@@ -69,6 +69,11 @@ QT_BEGIN_NAMESPACE
     files or to display shortcuts to tasks or commands.
  */
 
+/*!
+    \title Application User Model IDs
+    \externalpage http://msdn.microsoft.com/en-us/library/windows/desktop/dd378459%28v=vs.85%29.aspx
+ */
+
 // partial copy of qprocess_win.cpp:qt_create_commandline()
 static QString createArguments(const QStringList &arguments)
 {
@@ -90,6 +95,17 @@ static QString createArguments(const QStringList &arguments)
         args += QLatin1Char(' ') + tmp;
     }
     return args;
+}
+
+static QString defaultIdentifier()
+{
+    // CompanyName.ProductName(.SubProduct).VersionInformation
+    QStringList identifier(QCoreApplication::applicationName());
+    if (!QCoreApplication::organizationName().isEmpty())
+        identifier.prepend(QCoreApplication::organizationName());
+    if (!QCoreApplication::applicationVersion().isEmpty())
+        identifier.append(QCoreApplication::applicationVersion());
+    return identifier.join(QLatin1Char('.'));
 }
 
 QWinJumpListPrivate::QWinJumpListPrivate() :
@@ -155,13 +171,21 @@ void QWinJumpListPrivate::destroy()
 
 bool QWinJumpListPrivate::beginList()
 {
-    UINT maxSlots;
-    IUnknown *array = 0;
-    HRESULT hresult = pDestList->BeginList(&maxSlots, IID_IUnknown, reinterpret_cast<void **>(&array));
+    HRESULT hresult = S_OK;
+    if (!identifier.isEmpty()) {
+        wchar_t *id = qt_qstringToNullTerminated(identifier);
+        hresult = pDestList->SetAppID(id);
+        delete[] id;
+    }
+    if (SUCCEEDED(hresult)) {
+        UINT maxSlots = 0;
+        IUnknown *array = 0;
+        hresult = pDestList->BeginList(&maxSlots, IID_IUnknown, reinterpret_cast<void **>(&array));
+        if (array)
+            array->Release();
+    }
     if (FAILED(hresult))
         QWinJumpListPrivate::warning("BeginList", hresult);
-    if (array)
-        array->Release();
     return SUCCEEDED(hresult);
 }
 
@@ -409,6 +433,7 @@ QWinJumpList::QWinJumpList(QObject *parent) :
     HRESULT hresult = CoCreateInstance(CLSID_DestinationList, 0, CLSCTX_INPROC_SERVER, IID_ICustomDestinationList, reinterpret_cast<void **>(&d_ptr->pDestList));
     if (FAILED(hresult))
         QWinJumpListPrivate::warning("CoCreateInstance", hresult);
+    setIdentifier(defaultIdentifier());
     d->invalidate();
 }
 
@@ -425,6 +450,43 @@ QWinJumpList::~QWinJumpList()
         d->pDestList = 0;
     }
     d->destroy();
+}
+
+/*!
+    \property QWinJumpList::identifier
+    \brief the jump list identifier
+
+    Specifies a unique identifier for the application jump list.
+    See \l {Application User Model IDs} on MSDN for further details.
+
+    The default value is based on:
+    \list
+    \li QCoreApplication::organizationName
+    \li QCoreApplication::applicationName
+    \li QCoreApplication::applicationVersion
+    \endlist
+
+    \note The identifier cannot have more than \c 128 characters and
+    cannot contain spaces. A too long identifier is automatically truncated
+    to \c 128 characters, and spaces are replaced by underscores.
+ */
+QString QWinJumpList::identifier() const
+{
+    Q_D(const QWinJumpList);
+    return d->identifier;
+}
+
+void QWinJumpList::setIdentifier(const QString &identifier)
+{
+    Q_D(QWinJumpList);
+    QString id = identifier;
+    id.replace(QLatin1Char(' '), QLatin1Char('_'));
+    if (id.size() > 128)
+        id.truncate(128);
+    if (d->identifier != id) {
+        d->identifier = id;
+        d->invalidate();
+    }
 }
 
 /*!
