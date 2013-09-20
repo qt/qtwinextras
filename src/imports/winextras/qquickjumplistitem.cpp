@@ -40,62 +40,49 @@
  **
  ****************************************************************************/
 
-#ifndef QQUICKJUMPLIST_P_H
-#define QQUICKJUMPLIST_P_H
-
-#include <QObject>
-#include <QQmlParserStatus>
-#include <QQmlListProperty>
+#include "qquickjumplistitem_p.h"
+#include <QVariant>
 
 QT_BEGIN_NAMESPACE
 
-class QQuickJumpListCategory;
-
-class QQuickJumpList : public QObject, public QQmlParserStatus
+QQuickJumpListItem::QQuickJumpListItem(QObject *parent) :
+    QObject(parent)
 {
-    Q_OBJECT
-    Q_PROPERTY(QQuickJumpListCategory *recent READ recent CONSTANT)
-    Q_PROPERTY(QQuickJumpListCategory *frequent READ frequent CONSTANT)
-    Q_PROPERTY(QQuickJumpListCategory *tasks READ tasks WRITE setTasks NOTIFY tasksChanged)
-    Q_PROPERTY(QQmlListProperty<QQuickJumpListCategory> categories READ categories NOTIFY categoriesChanged)
-    Q_PROPERTY(QQmlListProperty<QObject> data READ data)
-    Q_CLASSINFO("DefaultProperty", "data")
-    Q_INTERFACES(QQmlParserStatus)
+}
 
-public:
-    explicit QQuickJumpList(QObject *parent = 0);
-    ~QQuickJumpList();
+QQuickJumpListItem::~QQuickJumpListItem()
+{
+}
 
-    QQuickJumpListCategory *recent() const;
-    QQuickJumpListCategory *frequent() const;
+int QQuickJumpListItem::type() const
+{
+    return m_type;
+}
 
-    QQuickJumpListCategory *tasks() const;
-    void setTasks(QQuickJumpListCategory *tasks);
+void QQuickJumpListItem::setType(int type)
+{
+    m_type = type;
+}
 
-    QQmlListProperty<QObject> data();
-    QQmlListProperty<QQuickJumpListCategory> categories();
+QWinJumpListItem *QQuickJumpListItem::toJumpListItem() const
+{
+    QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Separator);
+    switch (m_type) {
+    case ItemTypeDestination:
+        item->setType(QWinJumpListItem::Destination);
+        item->setFilePath(property("filePath").toString());
+        break;
+    case ItemTypeLink:
+        item->setType(QWinJumpListItem::Link);
+        item->setFilePath(property("executablePath").toString());
+        item->setArguments(QStringList(property("arguments").toStringList()));
+        item->setDescription(property("description").toString());
+        item->setTitle(property("title").toString());
+        item->setIcon(QIcon(property("iconPath").toString()));
+        break;
+    }
 
-    void classBegin();
-    void componentComplete();
-
-Q_SIGNALS:
-    void tasksChanged();
-    void categoriesChanged();
-
-private Q_SLOTS:
-    void rebuild();
-
-private:
-    static void data_append(QQmlListProperty<QObject> *property, QObject *object);
-    static int categories_count(QQmlListProperty<QQuickJumpListCategory> *property);
-    static QQuickJumpListCategory *categories_at(QQmlListProperty<QQuickJumpListCategory> *property, int index);
-
-    QQuickJumpListCategory *m_recent;
-    QQuickJumpListCategory *m_frequent;
-    QQuickJumpListCategory *m_tasks;
-    QList<QQuickJumpListCategory *> m_categories;
-};
+    return item;
+}
 
 QT_END_NAMESPACE
-
-#endif // QQUICKJUMPLIST_P_H

@@ -40,62 +40,57 @@
  **
  ****************************************************************************/
 
-#ifndef QQUICKJUMPLIST_P_H
-#define QQUICKJUMPLIST_P_H
+#ifndef QQUICKJUMPLISTCATEGORY_P_H
+#define QQUICKJUMPLISTCATEGORY_P_H
+
+#include "qquickjumplistitem_p.h"
 
 #include <QObject>
-#include <QQmlParserStatus>
 #include <QQmlListProperty>
+#include <QWinJumpListCategory>
+#include <QWinJumpListItem>
 
 QT_BEGIN_NAMESPACE
 
-class QQuickJumpListCategory;
-
-class QQuickJumpList : public QObject, public QQmlParserStatus
+class QQuickJumpListCategory : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QQuickJumpListCategory *recent READ recent CONSTANT)
-    Q_PROPERTY(QQuickJumpListCategory *frequent READ frequent CONSTANT)
-    Q_PROPERTY(QQuickJumpListCategory *tasks READ tasks WRITE setTasks NOTIFY tasksChanged)
-    Q_PROPERTY(QQmlListProperty<QQuickJumpListCategory> categories READ categories NOTIFY categoriesChanged)
     Q_PROPERTY(QQmlListProperty<QObject> data READ data)
+    Q_PROPERTY(QQmlListProperty<QQuickJumpListItem> items READ items)
+    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
+    Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibilityChanged)
     Q_CLASSINFO("DefaultProperty", "data")
-    Q_INTERFACES(QQmlParserStatus)
 
 public:
-    explicit QQuickJumpList(QObject *parent = 0);
-    ~QQuickJumpList();
+    explicit QQuickJumpListCategory(QObject *parent = 0);
+    ~QQuickJumpListCategory();
 
-    QQuickJumpListCategory *recent() const;
-    QQuickJumpListCategory *frequent() const;
+    QString title() const;
+    void setTitle(const QString &title);
 
-    QQuickJumpListCategory *tasks() const;
-    void setTasks(QQuickJumpListCategory *tasks);
+    bool isVisible() const;
+    void setVisible(bool visible);
 
     QQmlListProperty<QObject> data();
-    QQmlListProperty<QQuickJumpListCategory> categories();
+    QQmlListProperty<QQuickJumpListItem> items();
 
-    void classBegin();
-    void componentComplete();
+    QList<QWinJumpListItem *> toItemList() const;
 
 Q_SIGNALS:
-    void tasksChanged();
-    void categoriesChanged();
-
-private Q_SLOTS:
-    void rebuild();
+    void itemsChanged();
+    void titleChanged();
+    void visibilityChanged();
 
 private:
     static void data_append(QQmlListProperty<QObject> *property, QObject *object);
-    static int categories_count(QQmlListProperty<QQuickJumpListCategory> *property);
-    static QQuickJumpListCategory *categories_at(QQmlListProperty<QQuickJumpListCategory> *property, int index);
+    static int items_count(QQmlListProperty<QQuickJumpListItem> *property);
+    static QQuickJumpListItem *items_at(QQmlListProperty<QQuickJumpListItem> *property, int index);
 
-    QQuickJumpListCategory *m_recent;
-    QQuickJumpListCategory *m_frequent;
-    QQuickJumpListCategory *m_tasks;
-    QList<QQuickJumpListCategory *> m_categories;
+    bool m_visible;
+    QString m_title;
+    QList<QQuickJumpListItem *> m_items;
 };
 
 QT_END_NAMESPACE
 
-#endif // QQUICKJUMPLIST_P_H
+#endif // QQUICKJUMPLISTCATEGORY_P_H

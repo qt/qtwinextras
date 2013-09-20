@@ -40,62 +40,39 @@
  **
  ****************************************************************************/
 
-#ifndef QQUICKJUMPLIST_P_H
-#define QQUICKJUMPLIST_P_H
+#ifndef QQUICKJUMPLISTITEM_P_H
+#define QQUICKJUMPLISTITEM_P_H
 
 #include <QObject>
-#include <QQmlParserStatus>
-#include <QQmlListProperty>
+#include <QWinJumpListItem>
 
 QT_BEGIN_NAMESPACE
 
-class QQuickJumpListCategory;
-
-class QQuickJumpList : public QObject, public QQmlParserStatus
+class QQuickJumpListItem : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QQuickJumpListCategory *recent READ recent CONSTANT)
-    Q_PROPERTY(QQuickJumpListCategory *frequent READ frequent CONSTANT)
-    Q_PROPERTY(QQuickJumpListCategory *tasks READ tasks WRITE setTasks NOTIFY tasksChanged)
-    Q_PROPERTY(QQmlListProperty<QQuickJumpListCategory> categories READ categories NOTIFY categoriesChanged)
-    Q_PROPERTY(QQmlListProperty<QObject> data READ data)
-    Q_CLASSINFO("DefaultProperty", "data")
-    Q_INTERFACES(QQmlParserStatus)
+    Q_PROPERTY(int __jumpListItemType READ type WRITE setType)
+    Q_ENUMS(JumpListItemType)
 
 public:
-    explicit QQuickJumpList(QObject *parent = 0);
-    ~QQuickJumpList();
+    enum JumpListItemType {
+        ItemTypeLink = 1,
+        ItemTypeDestination = 2,
+        ItemTypeSeparator = 3
+    };
 
-    QQuickJumpListCategory *recent() const;
-    QQuickJumpListCategory *frequent() const;
+    explicit QQuickJumpListItem(QObject *p = 0);
+    ~QQuickJumpListItem();
 
-    QQuickJumpListCategory *tasks() const;
-    void setTasks(QQuickJumpListCategory *tasks);
+    int type() const;
+    void setType(int type);
 
-    QQmlListProperty<QObject> data();
-    QQmlListProperty<QQuickJumpListCategory> categories();
-
-    void classBegin();
-    void componentComplete();
-
-Q_SIGNALS:
-    void tasksChanged();
-    void categoriesChanged();
-
-private Q_SLOTS:
-    void rebuild();
+    QWinJumpListItem *toJumpListItem() const;
 
 private:
-    static void data_append(QQmlListProperty<QObject> *property, QObject *object);
-    static int categories_count(QQmlListProperty<QQuickJumpListCategory> *property);
-    static QQuickJumpListCategory *categories_at(QQmlListProperty<QQuickJumpListCategory> *property, int index);
-
-    QQuickJumpListCategory *m_recent;
-    QQuickJumpListCategory *m_frequent;
-    QQuickJumpListCategory *m_tasks;
-    QList<QQuickJumpListCategory *> m_categories;
+    int m_type; // 1 - link, 2 - destination
 };
 
 QT_END_NAMESPACE
 
-#endif // QQUICKJUMPLIST_P_H
+#endif // QQUICKJUMPLISTITEM_P_H

@@ -15,6 +15,8 @@ HEADERS += \
     qquickdwmfeatures_p_p.h \
     qquicktaskbarbutton_p.h \
     qquickjumplist_p.h \
+    qquickjumplistitem_p.h \
+    qquickjumplistcategory_p.h \
     qquickthumbnailtoolbar_p.h \
     qquickthumbnailtoolbutton_p.h \
     qquickiconloader_p.h
@@ -24,6 +26,8 @@ SOURCES += \
     qquickdwmfeatures.cpp \
     qquicktaskbarbutton.cpp \
     qquickjumplist.cpp \
+    qquickjumplistitem.cpp \
+    qquickjumplistcategory.cpp \
     qquickthumbnailtoolbar.cpp \
     qquickthumbnailtoolbutton.cpp \
     qquickiconloader.cpp

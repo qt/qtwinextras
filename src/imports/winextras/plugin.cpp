@@ -43,6 +43,8 @@
 #include "qquickdwmfeatures_p.h"
 #include "qquicktaskbarbutton_p.h"
 #include "qquickjumplist_p.h"
+#include "qquickjumplistitem_p.h"
+#include "qquickjumplistcategory_p.h"
 #include "qquickthumbnailtoolbar_p.h"
 #include "qquickthumbnailtoolbutton_p.h"
 
