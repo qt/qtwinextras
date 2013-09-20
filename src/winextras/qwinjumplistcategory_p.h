@@ -53,6 +53,8 @@ class QWinJumpList;
 class QWinJumpListCategoryPrivate
 {
 public:
+    QWinJumpListCategoryPrivate();
+
     static QWinJumpListCategoryPrivate *get(QWinJumpListCategory *category)
     {
         return category->d_func();

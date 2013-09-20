@@ -72,6 +72,11 @@ QT_BEGIN_NAMESPACE
             A jump list category of tasks.
  */
 
+QWinJumpListCategoryPrivate::QWinJumpListCategoryPrivate() :
+    visible(false), jumpList(0), type(QWinJumpListCategory::Custom), pDocList(0)
+{
+}
+
 QWinJumpListCategory *QWinJumpListCategoryPrivate::create(QWinJumpListCategory::Type type, QWinJumpList *jumpList)
 {
     QWinJumpListCategory *category = new QWinJumpListCategory;
@@ -130,9 +135,6 @@ void QWinJumpListCategoryPrivate::clearRecents()
 QWinJumpListCategory::QWinJumpListCategory(const QString &title) :
     d_ptr(new QWinJumpListCategoryPrivate)
 {
-    d_ptr->pDocList = 0;
-    d_ptr->type = Custom;
-    d_ptr->visible = false;
     d_ptr->title = title;
 }
 
