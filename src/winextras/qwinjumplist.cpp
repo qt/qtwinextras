@@ -140,31 +140,15 @@ void QWinJumpListPrivate::_q_rebuild()
     dirty = false;
 }
 
-void QWinJumpListPrivate::destroy(bool clear)
+void QWinJumpListPrivate::destroy()
 {
-    if (recent) {
-        if (clear)
-            recent->clear();
-        delete recent;
-        recent = 0;
-    }
-    if (frequent) {
-        if (clear)
-            frequent->clear();
-        delete frequent;
-        frequent = 0;
-    }
-    if (tasks) {
-        if (clear)
-            tasks->clear();
-        delete tasks;
-        tasks = 0;
-    }
-    foreach (QWinJumpListCategory *category, categories) {
-        if (clear)
-            category->clear();
-        delete category;
-    }
+    delete recent;
+    recent = 0;
+    delete frequent;
+    frequent = 0;
+    delete tasks;
+    tasks = 0;
+    qDeleteAll(categories);
     categories.clear();
     invalidate();
 }
@@ -440,8 +424,7 @@ QWinJumpList::~QWinJumpList()
         d->pDestList->Release();
         d->pDestList = 0;
     }
-    const bool clear = false;
-    d->destroy(clear);
+    d->destroy();
 }
 
 /*!
@@ -525,8 +508,13 @@ QWinJumpListCategory *QWinJumpList::addCategory(const QString &title, const QLis
 void QWinJumpList::clear()
 {
     Q_D(QWinJumpList);
-    const bool clear = true;
-    d->destroy(clear);
+    recent()->clear();
+    frequent()->clear();
+    if (d->tasks)
+        d->tasks->clear();
+    foreach (QWinJumpListCategory *category, d->categories)
+        category->clear();
+    d->destroy();
 }
 
 QT_END_NAMESPACE

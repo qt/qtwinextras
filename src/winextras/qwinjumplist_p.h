@@ -65,7 +65,7 @@ public:
 
     void invalidate();
     void _q_rebuild();
-    void destroy(bool clear);
+    void destroy();
 
     bool beginList();
     bool commitList();
