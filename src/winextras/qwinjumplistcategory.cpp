@@ -239,6 +239,17 @@ void QWinJumpListCategory::addItem(QWinJumpListItem *item)
     if (!item)
         return;
 
+    if (d->type == Recent || d->type == Frequent) {
+        if (item->type() == QWinJumpListItem::Separator) {
+            qWarning("QWinJumpListCategory::addItem(): only tasks/custom categories support separators.");
+            return;
+        }
+        if (item->type() == QWinJumpListItem::Destination) {
+            qWarning("QWinJumpListCategory::addItem(): only tasks/custom categories support destinations.");
+            return;
+        }
+    }
+
     QWinJumpListItemPrivate *p = QWinJumpListItemPrivate::get(item);
     if (p->category != this) {
         p->category = this;
@@ -293,11 +304,6 @@ QWinJumpListItem *QWinJumpListCategory::addLink(const QIcon &icon, const QString
  */
 QWinJumpListItem *QWinJumpListCategory::addSeparator()
 {
-    Q_D(QWinJumpListCategory);
-    if (d->type != Tasks) {
-        qWarning("QWinJumpListCategory::addSeparator(): only tasks category supports separators.");
-        return 0;
-    }
     QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Separator);
     addItem(item);
     return item;
