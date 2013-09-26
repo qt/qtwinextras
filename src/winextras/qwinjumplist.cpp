@@ -278,7 +278,7 @@ QWinJumpListItem *QWinJumpListPrivate::fromIShellLink(IShellLinkW *link)
     item->setIcon(QIcon(QString::fromWCharArray(buffer)));
 
     link->GetPath(buffer, buffersize-1, 0, 0);
-    item->setFilePath(QString::fromWCharArray(buffer));
+    item->setFilePath(QDir::fromNativeSeparators(QString::fromWCharArray(buffer)));
 
     return item;
 }
@@ -288,7 +288,7 @@ QWinJumpListItem *QWinJumpListPrivate::fromIShellItem(IShellItem2 *shellitem)
     QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Destination);
     wchar_t *strPtr;
     shellitem->GetDisplayName(SIGDN_FILESYSPATH, &strPtr);
-    item->setFilePath(QString::fromWCharArray(strPtr));
+    item->setFilePath(QDir::fromNativeSeparators(QString::fromWCharArray(strPtr)));
     CoTaskMemFree(strPtr);
     return item;
 }
