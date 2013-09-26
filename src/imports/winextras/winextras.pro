@@ -6,8 +6,8 @@ IMPORT_VERSION = 1.0
 QT += qml quick winextras winextras-private
 
 QML_FILES += \
-    JumpLink.qml \
-    JumpDestination.qml \
+    JumpListLink.qml \
+    JumpListDestination.qml \
     JumpListSeparator.qml
 
 HEADERS += \
@@ -34,8 +34,8 @@ SOURCES += \
 
 OTHER_FILES += \
     qmldir \
-    JumpLink.qml \
-    JumpDestination.qml \
+    JumpListLink.qml \
+    JumpListDestination.qml \
     JumpListSeparator.qml
 
 load(qml_plugin)

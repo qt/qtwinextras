@@ -60,7 +60,7 @@ ApplicationWindow {
         frequent.visible: frequentBox.checked
         tasks: JumpListCategory {
             visible: tasksBox.checked
-            JumpLink {
+            JumpListLink {
                 title: "qmlscene"
                 description: "qmlscene main.qml"
                 executablePath: Qt.application.arguments[0]
@@ -70,7 +70,7 @@ ApplicationWindow {
         JumpListCategory {
             title: "Custom"
             visible: customBox.checked
-            JumpLink {
+            JumpListLink {
                 title: "qmlscene"
                 description: "qmlscene main.qml"
                 executablePath: Qt.application.arguments[0]

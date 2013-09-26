@@ -42,26 +42,53 @@
 import QtWinExtras 1.0
 
 /*!
-    \qmltype JumpDestination
+    \qmltype JumpListLink
     \inherits JumpListItem
     \inqmlmodule QtWinExtras
 
-    \brief Represents a file that can be edited or viewed by an application.
+    \brief Represents a command to execute an application.
 
     \since QtWinExtras 1.0
 
-    The JumpDestination type contains a path to a file that users can select
-    from a Jump List to view or edit it with an application.
+    The JumpListLink type represents a command to execute an application.
 
  */
 
 JumpListItem {
-    __jumpListItemType: JumpListItem.ItemTypeDestination
+    __jumpListItemType: JumpListItem.ItemTypeLink
 
     /*!
-        \qmlproperty string JumpDestination::filePath
+        \qmlproperty string JumpListLink::iconPath
 
-        The path to the file.
+        The path to a link icon.
      */
-    property string filePath
+    property string iconPath
+
+    /*!
+        \qmlproperty string JumpListLink::executablePath
+
+        The path to an executable file.
+     */
+    property string executablePath
+
+    /*!
+        \qmlproperty string JumpListLink::arguments
+
+        Command-line arguments.
+     */
+    property string arguments
+
+    /*!
+        \qmlproperty string JumpListLink::description
+
+        The description of the link.
+     */
+    property string description
+
+    /*!
+        \qmlproperty string JumpListLink::title
+
+        The title of the link.
+     */
+    property string title
 }
