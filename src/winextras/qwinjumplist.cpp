@@ -543,6 +543,9 @@ QList<QWinJumpListCategory *> QWinJumpList::categories() const
 void QWinJumpList::addCategory(QWinJumpListCategory *category)
 {
     Q_D(QWinJumpList);
+    if (!category)
+        return;
+
     QWinJumpListCategoryPrivate::get(category)->jumpList = this;
     d->categories.append(category);
     d->invalidate();

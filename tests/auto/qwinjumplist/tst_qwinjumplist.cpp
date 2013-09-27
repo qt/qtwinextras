@@ -198,6 +198,8 @@ void tst_QWinJumpList::testCategories()
     QWinJumpList jumplist;
     QVERIFY(jumplist.categories().isEmpty());
 
+    jumplist.addCategory(0);
+
     QWinJumpListCategory *cat1 = new QWinJumpListCategory(QStringLiteral("tmp"));
     QCOMPARE(cat1->title(), QStringLiteral("tmp"));
     cat1->setTitle(QStringLiteral("cat1"));
