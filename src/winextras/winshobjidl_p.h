@@ -39,8 +39,8 @@
  **
  ****************************************************************************/
 
-#ifndef ITASKBARLIST_H
-#define ITASKBARLIST_H
+#ifndef WINSHOBJIDL_P_H
+#define WINSHOBJIDL_P_H
 
 #include <shobjidl.h>
 
@@ -254,4 +254,4 @@ typedef struct SHARDAPPIDINFOLINK
 
 #endif
 
-#endif // ITASKBARLIST_H
+#endif // WINSHOBJIDL_P_H
