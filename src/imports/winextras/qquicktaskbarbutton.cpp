@@ -120,6 +120,7 @@ QQuickTaskbarButton::~QQuickTaskbarButton()
 }
 
 /*!
+    \qmlpropertygroup ::TaskbarButton::progress
     \qmlproperty int TaskbarButton::progress.value
     \qmlproperty int TaskbarButton::progress.minimum
     \qmlproperty int TaskbarButton::progress.maximum
@@ -137,6 +138,7 @@ QWinTaskbarProgress *QQuickTaskbarButton::progress() const
 }
 
 /*!
+    \qmlpropertygroup ::TaskbarButton::overlay
     \qmlproperty url TaskbarButton::overlay.iconSource
     \qmlproperty string TaskbarButton::overlay.accessibleDescription
 
