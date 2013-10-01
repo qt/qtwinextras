@@ -46,6 +46,8 @@
 #include <QQuickItem>
 #include <QWinFunctions>
 
+#include "qquickwin_p.h"
+
 QT_BEGIN_NAMESPACE
 
 class QQuickDwmFeaturesPrivate;
@@ -63,7 +65,7 @@ class QQuickDwmFeatures : public QQuickItem
     Q_PROPERTY(int leftGlassMargin READ leftGlassMargin WRITE setLeftGlassMargin NOTIFY leftGlassMarginChanged)
     Q_PROPERTY(bool excludedFromPeek READ isExcludedFromPeek WRITE setExcludedFromPeek NOTIFY excludedFromPeekChanged)
     Q_PROPERTY(bool peekDisallowed READ isPeekDisallowed WRITE setPeekDisallowed NOTIFY peekDisallowedChanged)
-    Q_PROPERTY(QtWin::WindowFlip3DPolicy flip3DPolicy READ flip3DPolicy WRITE setFlip3DPolicy NOTIFY flip3DPolicyChanged)
+    Q_PROPERTY(QQuickWin::WindowFlip3DPolicy flip3DPolicy READ flip3DPolicy WRITE setFlip3DPolicy NOTIFY flip3DPolicyChanged)
 
 public:
     explicit QQuickDwmFeatures(QQuickItem *parent = 0);
@@ -88,8 +90,8 @@ public:
     void setExcludedFromPeek(bool exclude);
     bool isPeekDisallowed() const;
     void setPeekDisallowed(bool disallow);
-    QtWin::WindowFlip3DPolicy flip3DPolicy() const;
-    void setFlip3DPolicy(QtWin::WindowFlip3DPolicy policy);
+    QQuickWin::WindowFlip3DPolicy flip3DPolicy() const;
+    void setFlip3DPolicy(QQuickWin::WindowFlip3DPolicy policy);
 
     bool eventFilter(QObject *, QEvent *) Q_DECL_OVERRIDE;
 

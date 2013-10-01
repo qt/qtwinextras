@@ -40,35 +40,35 @@
  **
  ****************************************************************************/
 
-#ifndef QQUICKDWMFEATURES_P_P_H
-#define QQUICKDWMFEATURES_P_P_H
+#ifndef QQUICKWIN_P_H
+#define QQUICKWIN_P_H
 
-#include "qquickdwmfeatures_p.h"
+#include <QObject>
+#include <QWinFunctions>
 
 QT_BEGIN_NAMESPACE
 
-class QQuickDwmFeaturesPrivate
+class QQuickWin : public QObject
 {
+    Q_OBJECT
+    Q_ENUMS(HBitmapFormat WindowFlip3DPolicy)
+
 public:
-    QQuickDwmFeaturesPrivate(QQuickDwmFeatures *parent);
-    int topMargin;
-    int rightMargin;
-    int bottomMargin;
-    int leftMargin;
+    enum HBitmapFormat
+    {
+        HBitmapNoAlpha = QtWin::HBitmapNoAlpha,
+        HBitmapPremultipliedAlpha = QtWin::HBitmapPremultipliedAlpha,
+        HBitmapAlpha = QtWin::HBitmapAlpha
+    };
 
-    bool peekDisallowed;
-    bool peekExcluded;
-    QQuickWin::WindowFlip3DPolicy flipPolicy;
-
-    void update();
-
-private:
-    QQuickDwmFeatures *q_ptr;
-    bool formatSet;
-
-    Q_DECLARE_PUBLIC(QQuickDwmFeatures)
+    enum WindowFlip3DPolicy
+    {
+        FlipDefault = QtWin::FlipDefault,
+        FlipExcludeBelow = QtWin::FlipExcludeBelow,
+        FlipExcludeAbove = QtWin::FlipExcludeAbove
+    };
 };
 
 QT_END_NAMESPACE
 
-#endif // QQUICKDWMFEATURES_P_P_H
+#endif // QQUICKWIN_P_H

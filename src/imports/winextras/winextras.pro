@@ -19,7 +19,8 @@ HEADERS += \
     qquickjumplistcategory_p.h \
     qquickthumbnailtoolbar_p.h \
     qquickthumbnailtoolbutton_p.h \
-    qquickiconloader_p.h
+    qquickiconloader_p.h \
+    qquickwin_p.h
 
 SOURCES += \
     plugin.cpp \

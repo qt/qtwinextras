@@ -249,16 +249,16 @@ void QQuickDwmFeatures::setPeekDisallowed(bool disallow)
 
     The current Flip3D policy for the window.
  */
-QtWin::WindowFlip3DPolicy QQuickDwmFeatures::flip3DPolicy() const
+QQuickWin::WindowFlip3DPolicy QQuickDwmFeatures::flip3DPolicy() const
 {
     Q_D(const QQuickDwmFeatures);
     if (window())
-        return QtWin::windowFlip3DPolicy(window());
+        return static_cast<QQuickWin::WindowFlip3DPolicy>(QtWin::windowFlip3DPolicy(window()));
     else
         return d->flipPolicy;
 }
 
-void QQuickDwmFeatures::setFlip3DPolicy(QtWin::WindowFlip3DPolicy policy)
+void QQuickDwmFeatures::setFlip3DPolicy(QQuickWin::WindowFlip3DPolicy policy)
 {
     Q_D(QQuickDwmFeatures);
     if (d->flipPolicy == policy)
@@ -308,7 +308,7 @@ void QQuickDwmFeatures::itemChange(QQuickItem::ItemChange change, const QQuickIt
 
 QQuickDwmFeaturesPrivate::QQuickDwmFeaturesPrivate(QQuickDwmFeatures *parent) :
     topMargin(0), rightMargin(0), bottomMargin(0), leftMargin(0),
-    peekDisallowed(false), peekExcluded(false), flipPolicy(QtWin::FlipDefault),
+    peekDisallowed(false), peekExcluded(false), flipPolicy(QQuickWin::FlipDefault),
     q_ptr(parent), formatSet(false)
 {
 }
@@ -329,8 +329,8 @@ void QQuickDwmFeaturesPrivate::update()
             QtWin::setWindowExcludedFromPeek(w, peekExcluded);
         if (peekDisallowed)
             QtWin::setWindowDisallowPeek(w, peekDisallowed);
-        if (flipPolicy != QtWin::FlipDefault)
-            QtWin::setWindowFlip3DPolicy(w, flipPolicy);
+        if (flipPolicy != QQuickWin::FlipDefault)
+            QtWin::setWindowFlip3DPolicy(w, static_cast<QtWin::WindowFlip3DPolicy>(flipPolicy));
         if (topMargin || rightMargin || bottomMargin || leftMargin)
             QtWin::extendFrameIntoClientArea(w, leftMargin, topMargin, rightMargin, bottomMargin);
     }

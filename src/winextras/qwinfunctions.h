@@ -63,18 +63,8 @@ class QWindow;
 class QString;
 class QMargins;
 
-#ifdef Q_QDOC
 namespace QtWin
 {
-#else
-class Q_WINEXTRAS_EXPORT QtWin
-{
-    Q_GADGET
-    Q_ENUMS(HBitmapFormat WindowFlip3DPolicy)
-
-public:
-#endif // !Q_QDOC
-
     enum HBitmapFormat
     {
         HBitmapNoAlpha,
@@ -89,57 +79,57 @@ public:
         FlipExcludeAbove
     };
 
-    static HBITMAP createMask(const QBitmap &bitmap);
-    static HBITMAP toHBITMAP(const QPixmap &p, HBitmapFormat format = HBitmapNoAlpha);
-    static QPixmap fromHBITMAP(HBITMAP bitmap, HBitmapFormat format = HBitmapNoAlpha);
-    static HICON toHICON(const QPixmap &p);
-    static QImage imageFromHBITMAP(HDC hdc, HBITMAP bitmap, int width, int height);
-    static QPixmap fromHICON(HICON icon);
-    static HRGN toHRGN(const QRegion &region);
-    static QRegion fromHRGN(HRGN hrgn);
+    Q_WINEXTRAS_EXPORT HBITMAP createMask(const QBitmap &bitmap);
+    Q_WINEXTRAS_EXPORT HBITMAP toHBITMAP(const QPixmap &p, HBitmapFormat format = HBitmapNoAlpha);
+    Q_WINEXTRAS_EXPORT QPixmap fromHBITMAP(HBITMAP bitmap, HBitmapFormat format = HBitmapNoAlpha);
+    Q_WINEXTRAS_EXPORT HICON toHICON(const QPixmap &p);
+    Q_WINEXTRAS_EXPORT QImage imageFromHBITMAP(HDC hdc, HBITMAP bitmap, int width, int height);
+    Q_WINEXTRAS_EXPORT QPixmap fromHICON(HICON icon);
+    Q_WINEXTRAS_EXPORT HRGN toHRGN(const QRegion &region);
+    Q_WINEXTRAS_EXPORT QRegion fromHRGN(HRGN hrgn);
 
-    static QString stringFromHresult(HRESULT hresult);
-    static QString errorStringFromHresult(HRESULT hresult);
+    Q_WINEXTRAS_EXPORT QString stringFromHresult(HRESULT hresult);
+    Q_WINEXTRAS_EXPORT QString errorStringFromHresult(HRESULT hresult);
 
-    static QColor colorizationColor(bool *opaqueBlend = 0);
-    static QColor realColorizationColor();
+    Q_WINEXTRAS_EXPORT QColor colorizationColor(bool *opaqueBlend = 0);
+    Q_WINEXTRAS_EXPORT QColor realColorizationColor();
 
-    static void setWindowExcludedFromPeek(QWindow *window, bool exclude);
-    static bool isWindowExcludedFromPeek(QWindow *window);
-    static void setWindowDisallowPeek(QWindow *window, bool disallow);
-    static bool isWindowPeekDisallowed(QWindow *window);
-    static void setWindowFlip3DPolicy(QWindow *window, WindowFlip3DPolicy policy);
-    static WindowFlip3DPolicy windowFlip3DPolicy(QWindow *);
+    Q_WINEXTRAS_EXPORT void setWindowExcludedFromPeek(QWindow *window, bool exclude);
+    Q_WINEXTRAS_EXPORT bool isWindowExcludedFromPeek(QWindow *window);
+    Q_WINEXTRAS_EXPORT void setWindowDisallowPeek(QWindow *window, bool disallow);
+    Q_WINEXTRAS_EXPORT bool isWindowPeekDisallowed(QWindow *window);
+    Q_WINEXTRAS_EXPORT void setWindowFlip3DPolicy(QWindow *window, WindowFlip3DPolicy policy);
+    Q_WINEXTRAS_EXPORT WindowFlip3DPolicy windowFlip3DPolicy(QWindow *);
 
-    static void extendFrameIntoClientArea(QWindow *window, int left, int top, int right, int bottom);
-    static void extendFrameIntoClientArea(QWindow *window, const QMargins &margins);
-    static void resetExtendedFrame(QWindow *window);
+    Q_WINEXTRAS_EXPORT void extendFrameIntoClientArea(QWindow *window, int left, int top, int right, int bottom);
+    Q_WINEXTRAS_EXPORT void extendFrameIntoClientArea(QWindow *window, const QMargins &margins);
+    Q_WINEXTRAS_EXPORT void resetExtendedFrame(QWindow *window);
 
-    static void enableBlurBehindWindow(QWindow *window, const QRegion &region);
-    static void enableBlurBehindWindow(QWindow *window);
-    static void disableBlurBehindWindow(QWindow *window);
+    Q_WINEXTRAS_EXPORT void enableBlurBehindWindow(QWindow *window, const QRegion &region);
+    Q_WINEXTRAS_EXPORT void enableBlurBehindWindow(QWindow *window);
+    Q_WINEXTRAS_EXPORT void disableBlurBehindWindow(QWindow *window);
 
-    static bool isCompositionEnabled();
-    static void setCompositionEnabled(bool enabled);
-    static bool isCompositionOpaque();
+    Q_WINEXTRAS_EXPORT bool isCompositionEnabled();
+    Q_WINEXTRAS_EXPORT void setCompositionEnabled(bool enabled);
+    Q_WINEXTRAS_EXPORT bool isCompositionOpaque();
 
-    static void setCurrentProcessExplicitAppUserModelID(const QString &id);
+    Q_WINEXTRAS_EXPORT void setCurrentProcessExplicitAppUserModelID(const QString &id);
 
-    static void markFullscreenWindow(QWindow *, bool fullscreen = true);
+    Q_WINEXTRAS_EXPORT void markFullscreenWindow(QWindow *, bool fullscreen = true);
 
-    static void taskbarActivateTab(QWindow *);
-    static void taskbarActivateTabAlt(QWindow *);
-    static void taskbarAddTab(QWindow *);
-    static void taskbarDeleteTab(QWindow *);
+    Q_WINEXTRAS_EXPORT void taskbarActivateTab(QWindow *);
+    Q_WINEXTRAS_EXPORT void taskbarActivateTabAlt(QWindow *);
+    Q_WINEXTRAS_EXPORT void taskbarAddTab(QWindow *);
+    Q_WINEXTRAS_EXPORT void taskbarDeleteTab(QWindow *);
 
 #ifdef QT_WIDGETS_LIB
-    static inline void setWindowExcludedFromPeek(QWidget *window, bool exclude)
+    inline void setWindowExcludedFromPeek(QWidget *window, bool exclude)
     {
         window->createWinId();
         setWindowExcludedFromPeek(window->windowHandle(), exclude);
     }
 
-    static inline bool isWindowExcludedFromPeek(QWidget *window)
+    inline bool isWindowExcludedFromPeek(QWidget *window)
     {
         if (!window->windowHandle())
             return false;
@@ -147,13 +137,13 @@ public:
             return isWindowExcludedFromPeek(window->windowHandle());
     }
 
-    static inline void setWindowDisallowPeek(QWidget *window, bool disallow)
+    inline void setWindowDisallowPeek(QWidget *window, bool disallow)
     {
         window->createWinId();
         setWindowDisallowPeek(window->windowHandle(), disallow);
     }
 
-    static inline bool isWindowPeekDisallowed(QWidget *window)
+    inline bool isWindowPeekDisallowed(QWidget *window)
     {
         if (!window->windowHandle())
             return false;
@@ -161,13 +151,13 @@ public:
             return isWindowPeekDisallowed(window->windowHandle());
     }
 
-    static inline void setWindowFlip3DPolicy(QWidget *window, WindowFlip3DPolicy policy)
+    inline void setWindowFlip3DPolicy(QWidget *window, WindowFlip3DPolicy policy)
     {
         window->createWinId();
         setWindowFlip3DPolicy(window->windowHandle(), policy);
     }
 
-    static inline WindowFlip3DPolicy windowFlip3DPolicy(QWidget *window)
+    inline WindowFlip3DPolicy windowFlip3DPolicy(QWidget *window)
     {
         if (!window->windowHandle())
             return FlipDefault;
@@ -175,73 +165,73 @@ public:
             return windowFlip3DPolicy(window->windowHandle());
     }
 
-    static inline void extendFrameIntoClientArea(QWidget *window, const QMargins &margins)
+    inline void extendFrameIntoClientArea(QWidget *window, const QMargins &margins)
     {
         window->createWinId();
         extendFrameIntoClientArea(window->windowHandle(), margins);
     }
 
-    static inline void extendFrameIntoClientArea(QWidget *window, int left, int top, int right, int bottom)
+    inline void extendFrameIntoClientArea(QWidget *window, int left, int top, int right, int bottom)
     {
         window->createWinId();
         extendFrameIntoClientArea(window->windowHandle(), left, top, right, bottom);
     }
 
-    static inline void resetExtendedFrame(QWidget *window)
+    inline void resetExtendedFrame(QWidget *window)
     {
         if (window->windowHandle())
             resetExtendedFrame(window->windowHandle());
     }
 
-    static inline void enableBlurBehindWindow(QWidget *window, const QRegion &region)
+    inline void enableBlurBehindWindow(QWidget *window, const QRegion &region)
     {
         window->createWinId();
         enableBlurBehindWindow(window->windowHandle(), region);
     }
 
-    static inline void enableBlurBehindWindow(QWidget *window)
+    inline void enableBlurBehindWindow(QWidget *window)
     {
         window->createWinId();
         enableBlurBehindWindow(window->windowHandle());
     }
 
-    static inline void disableBlurBehindWindow(QWidget *window)
+    inline void disableBlurBehindWindow(QWidget *window)
     {
         if (window->windowHandle())
             enableBlurBehindWindow(window->windowHandle());
     }
 
-    static inline void markFullscreenWindow(QWidget *window, bool fullscreen = true)
+    inline void markFullscreenWindow(QWidget *window, bool fullscreen = true)
     {
         window->createWinId();
         markFullscreenWindow(window->windowHandle(), fullscreen);
     }
 
-    static inline void taskbarActivateTab(QWidget *window)
+    inline void taskbarActivateTab(QWidget *window)
     {
         window->createWinId();
         taskbarActivateTab(window->windowHandle());
     }
 
-    static inline void taskbarActivateTabAlt(QWidget *window)
+    inline void taskbarActivateTabAlt(QWidget *window)
     {
         window->createWinId();
         taskbarActivateTabAlt(window->windowHandle());
     }
 
-    static inline void taskbarAddTab(QWidget *window)
+    inline void taskbarAddTab(QWidget *window)
     {
         window->createWinId();
         taskbarAddTab(window->windowHandle());
     }
 
-    static inline void taskbarDeleteTab(QWidget *window)
+    inline void taskbarDeleteTab(QWidget *window)
     {
         window->createWinId();
         taskbarDeleteTab(window->windowHandle());
     }
 #endif // QT_WIDGETS_LIB
-};
+}
 
 QT_END_NAMESPACE
 
