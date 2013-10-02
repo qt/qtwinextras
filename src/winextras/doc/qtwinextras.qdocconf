@@ -42,3 +42,7 @@ qhp.QtWinExtras.subprojects.qmltypes.title = QML Types
 qhp.QtWinExtras.subprojects.qmltypes.indexTitle = Qt Windows Extras QML Types
 qhp.QtWinExtras.subprojects.qmltypes.selectors = fake:qmlclass
 qhp.QtWinExtras.subprojects.qmltypes.sortPages = true
+
+navigation.landingpage = "Qt Windows Extras"
+navigation.qmltypespage = "Qt Windows Extras QML Types"
+navigation.cppclassespage = "Qt Windows Extras C++ Classes"
