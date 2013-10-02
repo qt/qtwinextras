@@ -63,6 +63,7 @@ class QQuickDwmFeatures : public QQuickItem
     Q_PROPERTY(int rightGlassMargin READ rightGlassMargin WRITE setRightGlassMargin NOTIFY rightGlassMarginChanged)
     Q_PROPERTY(int bottomGlassMargin READ bottomGlassMargin WRITE setBottomGlassMargin NOTIFY bottomGlassMarginChanged)
     Q_PROPERTY(int leftGlassMargin READ leftGlassMargin WRITE setLeftGlassMargin NOTIFY leftGlassMarginChanged)
+    Q_PROPERTY(bool blurBehindEnabled READ isBlurBehindEnabled WRITE setBlurBehindEnabled NOTIFY blurBehindEnabledChanged)
     Q_PROPERTY(bool excludedFromPeek READ isExcludedFromPeek WRITE setExcludedFromPeek NOTIFY excludedFromPeekChanged)
     Q_PROPERTY(bool peekDisallowed READ isPeekDisallowed WRITE setPeekDisallowed NOTIFY peekDisallowedChanged)
     Q_PROPERTY(QQuickWin::WindowFlip3DPolicy flip3DPolicy READ flip3DPolicy WRITE setFlip3DPolicy NOTIFY flip3DPolicyChanged)
@@ -85,6 +86,8 @@ public:
     int rightGlassMargin() const;
     int bottomGlassMargin() const;
     int leftGlassMargin() const;
+    bool isBlurBehindEnabled() const;
+    void setBlurBehindEnabled(bool enabled);
 
     bool isExcludedFromPeek() const;
     void setExcludedFromPeek(bool exclude);
@@ -106,6 +109,7 @@ Q_SIGNALS:
     void rightGlassMarginChanged();
     void bottomGlassMarginChanged();
     void leftGlassMarginChanged();
+    void blurBehindEnabledChanged();
     void excludedFromPeekChanged();
     void peekDisallowedChanged();
     void flip3DPolicyChanged();

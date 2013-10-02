@@ -51,20 +51,23 @@ class QQuickDwmFeaturesPrivate
 {
 public:
     QQuickDwmFeaturesPrivate(QQuickDwmFeatures *parent);
+
     int topMargin;
     int rightMargin;
     int bottomMargin;
     int leftMargin;
+    bool blurBehindEnabled;
 
     bool peekDisallowed;
     bool peekExcluded;
     QQuickWin::WindowFlip3DPolicy flipPolicy;
+    QColor originalSurfaceColor;
 
-    void update();
+    void updateAll();
+    void updateSurfaceFormat();
 
 private:
     QQuickDwmFeatures *q_ptr;
-    bool formatSet;
 
     Q_DECLARE_PUBLIC(QQuickDwmFeatures)
 };
