@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -48,7 +49,15 @@ QT_BEGIN_NAMESPACE
     \class QWinThumbnailToolButton
     \inmodule QtWinExtras
     \since 5.2
-    \brief The QWinThumbnailToolButton class represents a button in the window's thumbnail toolbar.
+    \brief The QWinThumbnailToolButton class represents a button in a thumbnail toolbar.
+
+    Buttons in a QWinThumbnailToolBar are instances of QWinThumbnailToolButton.
+    It provides a set of properties for specifying the attributes of a thumbnail
+    toolbar button. It also provides a signal that is emitted whenever the button
+    is \l{clicked()}{clicked}, and a slot to perform \l{click()}{clicks}
+    programmatically.
+
+    \sa QWinThumbnailToolBar
  */
 
 /*!
@@ -119,7 +128,12 @@ QIcon QWinThumbnailToolButton::icon() const
     \property QWinThumbnailToolButton::enabled
     \brief whether the button is enabled
 
-    This property's default is true.
+    The default value is \c true.
+
+    A disabled button does not react to user interaction,
+    and is also visually disabled.
+
+    \sa interactive
  */
 void QWinThumbnailToolButton::setEnabled(bool enabled)
 {
@@ -140,11 +154,13 @@ bool QWinThumbnailToolButton::isEnabled() const
     \property QWinThumbnailToolButton::interactive
     \brief whether the button is interactive
 
-    This property's default is true.
+    The default value is \c true.
 
-    If not interactive, the button remains enabled, but no pressed or mouse-over
-    states are drawn. Set this property to false to use this button as a
-    notification icon.
+    A non-interactive button does not react to user interaction,
+    but is still visually enabled. A typical use case for non-
+    interactive buttons are notification icons.
+
+    \sa enabled
  */
 void QWinThumbnailToolButton::setInteractive(bool interactive)
 {
@@ -165,7 +181,7 @@ bool QWinThumbnailToolButton::isInteractive() const
     \property QWinThumbnailToolButton::visible
     \brief whether the button is visible
 
-    This property's default is true.
+    The default value is \c true.
  */
 void QWinThumbnailToolButton::setVisible(bool visible)
 {
@@ -186,7 +202,7 @@ bool QWinThumbnailToolButton::isVisible() const
     \property QWinThumbnailToolButton::dismissOnClick
     \brief whether the window thumbnail is dismissed after a button click
 
-    This property's default is false.
+    The default value is \c false.
  */
 void QWinThumbnailToolButton::setDismissOnClick(bool dismiss)
 {
@@ -205,9 +221,11 @@ bool QWinThumbnailToolButton::dismissOnClick() const
 
 /*!
     \property QWinThumbnailToolButton::flat
-    \brief whether the button background and frame are not drawn
+    \brief whether the button is flat
 
-    This property's default is false.
+    The default value is \c false.
+
+    A flat button does not draw a background nor a frame - only an icon.
  */
 void QWinThumbnailToolButton::setFlat(bool flat)
 {
@@ -227,7 +245,8 @@ bool QWinThumbnailToolButton::isFlat() const
 /*!
     Performs a click. The clicked() signal is emitted as appropriate.
 
-    Does nothing if the button is disabled or non-interactive.
+    This function does nothing if the button is \l{enabled}{disabled}
+    or \l{interactive}{non-interactive}.
  */
 void QWinThumbnailToolButton::click()
 {

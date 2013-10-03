@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -61,12 +62,29 @@ static const int windowsLimitedThumbbarSize = 7;
     \class QWinThumbnailToolBar
     \inmodule QtWinExtras
     \since 5.2
-    \brief The QWinThumbnailToolBar class allows manipulating the window's thumbnail toolbar.
+    \brief The QWinThumbnailToolBar class allows manipulating the thumbnail toolbar of a window.
 
+    Applications can embed a toolbar in the thumbnail of a window, which is
+    shown when hovering over its taskbar icon. A thumbnail toolbar may provide
+    quick access to the commands of a window without requiring the user to restore
+    or activate the window.
+
+    \image thumbbar.png Media player thumbnail toolbar
+
+    The following example code illustrates how to use the functions in the
+    QWinThumbnailToolBar and QWinThumbnailToolButton class to implement a
+    thumbnail toolbar:
+
+    \snippet code/thumbbar.cpp thumbbar_cpp
+
+    \sa QWinThumbnailToolButton
  */
 
 /*!
-    Constructs a QWinThumbnailToolBar with the parent object \a parent.
+    Constructs a QWinThumbnailToolBar with the specified \a parent.
+
+    If \a parent is an instance of QWindow, it is automatically
+    assigned as the thumbnail toolbar's \l window.
  */
 QWinThumbnailToolBar::QWinThumbnailToolBar(QObject *parent) :
     QObject(parent), d_ptr(new QWinThumbnailToolBarPrivate)
@@ -78,7 +96,7 @@ QWinThumbnailToolBar::QWinThumbnailToolBar(QObject *parent) :
 }
 
 /*!
-    Destroys the QWinThumbnailToolBar and clears the toolbar.
+    Destroys and clears the QWinThumbnailToolBar.
  */
 QWinThumbnailToolBar::~QWinThumbnailToolBar()
 {
@@ -114,9 +132,9 @@ QWindow *QWinThumbnailToolBar::window() const
 }
 
 /*!
-    Appends a \a button to the right of the thumbnail toolbar.
+    Adds a \a button to the thumbnail toolbar.
 
-    \note The number of buttons is limited to 7.
+    \note The number of buttons is limited to \c 7.
  */
 void QWinThumbnailToolBar::addButton(QWinThumbnailToolButton *button)
 {
@@ -138,7 +156,7 @@ void QWinThumbnailToolBar::addButton(QWinThumbnailToolButton *button)
 }
 
 /*!
-    Removes the \a button from this toolbar.
+    Removes the \a button from the thumbnail toolbar.
  */
 void QWinThumbnailToolBar::removeButton(QWinThumbnailToolButton *button)
 {
@@ -152,7 +170,9 @@ void QWinThumbnailToolBar::removeButton(QWinThumbnailToolButton *button)
 }
 
 /*!
-    Replaces the currently set toolbar with \a buttons.
+    Sets the list of \a buttons in the thumbnail toolbar.
+
+    \note Any existing buttons are replaced.
  */
 void QWinThumbnailToolBar::setButtons(const QList<QWinThumbnailToolButton *> &buttons)
 {
@@ -164,7 +184,7 @@ void QWinThumbnailToolBar::setButtons(const QList<QWinThumbnailToolButton *> &bu
 }
 
 /*!
-    Returns the list of buttons which this toolbar consists of.
+    Returns the list of buttons in the thumbnail toolbar.
  */
 QList<QWinThumbnailToolButton *> QWinThumbnailToolBar::buttons() const
 {
@@ -174,7 +194,9 @@ QList<QWinThumbnailToolButton *> QWinThumbnailToolBar::buttons() const
 
 /*!
     \property QWinThumbnailToolBar::count
-    \brief the current button count
+    \brief the number of buttons in the thumbnail toolbar
+
+    \note The number of buttons is limited to \c 7.
  */
 int QWinThumbnailToolBar::count() const
 {
@@ -183,7 +205,7 @@ int QWinThumbnailToolBar::count() const
 }
 
 /*!
-    Removes all buttons from the toolbar.
+    Removes all buttons from the thumbnail toolbar.
  */
 void QWinThumbnailToolBar::clear()
 {

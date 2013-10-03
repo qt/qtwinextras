@@ -40,12 +40,12 @@
 
 #include <QtWinExtras>
 
-void initializeThumbnailToolBar(QWidget *window)
+void initializeThumbnailToolBar(QWidget *widget)
 {
-    Q_ASSERT(window->windowHandle()); // Note: this requires the window to be shown.
+    Q_ASSERT(widget->windowHandle()); // Note: this requires the window to be shown.
 //! [thumbbar_cpp]
-    QWinThumbnailToolBar *thumbbar = QWinThumbnailToolBar(window);
-    thumbbar->setWindow(window->windowHandle());
+    QWinThumbnailToolBar *thumbbar = QWinThumbnailToolBar(widget);
+    thumbbar->setWindow(widget->windowHandle());
 
     QWinThumbnailToolButton *settings = new QWinThumbnailToolButton(thumbbar);
     settings->setToolTip("Settings");
