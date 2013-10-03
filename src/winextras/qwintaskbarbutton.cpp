@@ -1,6 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -65,8 +66,19 @@ QT_BEGIN_NAMESPACE
     \since 5.2
 
     The QWinTaskbarButton class enables you to set overlay icons on a taskbar
-    button, to display a progress indicator, and to add a small toolbar to the
-    window thumbnail popup.
+    button, and provides access to its progress indicator.
+
+    An overlay icon indicates change in the state of an application, whereas
+    a progress indicator shows how time-consuming tasks are progressing.
+
+    \image taskbar-button.png Taskbar Button
+
+    The following example code illustrates how to use the QWinTaskbarButton
+    and QWinTaskbarProgress classes to adjust the look of the taskbar button:
+
+    \snippet code/taskbar.cpp taskbar_cpp
+
+    \sa QWinTaskbarProgress
  */
 
 static TBPFLAG nativeProgressState(QWinTaskbarProgress *progress)
@@ -155,7 +167,10 @@ void QWinTaskbarButtonPrivate::_q_updateProgress()
 }
 
 /*!
-    Constructs a QWinTaskbarButton with the parent object \a parent.
+    Constructs a QWinTaskbarButton with the specified \a parent.
+
+    If \a parent is an instance of QWindow, it is automatically
+    assigned as the taskbar button's \l window.
  */
 QWinTaskbarButton::QWinTaskbarButton(QObject *parent) :
     QObject(parent), d_ptr(new QWinTaskbarButtonPrivate)
@@ -198,7 +213,7 @@ QWindow *QWinTaskbarButton::window() const
 
 /*!
     \property QWinTaskbarButton::overlayIcon
-    \brief the overlay icon of the button
+    \brief the overlay icon of the taskbar button
  */
 QIcon QWinTaskbarButton::overlayIcon() const
 {
@@ -214,10 +229,6 @@ void QWinTaskbarButton::setOverlayIcon(const QIcon &icon)
     d->updateOverlayIcon();
 }
 
-/*!
-    Clears the previously set overlay icon.
-    \sa QWinTaskbarButton::setOverlayIcon()
- */
 void QWinTaskbarButton::clearOverlayIcon()
 {
     setOverlayAccessibleDescription(QString());
@@ -227,6 +238,8 @@ void QWinTaskbarButton::clearOverlayIcon()
 /*!
     \property QWinTaskbarButton::overlayAccessibleDescription
     \brief the description of the overlay for accessibility purposes
+
+    \sa overlayIcon
  */
 QString QWinTaskbarButton::overlayAccessibleDescription() const
 {
@@ -245,6 +258,8 @@ void QWinTaskbarButton::setOverlayAccessibleDescription(const QString &descripti
 /*!
     \property QWinTaskbarButton::progress
     \brief the progress indicator of the taskbar button
+
+    \note The progress indicator is not \l{QWinTaskbarProgress::visible}{visible} by default.
  */
 QWinTaskbarProgress *QWinTaskbarButton::progress() const
 {
