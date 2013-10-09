@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-win32: SUBDIRS += auto
+win32: SUBDIRS += auto manual
