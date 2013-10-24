@@ -45,6 +45,7 @@
 #include "qwinjumplistitem_p.h"
 #include "qwinfunctions_p.h"
 #include "qwinjumplist_p.h"
+#include "winshobjidl_p.h"
 
 #include <shlobj.h>
 
@@ -73,7 +74,7 @@ QT_BEGIN_NAMESPACE
  */
 
 QWinJumpListCategoryPrivate::QWinJumpListCategoryPrivate() :
-    visible(false), jumpList(0), type(QWinJumpListCategory::Custom), pDocList(0)
+    visible(false), jumpList(0), type(QWinJumpListCategory::Custom)
 {
 }
 
@@ -95,15 +96,25 @@ void QWinJumpListCategoryPrivate::invalidate()
 
 void QWinJumpListCategoryPrivate::loadRecents()
 {
+    Q_ASSERT(jumpList);
+    IApplicationDocumentLists *pDocList = 0;
     HRESULT hresult = CoCreateInstance(CLSID_ApplicationDocumentLists, 0, CLSCTX_INPROC_SERVER, IID_IApplicationDocumentLists, reinterpret_cast<void **>(&pDocList));
     if (SUCCEEDED(hresult)) {
-        IObjectArray *array = 0;
-        hresult = pDocList->GetList(type == QWinJumpListCategory::Recent ? ADLT_RECENT : ADLT_FREQUENT,
-                                    0, IID_IObjectArray, reinterpret_cast<void **>(&array));
-        if (SUCCEEDED(hresult)) {
-            items = QWinJumpListPrivate::fromComCollection(array);
-            array->Release();
+        if (!jumpList->identifier().isEmpty()) {
+            wchar_t *id = qt_qstringToNullTerminated(jumpList->identifier());
+            hresult = pDocList->SetAppID(id);
+            delete[] id;
         }
+        if (SUCCEEDED(hresult)) {
+            IObjectArray *array = 0;
+            hresult = pDocList->GetList(type == QWinJumpListCategory::Recent ? ADLT_RECENT : ADLT_FREQUENT,
+                                        0, IID_IObjectArray, reinterpret_cast<void **>(&array));
+            if (SUCCEEDED(hresult)) {
+                items = QWinJumpListPrivate::fromComCollection(array);
+                array->Release();
+            }
+        }
+        pDocList->Release();
     }
     if (FAILED(hresult))
         QWinJumpListPrivate::warning("loadRecents", hresult);
@@ -111,10 +122,18 @@ void QWinJumpListCategoryPrivate::loadRecents()
 
 void QWinJumpListCategoryPrivate::addRecent(QWinJumpListItem *item)
 {
-    if (item->type() == QWinJumpListItem::Link)
-        SHAddToRecentDocs(SHARD_LINK, QWinJumpListPrivate::toIShellLink(item));
-    else if (item->type() == QWinJumpListItem::Destination)
-        SHAddToRecentDocs(SHARD_SHELLITEM, QWinJumpListPrivate::toIShellItem(item));
+    Q_ASSERT(item->type() == QWinJumpListItem::Link);
+    const QString identifier = jumpList ? jumpList->identifier() : QString();
+    wchar_t *id = qt_qstringToNullTerminated(identifier);
+
+    SHARDAPPIDINFOLINK info;
+    info.pszAppID = id;
+    info.psl =  QWinJumpListPrivate::toIShellLink(item);
+    if (info.psl) {
+        SHAddToRecentDocs(SHARD_APPIDINFOLINK, &info);
+        info.psl->Release();
+    }
+    delete[] id;
 }
 
 void QWinJumpListCategoryPrivate::clearRecents()
@@ -122,6 +141,12 @@ void QWinJumpListCategoryPrivate::clearRecents()
     IApplicationDestinations *pDest = 0;
     HRESULT hresult = CoCreateInstance(CLSID_ApplicationDestinations, 0, CLSCTX_INPROC_SERVER, IID_IApplicationDestinations, reinterpret_cast<void **>(&pDest));
     if (SUCCEEDED(hresult)) {
+        const QString identifier = jumpList ? jumpList->identifier() : QString();
+        if (!identifier.isEmpty()) {
+            wchar_t *id = qt_qstringToNullTerminated(identifier);
+            hresult = pDest->SetAppID(id);
+            delete[] id;
+        }
         hresult = pDest->RemoveAllDestinations();
         pDest->Release();
     }
@@ -144,10 +169,6 @@ QWinJumpListCategory::QWinJumpListCategory(const QString &title) :
 QWinJumpListCategory::~QWinJumpListCategory()
 {
     Q_D(QWinJumpListCategory);
-    if (d->pDocList) {
-        d->pDocList->Release();
-        d->pDocList = 0;
-    }
     qDeleteAll(d->items);
     d->items.clear();
 }
@@ -239,6 +260,17 @@ void QWinJumpListCategory::addItem(QWinJumpListItem *item)
     if (!item)
         return;
 
+    if (d->type == Recent || d->type == Frequent) {
+        if (item->type() == QWinJumpListItem::Separator) {
+            qWarning("QWinJumpListCategory::addItem(): only tasks/custom categories support separators.");
+            return;
+        }
+        if (item->type() == QWinJumpListItem::Destination) {
+            qWarning("QWinJumpListCategory::addItem(): only tasks/custom categories support destinations.");
+            return;
+        }
+    }
+
     QWinJumpListItemPrivate *p = QWinJumpListItemPrivate::get(item);
     if (p->category != this) {
         p->category = this;
@@ -293,11 +325,6 @@ QWinJumpListItem *QWinJumpListCategory::addLink(const QIcon &icon, const QString
  */
 QWinJumpListItem *QWinJumpListCategory::addSeparator()
 {
-    Q_D(QWinJumpListCategory);
-    if (d->type != Tasks) {
-        qWarning("QWinJumpListCategory::addSeparator(): only tasks category supports separators.");
-        return 0;
-    }
     QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Separator);
     addItem(item);
     return item;

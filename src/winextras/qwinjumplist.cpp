@@ -69,6 +69,11 @@ QT_BEGIN_NAMESPACE
     files or to display shortcuts to tasks or commands.
  */
 
+/*!
+    \title Application User Model IDs
+    \externalpage http://msdn.microsoft.com/en-us/library/windows/desktop/dd378459%28v=vs.85%29.aspx
+ */
+
 // partial copy of qprocess_win.cpp:qt_create_commandline()
 static QString createArguments(const QStringList &arguments)
 {
@@ -90,6 +95,17 @@ static QString createArguments(const QStringList &arguments)
         args += QLatin1Char(' ') + tmp;
     }
     return args;
+}
+
+static QString defaultIdentifier()
+{
+    // CompanyName.ProductName(.SubProduct).VersionInformation
+    QStringList identifier(QCoreApplication::applicationName());
+    if (!QCoreApplication::organizationName().isEmpty())
+        identifier.prepend(QCoreApplication::organizationName());
+    if (!QCoreApplication::applicationVersion().isEmpty())
+        identifier.append(QCoreApplication::applicationVersion());
+    return identifier.join(QLatin1Char('.'));
 }
 
 QWinJumpListPrivate::QWinJumpListPrivate() :
@@ -140,44 +156,36 @@ void QWinJumpListPrivate::_q_rebuild()
     dirty = false;
 }
 
-void QWinJumpListPrivate::destroy(bool clear)
+void QWinJumpListPrivate::destroy()
 {
-    if (recent) {
-        if (clear)
-            recent->clear();
-        delete recent;
-        recent = 0;
-    }
-    if (frequent) {
-        if (clear)
-            frequent->clear();
-        delete frequent;
-        frequent = 0;
-    }
-    if (tasks) {
-        if (clear)
-            tasks->clear();
-        delete tasks;
-        tasks = 0;
-    }
-    foreach (QWinJumpListCategory *category, categories) {
-        if (clear)
-            category->clear();
-        delete category;
-    }
+    delete recent;
+    recent = 0;
+    delete frequent;
+    frequent = 0;
+    delete tasks;
+    tasks = 0;
+    qDeleteAll(categories);
     categories.clear();
     invalidate();
 }
 
 bool QWinJumpListPrivate::beginList()
 {
-    UINT maxSlots;
-    IUnknown *array = 0;
-    HRESULT hresult = pDestList->BeginList(&maxSlots, IID_IUnknown, reinterpret_cast<void **>(&array));
+    HRESULT hresult = S_OK;
+    if (!identifier.isEmpty()) {
+        wchar_t *id = qt_qstringToNullTerminated(identifier);
+        hresult = pDestList->SetAppID(id);
+        delete[] id;
+    }
+    if (SUCCEEDED(hresult)) {
+        UINT maxSlots = 0;
+        IUnknown *array = 0;
+        hresult = pDestList->BeginList(&maxSlots, IID_IUnknown, reinterpret_cast<void **>(&array));
+        if (array)
+            array->Release();
+    }
     if (FAILED(hresult))
         QWinJumpListPrivate::warning("BeginList", hresult);
-    if (array)
-        array->Release();
     return SUCCEEDED(hresult);
 }
 
@@ -294,7 +302,7 @@ QWinJumpListItem *QWinJumpListPrivate::fromIShellLink(IShellLinkW *link)
     item->setIcon(QIcon(QString::fromWCharArray(buffer)));
 
     link->GetPath(buffer, buffersize-1, 0, 0);
-    item->setFilePath(QString::fromWCharArray(buffer));
+    item->setFilePath(QDir::fromNativeSeparators(QString::fromWCharArray(buffer)));
 
     return item;
 }
@@ -304,7 +312,7 @@ QWinJumpListItem *QWinJumpListPrivate::fromIShellItem(IShellItem2 *shellitem)
     QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Destination);
     wchar_t *strPtr;
     shellitem->GetDisplayName(SIGDN_FILESYSPATH, &strPtr);
-    item->setFilePath(QString::fromWCharArray(strPtr));
+    item->setFilePath(QDir::fromNativeSeparators(QString::fromWCharArray(strPtr)));
     CoTaskMemFree(strPtr);
     return item;
 }
@@ -425,6 +433,7 @@ QWinJumpList::QWinJumpList(QObject *parent) :
     HRESULT hresult = CoCreateInstance(CLSID_DestinationList, 0, CLSCTX_INPROC_SERVER, IID_ICustomDestinationList, reinterpret_cast<void **>(&d_ptr->pDestList));
     if (FAILED(hresult))
         QWinJumpListPrivate::warning("CoCreateInstance", hresult);
+    setIdentifier(defaultIdentifier());
     d->invalidate();
 }
 
@@ -440,8 +449,44 @@ QWinJumpList::~QWinJumpList()
         d->pDestList->Release();
         d->pDestList = 0;
     }
-    const bool clear = false;
-    d->destroy(clear);
+    d->destroy();
+}
+
+/*!
+    \property QWinJumpList::identifier
+    \brief the jump list identifier
+
+    Specifies a unique identifier for the application jump list.
+    See \l {Application User Model IDs} on MSDN for further details.
+
+    The default value is based on:
+    \list
+    \li QCoreApplication::organizationName
+    \li QCoreApplication::applicationName
+    \li QCoreApplication::applicationVersion
+    \endlist
+
+    \note The identifier cannot have more than \c 128 characters and
+    cannot contain spaces. A too long identifier is automatically truncated
+    to \c 128 characters, and spaces are replaced by underscores.
+ */
+QString QWinJumpList::identifier() const
+{
+    Q_D(const QWinJumpList);
+    return d->identifier;
+}
+
+void QWinJumpList::setIdentifier(const QString &identifier)
+{
+    Q_D(QWinJumpList);
+    QString id = identifier;
+    id.replace(QLatin1Char(' '), QLatin1Char('_'));
+    if (id.size() > 128)
+        id.truncate(128);
+    if (d->identifier != id) {
+        d->identifier = id;
+        d->invalidate();
+    }
 }
 
 /*!
@@ -498,6 +543,9 @@ QList<QWinJumpListCategory *> QWinJumpList::categories() const
 void QWinJumpList::addCategory(QWinJumpListCategory *category)
 {
     Q_D(QWinJumpList);
+    if (!category)
+        return;
+
     QWinJumpListCategoryPrivate::get(category)->jumpList = this;
     d->categories.append(category);
     d->invalidate();
@@ -525,8 +573,13 @@ QWinJumpListCategory *QWinJumpList::addCategory(const QString &title, const QLis
 void QWinJumpList::clear()
 {
     Q_D(QWinJumpList);
-    const bool clear = true;
-    d->destroy(clear);
+    recent()->clear();
+    frequent()->clear();
+    if (d->tasks)
+        d->tasks->clear();
+    foreach (QWinJumpListCategory *category, d->categories)
+        category->clear();
+    d->destroy();
 }
 
 QT_END_NAMESPACE

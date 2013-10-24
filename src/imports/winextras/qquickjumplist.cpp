@@ -41,7 +41,8 @@
  ****************************************************************************/
 
 #include "qquickjumplist_p.h"
-#include <QIcon>
+#include "qquickjumplistcategory_p.h"
+#include <QWinJumpList>
 
 QT_BEGIN_NAMESPACE
 
@@ -65,195 +66,139 @@ QT_BEGIN_NAMESPACE
     \internal
  */
 
-QQuickJumpList::QQuickJumpList(QQuickItem *parent) :
-    QQuickItem(parent), frequentCategoryShown(false), recentCategoryShown(false)
+QQuickJumpList::QQuickJumpList(QObject *parent) :
+    QObject(parent), m_recent(0), m_frequent(0), m_tasks(0)
+{
+}
+
+QQuickJumpList::~QQuickJumpList()
 {
 }
 
 /*!
-    \qmlproperty object JumpList::tasks
+    \qmlproperty JumpListCategory JumpList::recent
+    \readonly
 
-    Application tasks.
+    The recent items category.
  */
-QQmlListProperty<QQuickJumpListItem> QQuickJumpList::tasks()
+QQuickJumpListCategory *QQuickJumpList::recent() const
 {
-    return QQmlListProperty<QQuickJumpListItem>(this, this, &QQuickJumpList::appendTaskItem, 0, 0, 0);
+    if (!m_recent) {
+        QQuickJumpList *that = const_cast<QQuickJumpList *>(this);
+        that->m_recent = new QQuickJumpListCategory(that);
+        connect(m_recent, SIGNAL(visibilityChanged()), that, SLOT(rebuild()));
+        m_recent->setVisible(false);
+    }
+    return m_recent;
 }
 
 /*!
-    \qmlproperty object JumpList::destinations
+    \qmlproperty JumpListCategory JumpList::frequent
+    \readonly
 
-    Categories of custom destinations.
+    The frequent items category.
  */
-QQmlListProperty<QQuickJumpListCategory> QQuickJumpList::destinations()
+QQuickJumpListCategory *QQuickJumpList::frequent() const
 {
-    return QQmlListProperty<QQuickJumpListCategory>(this, this, &QQuickJumpList::appendGroup, 0, 0, 0);
+    if (!m_frequent) {
+        QQuickJumpList *that = const_cast<QQuickJumpList *>(this);
+        that->m_frequent = new QQuickJumpListCategory(that);
+        connect(m_frequent, SIGNAL(visibilityChanged()), that, SLOT(rebuild()));
+        m_frequent->setVisible(false);
+    }
+    return m_frequent;
 }
 
 /*!
-    \qmlproperty bool JumpList::showFrequentCategory
+    \qmlproperty JumpListCategory JumpList::tasks
 
-    Contains true if the \e Frequent category is shown; otherwise false.
+    The tasks category.
  */
-bool QQuickJumpList::showFrequentCategory() const
+QQuickJumpListCategory *QQuickJumpList::tasks() const
 {
-    return frequentCategoryShown;
+    if (!m_tasks) {
+        QQuickJumpList *that = const_cast<QQuickJumpList *>(this);
+        that->m_tasks = new QQuickJumpListCategory(that);
+        connect(m_tasks, SIGNAL(visibilityChanged()), that, SLOT(rebuild()));
+    }
+    return m_tasks;
 }
 
-void QQuickJumpList::setShowFrequentCategory(bool show)
+void QQuickJumpList::setTasks(QQuickJumpListCategory *tasks)
 {
-    frequentCategoryShown = show;
+    if (m_tasks != tasks) {
+        if (m_tasks)
+            disconnect(m_tasks, SIGNAL(visibilityChanged()), this, SLOT(rebuild()));
+        delete m_tasks;
+        m_tasks = tasks;
+        if (m_tasks)
+            connect(m_tasks, SIGNAL(visibilityChanged()), this, SLOT(rebuild()));
+        emit tasksChanged();
+    }
 }
 
 /*!
-    \qmlproperty bool JumpList::showRecentCategory
-
-    Contains true if the \e Recent category is shown; otherwise false.
+    \qmlproperty list<QtObject> JumpList::data
+    \internal
  */
-bool QQuickJumpList::showRecentCategory() const
+QQmlListProperty<QObject> QQuickJumpList::data()
 {
-    return recentCategoryShown;
+    return QQmlListProperty<QObject>(this, this, &QQuickJumpList::data_append, 0, 0, 0);
 }
 
-void QQuickJumpList::setShowRecentCategory(bool show)
+/*!
+    \qmlproperty list<JumpListCategory> JumpList::categories
+
+    A list of custom categories.
+ */
+QQmlListProperty<QQuickJumpListCategory> QQuickJumpList::categories()
 {
-    recentCategoryShown = show;
+    return QQmlListProperty<QQuickJumpListCategory>(this, this, &QQuickJumpList::categories_count, &QQuickJumpList::categories_at);
+}
+
+void QQuickJumpList::classBegin()
+{
 }
 
 void QQuickJumpList::componentComplete()
 {
-    QQuickItem::componentComplete();
-    QWinJumpList jumplist;
-    jumplist.frequent()->setVisible(frequentCategoryShown);
-    jumplist.recent()->setVisible(recentCategoryShown);
-    if (!taskList.isEmpty()) {
-        Q_FOREACH (QQuickJumpListItem *item, taskList)
-            jumplist.tasks()->addItem(item->toJumpListItem());
-        taskList.clear();
+    rebuild();
+}
+
+void QQuickJumpList::rebuild()
+{
+    QWinJumpList jumpList;
+    jumpList.recent()->setVisible(m_recent && m_recent->isVisible());
+    jumpList.frequent()->setVisible(m_frequent && m_frequent->isVisible());
+    if (m_tasks && m_tasks->isVisible()) {
+        jumpList.tasks()->setVisible(true);
+        foreach (QWinJumpListItem *item, m_tasks->toItemList())
+            jumpList.tasks()->addItem(item);
     }
-    if (!categoryList.isEmpty()) {
-        Q_FOREACH (QQuickJumpListCategory *category, categoryList) {
-            QList<QWinJumpListItem *> items = category->toItemList();
-            jumplist.addCategory(category->title(), items);
-        }
+    foreach (QQuickJumpListCategory *category, m_categories) {
+        if (category->isVisible())
+            jumpList.addCategory(category->title(), category->toItemList())->setVisible(true);
     }
 }
 
-void QQuickJumpList::appendTaskItem(QQmlListProperty<QQuickJumpListItem> *property, QQuickJumpListItem *value)
+void QQuickJumpList::data_append(QQmlListProperty<QObject> *property, QObject *object)
 {
-    static_cast<QQuickJumpList *>(property->data)->taskList.append(value);
-}
-
-void QQuickJumpList::appendGroup(QQmlListProperty<QQuickJumpListCategory> *property, QQuickJumpListCategory *value)
-{
-    static_cast<QQuickJumpList *>(property->data)->categoryList.append(value);
-}
-
-
-/*!
-    \qmltype JumpCategory
-    \instantiates QQuickJumpListCategory
-    \inqmlmodule QtWinExtras
-
-    \brief Represents a category of custom destinations.
-
-    \since QtWinExtras 1.0
-
-    The JumpCategory type represents a category that consists of several
-    Jump List destinations and has a title.
- */
-
-/*!
-    \class QQuickJumpListCategory
-    \internal
- */
-
-QQuickJumpListCategory::QQuickJumpListCategory(QObject *parent) :
-    QObject(parent)
-{
-}
-
-QQuickJumpListCategory::~QQuickJumpListCategory()
-{
-}
-
-/*!
-    \qmlproperty object JumpCategory::destinations
-
-    The destinations in this category.
- */
-QQmlListProperty<QQuickJumpListItem> QQuickJumpListCategory::destinations()
-{
-    return QQmlListProperty<QQuickJumpListItem>(this, this, &QQuickJumpListCategory::addItem, 0, 0, 0);
-}
-
-void QQuickJumpListCategory::setTitle(const QString &title)
-{
-    m_groupTitle = title;
-}
-
-/*!
-    \qmlproperty string JumpCategory::title
-
-    The title of the category.
- */
-QString QQuickJumpListCategory::title() const
-{
-    return m_groupTitle;
-}
-
-QList<QWinJumpListItem *> QQuickJumpListCategory::toItemList() const
-{
-    QList<QWinJumpListItem *> destinations;
-    foreach (QQuickJumpListItem *item, m_destinations)
-        destinations.append(item->toJumpListItem());
-    return destinations;
-}
-
-void QQuickJumpListCategory::addItem(QQmlListProperty<QQuickJumpListItem> *property, QQuickJumpListItem *value)
-{
-    static_cast<QQuickJumpListCategory *>(property->data)->m_destinations.append(value);
-}
-
-
-QQuickJumpListItem::QQuickJumpListItem(QObject *p) :
-    QObject(p)
-{
-}
-
-QQuickJumpListItem::~QQuickJumpListItem()
-{
-}
-
-void QQuickJumpListItem::setType(int type)
-{
-    m_type = type;
-}
-
-int QQuickJumpListItem::type() const
-{
-    return m_type;
-}
-
-QWinJumpListItem *QQuickJumpListItem::toJumpListItem() const
-{
-    QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Separator);
-    switch (m_type) {
-    case ItemTypeDestination :
-        item->setType(QWinJumpListItem::Destination);
-        item->setFilePath(property("filePath").toString());
-        break;
-    case ItemTypeLink :
-        item->setType(QWinJumpListItem::Link);
-        item->setFilePath(property("executablePath").toString());
-        item->setArguments(QStringList(property("arguments").toStringList()));
-        item->setDescription(property("description").toString());
-        item->setTitle(property("title").toString());
-        item->setIcon(QIcon(property("iconPath").toString()));
-        break;
+    if (QQuickJumpListCategory *category = qobject_cast<QQuickJumpListCategory *>(object)) {
+        QQuickJumpList *jumpList = static_cast<QQuickJumpList *>(property->object);
+        connect(category, SIGNAL(visibilityChanged()), jumpList, SLOT(rebuild()));
+        jumpList->m_categories.append(category);
+        emit jumpList->categoriesChanged();
     }
+}
 
-    return item;
+int QQuickJumpList::categories_count(QQmlListProperty<QQuickJumpListCategory> *property)
+{
+    return static_cast<QQuickJumpList *>(property->object)->m_categories.count();
+}
+
+QQuickJumpListCategory *QQuickJumpList::categories_at(QQmlListProperty<QQuickJumpListCategory> *property, int index)
+{
+    return static_cast<QQuickJumpList *>(property->object)->m_categories.value(index);
 }
 
 QT_END_NAMESPACE

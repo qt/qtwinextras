@@ -43,89 +43,57 @@
 #ifndef QQUICKJUMPLIST_P_H
 #define QQUICKJUMPLIST_P_H
 
-#include <QQuickItem>
+#include <QObject>
+#include <QQmlParserStatus>
 #include <QQmlListProperty>
-#include <QIcon>
-#include <QWinJumpList>
-#include <QWinJumpListItem>
-#include <QWinJumpListCategory>
 
 QT_BEGIN_NAMESPACE
 
-class QQuickJumpListItem : public QObject
+class QQuickJumpListCategory;
+
+class QQuickJumpList : public QObject, public QQmlParserStatus
 {
     Q_OBJECT
-    Q_PROPERTY(int __jumpListItemType READ type WRITE setType)
+    Q_PROPERTY(QQuickJumpListCategory *recent READ recent CONSTANT)
+    Q_PROPERTY(QQuickJumpListCategory *frequent READ frequent CONSTANT)
+    Q_PROPERTY(QQuickJumpListCategory *tasks READ tasks WRITE setTasks NOTIFY tasksChanged)
+    Q_PROPERTY(QQmlListProperty<QQuickJumpListCategory> categories READ categories NOTIFY categoriesChanged)
+    Q_PROPERTY(QQmlListProperty<QObject> data READ data)
+    Q_CLASSINFO("DefaultProperty", "data")
+    Q_INTERFACES(QQmlParserStatus)
 
 public:
-    enum JumpListItemType {
-        ItemTypeLink = 1,
-        ItemTypeDestination = 2,
-        ItemTypeSeparator = 3
-    };
+    explicit QQuickJumpList(QObject *parent = 0);
+    ~QQuickJumpList();
 
-    Q_ENUMS(JumpListItemType)
+    QQuickJumpListCategory *recent() const;
+    QQuickJumpListCategory *frequent() const;
 
-    explicit QQuickJumpListItem(QObject *p = 0);
-    ~QQuickJumpListItem();
-    void setType(int type);
-    int type() const;
-    QWinJumpListItem *toJumpListItem() const;
+    QQuickJumpListCategory *tasks() const;
+    void setTasks(QQuickJumpListCategory *tasks);
 
-private:
-    int m_type; // 1 - link, 2 - destination
-};
+    QQmlListProperty<QObject> data();
+    QQmlListProperty<QQuickJumpListCategory> categories();
 
-class QQuickJumpListCategory : public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY(QQmlListProperty<QQuickJumpListItem> destinations READ destinations)
-    Q_PROPERTY(QString title READ title WRITE setTitle)
-    Q_CLASSINFO("DefaultProperty", "destinations")
+    void classBegin();
+    void componentComplete();
 
-public:
-    explicit QQuickJumpListCategory(QObject *parent = 0);
-    ~QQuickJumpListCategory();
-    QQmlListProperty<QQuickJumpListItem> destinations();
-    void setTitle(const QString &title);
-    QString title() const;
+Q_SIGNALS:
+    void tasksChanged();
+    void categoriesChanged();
 
-    QList<QWinJumpListItem *> toItemList() const;
-
-    static void addItem(QQmlListProperty<QQuickJumpListItem> *property, QQuickJumpListItem *value);
+private Q_SLOTS:
+    void rebuild();
 
 private:
-    QString m_groupTitle;
-    QList<QQuickJumpListItem *> m_destinations;
-};
+    static void data_append(QQmlListProperty<QObject> *property, QObject *object);
+    static int categories_count(QQmlListProperty<QQuickJumpListCategory> *property);
+    static QQuickJumpListCategory *categories_at(QQmlListProperty<QQuickJumpListCategory> *property, int index);
 
-class QQuickJumpList : public QQuickItem
-{
-    Q_OBJECT
-    Q_PROPERTY(QQmlListProperty<QQuickJumpListItem> tasks READ tasks)
-    Q_PROPERTY(QQmlListProperty<QQuickJumpListCategory> destinations READ destinations)
-    Q_PROPERTY(bool showFrequentCategory READ showFrequentCategory WRITE setShowFrequentCategory)
-    Q_PROPERTY(bool showRecentCategory   READ showRecentCategory   WRITE setShowRecentCategory)
-
-public:
-    explicit QQuickJumpList(QQuickItem *parent = 0);
-    QQmlListProperty<QQuickJumpListItem> tasks();
-    QQmlListProperty<QQuickJumpListCategory> destinations();
-    bool showFrequentCategory() const;
-    void setShowFrequentCategory(bool);
-    bool showRecentCategory() const;
-    void setShowRecentCategory(bool);
-
-    virtual void componentComplete();
-
-    static void appendTaskItem(QQmlListProperty<QQuickJumpListItem> *property, QQuickJumpListItem *value);
-    static void appendGroup(QQmlListProperty<QQuickJumpListCategory> *property, QQuickJumpListCategory *value);
-
-private:
-    QList<QQuickJumpListItem *> taskList;
-    QList<QQuickJumpListCategory *> categoryList;
-    bool frequentCategoryShown;
-    bool recentCategoryShown;
+    QQuickJumpListCategory *m_recent;
+    QQuickJumpListCategory *m_frequent;
+    QQuickJumpListCategory *m_tasks;
+    QList<QQuickJumpListCategory *> m_categories;
 };
 
 QT_END_NAMESPACE

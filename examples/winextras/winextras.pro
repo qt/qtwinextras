@@ -1,8 +1,6 @@
 TEMPLATE = subdirs
-win32:{
+win32 {
     SUBDIRS += \
-        iconextractor \
-        dwmfeatures \
-        jumplistexample
-    EXAMPLE_FILES += quickdwm
+        iconextractor
+    qtHaveModule(widgets):qtHaveModule(multimedia): SUBDIRS += musicplayer
 }

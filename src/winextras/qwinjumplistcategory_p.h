@@ -44,7 +44,6 @@
 #define QWINJUMPLISTCATEGORY_P_H
 
 #include "qwinjumplistcategory.h"
-#include "winshobjidl_p.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -72,7 +71,6 @@ public:
     QWinJumpList *jumpList;
     QWinJumpListCategory::Type type;
     QList<QWinJumpListItem *> items;
-    IApplicationDocumentLists *pDocList;
 };
 
 QT_END_NAMESPACE

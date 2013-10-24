@@ -116,7 +116,8 @@ void QQuickDwmFeatures::setTopGlassMargin(int margin)
         return;
 
     d->topMargin = margin;
-    d->update();
+    if (window())
+        QtWin::extendFrameIntoClientArea(window(), d->leftMargin, d->topMargin, d->rightMargin, d->bottomMargin);
     emit topGlassMarginChanged();
 }
 
@@ -132,7 +133,8 @@ void QQuickDwmFeatures::setRightGlassMargin(int margin)
         return;
 
     d->rightMargin = margin;
-    d->update();
+    if (window())
+        QtWin::extendFrameIntoClientArea(window(), d->leftMargin, d->topMargin, d->rightMargin, d->bottomMargin);
     emit rightGlassMarginChanged();
 }
 
@@ -148,8 +150,9 @@ void QQuickDwmFeatures::setBottomGlassMargin(int margin)
         return;
 
     d->bottomMargin = margin;
-    d->update();
-    emit rightGlassMarginChanged();
+    if (window())
+        QtWin::extendFrameIntoClientArea(window(), d->leftMargin, d->topMargin, d->rightMargin, d->bottomMargin);
+    emit bottomGlassMarginChanged();
 }
 
 /*!
@@ -164,7 +167,8 @@ void QQuickDwmFeatures::setLeftGlassMargin(int margin)
         return;
 
     d->leftMargin = margin;
-    d->update();
+    if (window())
+        QtWin::extendFrameIntoClientArea(window(), d->leftMargin, d->topMargin, d->rightMargin, d->bottomMargin);
     emit leftGlassMarginChanged();
 }
 
@@ -193,6 +197,33 @@ int QQuickDwmFeatures::leftGlassMargin() const
 }
 
 /*!
+    \qmlproperty bool DwmFeatures::blurBehindEnabled
+
+    Specifies whether the blur behind the window client area is enabled.
+ */
+bool QQuickDwmFeatures::isBlurBehindEnabled() const
+{
+    Q_D(const QQuickDwmFeatures);
+    return d->blurBehindEnabled;
+}
+
+void QQuickDwmFeatures::setBlurBehindEnabled(bool enabled)
+{
+    Q_D(QQuickDwmFeatures);
+    if (d->blurBehindEnabled == enabled)
+        return;
+
+    d->blurBehindEnabled = enabled;
+    if (window()) {
+        if (d->blurBehindEnabled)
+            QtWin::enableBlurBehindWindow(window());
+        else
+            QtWin::disableBlurBehindWindow(window());
+    }
+    emit blurBehindEnabledChanged();
+}
+
+/*!
     \qmlproperty bool DwmFeatures::excludedFromPeek
 
     Specifies whether the window is excluded from Aero Peek.
@@ -214,7 +245,8 @@ void QQuickDwmFeatures::setExcludedFromPeek(bool exclude)
         return;
 
     d->peekExcluded = exclude;
-    d->update();
+    if (window())
+        QtWin::setWindowExcludedFromPeek(window(), d->peekExcluded);
     emit excludedFromPeekChanged();
 }
 
@@ -240,7 +272,8 @@ void QQuickDwmFeatures::setPeekDisallowed(bool disallow)
         return;
 
     d->peekDisallowed = disallow;
-    d->update();
+    if (window())
+        QtWin::setWindowDisallowPeek(window(), d->peekDisallowed);
     emit peekDisallowedChanged();
 }
 
@@ -249,30 +282,35 @@ void QQuickDwmFeatures::setPeekDisallowed(bool disallow)
 
     The current Flip3D policy for the window.
  */
-QtWin::WindowFlip3DPolicy QQuickDwmFeatures::flip3DPolicy() const
+QQuickWin::WindowFlip3DPolicy QQuickDwmFeatures::flip3DPolicy() const
 {
     Q_D(const QQuickDwmFeatures);
     if (window())
-        return QtWin::windowFlip3DPolicy(window());
+        return static_cast<QQuickWin::WindowFlip3DPolicy>(QtWin::windowFlip3DPolicy(window()));
     else
         return d->flipPolicy;
 }
 
-void QQuickDwmFeatures::setFlip3DPolicy(QtWin::WindowFlip3DPolicy policy)
+void QQuickDwmFeatures::setFlip3DPolicy(QQuickWin::WindowFlip3DPolicy policy)
 {
     Q_D(QQuickDwmFeatures);
     if (d->flipPolicy == policy)
         return;
 
     d->flipPolicy = policy;
-    d->update();
+    if (window())
+        QtWin::setWindowFlip3DPolicy(window(), static_cast<QtWin::WindowFlip3DPolicy>(d->flipPolicy));
     emit flip3DPolicyChanged();
 }
 
 bool QQuickDwmFeatures::eventFilter(QObject *object, QEvent *event)
 {
+    Q_D(QQuickDwmFeatures);
     if (object == window()) {
         if (event->type() == QWinEvent::CompositionChange) {
+            d->updateSurfaceFormat();
+            if (static_cast<QWinCompositionChangeEvent *>(event)->isCompositionEnabled())
+                d->updateAll();
             emit compositionEnabledChanged();
         } else if (event->type() == QWinEvent::ColorizationChange) {
             emit colorizationColorChanged();
@@ -298,8 +336,9 @@ void QQuickDwmFeatures::itemChange(QQuickItem::ItemChange change, const QQuickIt
 {
     Q_D(QQuickDwmFeatures);
     if (change == ItemSceneChange && data.window) {
-        d->update();
+        d->updateAll();
         data.window->installEventFilter(this);
+        d->originalSurfaceColor = data.window->color();
     }
     QQuickItem::itemChange(change, data);
 }
@@ -308,31 +347,38 @@ void QQuickDwmFeatures::itemChange(QQuickItem::ItemChange change, const QQuickIt
 
 QQuickDwmFeaturesPrivate::QQuickDwmFeaturesPrivate(QQuickDwmFeatures *parent) :
     topMargin(0), rightMargin(0), bottomMargin(0), leftMargin(0),
-    peekDisallowed(false), peekExcluded(false), flipPolicy(QtWin::FlipDefault),
-    q_ptr(parent), formatSet(false)
+    blurBehindEnabled(false),
+    peekDisallowed(false), peekExcluded(false), flipPolicy(QQuickWin::FlipDefault),
+    q_ptr(parent)
 {
 }
 
-void QQuickDwmFeaturesPrivate::update()
+void QQuickDwmFeaturesPrivate::updateAll()
 {
     Q_Q(QQuickDwmFeatures);
     QWindow *w = q->window();
     if (w) {
-        if (!formatSet) {
-            formatSet = true;
-            QSurfaceFormat format = w->format();
-            format.setAlphaBufferSize(8);
-            w->setFormat(format);
-            q->window()->setColor(Qt::transparent);
-        }
-        if (peekExcluded)
-            QtWin::setWindowExcludedFromPeek(w, peekExcluded);
-        if (peekDisallowed)
-            QtWin::setWindowDisallowPeek(w, peekDisallowed);
-        if (flipPolicy != QtWin::FlipDefault)
-            QtWin::setWindowFlip3DPolicy(w, flipPolicy);
-        if (topMargin || rightMargin || bottomMargin || leftMargin)
-            QtWin::extendFrameIntoClientArea(w, leftMargin, topMargin, rightMargin, bottomMargin);
+        updateSurfaceFormat();
+        QtWin::setWindowExcludedFromPeek(w, peekExcluded);
+        QtWin::setWindowDisallowPeek(w, peekDisallowed);
+        QtWin::setWindowFlip3DPolicy(w, static_cast<QtWin::WindowFlip3DPolicy>(flipPolicy));
+        if (blurBehindEnabled)
+            QtWin::enableBlurBehindWindow(w);
+        else
+            QtWin::disableBlurBehindWindow(w);
+        QtWin::extendFrameIntoClientArea(w, leftMargin, topMargin, rightMargin, bottomMargin);
+    }
+}
+
+void QQuickDwmFeaturesPrivate::updateSurfaceFormat()
+{
+    Q_Q(QQuickDwmFeatures);
+    if (q->window()) {
+        const bool compositionEnabled = q->isCompositionEnabled();
+        QSurfaceFormat format = q->window()->format();
+        format.setAlphaBufferSize(compositionEnabled ? 8 : 0);
+        q->window()->setFormat(format);
+        q->window()->setColor(compositionEnabled ? QColor(Qt::transparent) : originalSurfaceColor);
     }
 }
 

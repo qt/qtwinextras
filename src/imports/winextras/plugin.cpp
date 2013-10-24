@@ -43,8 +43,11 @@
 #include "qquickdwmfeatures_p.h"
 #include "qquicktaskbarbutton_p.h"
 #include "qquickjumplist_p.h"
+#include "qquickjumplistitem_p.h"
+#include "qquickjumplistcategory_p.h"
 #include "qquickthumbnailtoolbar_p.h"
 #include "qquickthumbnailtoolbutton_p.h"
+#include "qquickwin_p.h"
 
 #include <QtQml/QtQml>
 
@@ -59,7 +62,7 @@ public:
     void registerTypes(const char *uri) Q_DECL_OVERRIDE
     {
         Q_ASSERT(uri == QLatin1String("QtWinExtras"));
-        qmlRegisterUncreatableType<QtWin>(uri, 1, 0, "QtWin", "Cannot create an instance of the QtWin namespace.");
+        qmlRegisterUncreatableType<QQuickWin>(uri, 1, 0, "QtWin", "Cannot create an instance of the QtWin namespace.");
         qmlRegisterType<QQuickDwmFeatures>(uri, 1, 0, "DwmFeatures");
         qmlRegisterType<QQuickTaskbarButton>(uri, 1, 0, "TaskbarButton");
         qmlRegisterUncreatableType<QWinTaskbarProgress>(uri, 1, 0, "TaskbarProgress", "Cannot create TaskbarProgress - use TaskbarButton.progress instead.");

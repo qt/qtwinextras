@@ -65,7 +65,7 @@ public:
 
     void invalidate();
     void _q_rebuild();
-    void destroy(bool clear);
+    void destroy();
 
     bool beginList();
     bool commitList();
@@ -89,6 +89,7 @@ public:
     QWinJumpListCategory *frequent;
     QWinJumpListCategory *tasks;
     QList<QWinJumpListCategory *> categories;
+    QString identifier;
     bool dirty;
 };
 
