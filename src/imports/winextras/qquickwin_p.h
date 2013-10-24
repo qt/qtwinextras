@@ -44,7 +44,7 @@
 #define QQUICKWIN_P_H
 
 #include <QObject>
-#include <QWinFunctions>
+#include <QtWin>
 
 QT_BEGIN_NAMESPACE
 
