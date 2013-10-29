@@ -88,7 +88,7 @@ HRESULT qt_DwmGetColorizationColor(DWORD *colorization, BOOL *opaqueBlend)
 HRESULT qt_DwmSetWindowAttribute(HWND hwnd, DWORD dwAttribute, LPCVOID pvAttribute, DWORD cbAttribute)
 {
     qt_winextras_init();
-    if (pDwmGetColorizationColor)
+    if (pDwmSetWindowAttribute)
         return pDwmSetWindowAttribute(hwnd, dwAttribute, pvAttribute, cbAttribute);
     else
         return E_FAIL;
