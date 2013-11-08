@@ -42,7 +42,7 @@
 #include "testwidget.h"
 #include "ui_testwidget.h"
 
-#include <QWinFunctions>
+#include <QtWin>
 #include <QWinEvent>
 #include <QDebug>
 #include <qt_windows.h>

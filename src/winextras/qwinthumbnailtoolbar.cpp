@@ -44,6 +44,7 @@
 #include "qwinthumbnailtoolbar_p.h"
 #include "qwinthumbnailtoolbutton.h"
 #include "qwinthumbnailtoolbutton_p.h"
+#include "windowsguidsdefs_p.h"
 
 #include <QWindow>
 #include <QCoreApplication>
@@ -215,10 +216,10 @@ void QWinThumbnailToolBar::clear()
 static inline ITaskbarList4 *createTaskbarList()
 {
     ITaskbarList4 *result = 0;
-    HRESULT hresult = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, IID_ITaskbarList4, reinterpret_cast<void **>(&result));
+    HRESULT hresult = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, qIID_ITaskbarList4, reinterpret_cast<void **>(&result));
     if (FAILED(hresult)) {
         const QString err = QtWin::errorStringFromHresult(hresult);
-        qWarning("QWinThumbnailToolBar: IID_ITaskbarList4 was not created: %#010x, %s.",
+        qWarning("QWinThumbnailToolBar: qIID_ITaskbarList4 was not created: %#010x, %s.",
                  (unsigned)hresult, qPrintable(err));
         return 0;
     }
@@ -226,7 +227,7 @@ static inline ITaskbarList4 *createTaskbarList()
     if (FAILED(hresult)) {
         result->Release();
         const QString err = QtWin::errorStringFromHresult(hresult);
-        qWarning("QWinThumbnailToolBar: IID_ITaskbarList4 was not initialized: %#010x, %s.",
+        qWarning("QWinThumbnailToolBar: qIID_ITaskbarList4 was not initialized: %#010x, %s.",
                  (unsigned)hresult, qPrintable(err));
         return 0;
     }

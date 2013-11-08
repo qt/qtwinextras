@@ -43,7 +43,7 @@
 #define QWINFUNCTIONS_H
 
 #if 0
-#pragma qt_class(QWinFunctions)
+#pragma qt_class(QtWin)
 #endif
 
 #include <QtCore/qobject.h>

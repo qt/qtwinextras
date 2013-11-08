@@ -44,7 +44,7 @@
 #include <QtCore/QFileInfo>
 #include <QtGui/QPixmap>
 #include <QtGui/QImage>
-#include <QtWinExtras/QWinFunctions>
+#include <QtWinExtras/QtWin>
 
 class tst_QPixmap : public QObject
 {

@@ -1,7 +1,6 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
- ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -40,35 +39,44 @@
  **
  ****************************************************************************/
 
-#ifndef QQUICKWIN_P_H
-#define QQUICKWIN_P_H
+#ifndef WINDOWSGUIDSDEFS_P_H
+#define WINDOWSGUIDSDEFS_P_H
 
-#include <QObject>
-#include <QtWin>
+//
+//  W A R N I N G
+//  -------------
+//
+// This file is not part of the Qt API.  It exists for the convenience
+// of QtWinExtras. This header file may change from version to
+// version without notice, or even be removed.
+//
+// We mean it.
+//
+
+#include <QtGlobal>
+#include <qt_windows.h>
 
 QT_BEGIN_NAMESPACE
 
-class QQuickWin : public QObject
-{
-    Q_OBJECT
-    Q_ENUMS(HBitmapFormat WindowFlip3DPolicy)
-
-public:
-    enum HBitmapFormat
-    {
-        HBitmapNoAlpha = QtWin::HBitmapNoAlpha,
-        HBitmapPremultipliedAlpha = QtWin::HBitmapPremultipliedAlpha,
-        HBitmapAlpha = QtWin::HBitmapAlpha
-    };
-
-    enum WindowFlip3DPolicy
-    {
-        FlipDefault = QtWin::FlipDefault,
-        FlipExcludeBelow = QtWin::FlipExcludeBelow,
-        FlipExcludeAbove = QtWin::FlipExcludeAbove
-    };
-};
+extern const GUID qCLSID_DestinationList;
+extern const GUID qCLSID_EnumerableObjectCollection;
+extern const GUID qIID_ICustomDestinationList;
+extern const GUID qIID_IApplicationDestinations;
+extern const GUID qCLSID_ApplicationDestinations;
+extern const GUID qIID_IApplicationDocumentLists;
+extern const GUID qCLSID_ApplicationDocumentLists;
+extern const GUID qIID_IObjectArray;
+extern const GUID qIID_IObjectCollection;
+extern const GUID qIID_IPropertyStore;
+extern const GUID qIID_ITaskbarList3;
+extern const GUID qIID_ITaskbarList4;
+extern const GUID qIID_IShellItem2;
+extern const GUID qIID_IShellLinkW;
+extern const GUID qIID_ITaskbarList;
+extern const GUID qIID_ITaskbarList2;
+extern const GUID qIID_IUnknown;
+extern const GUID qGUID_NULL;
 
 QT_END_NAMESPACE
 
-#endif // QQUICKWIN_P_H
+#endif // WINDOWSGUIDSDEFS_P_H

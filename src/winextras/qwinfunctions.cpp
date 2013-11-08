@@ -43,6 +43,7 @@
 #include "qwinfunctions.h"
 #include "qwinfunctions_p.h"
 #include "qwineventfilter_p.h"
+#include "windowsguidsdefs_p.h"
 
 #include <QGuiApplication>
 #include <QWindow>
@@ -70,7 +71,7 @@ Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON(HICON icon);
     \namespace QtWin
     \inmodule QtWinExtras
     \brief The QtWin namespace contains miscellaneous Windows-specific functions.
-    \inheaderfile QWinFunctions
+    \inheaderfile QtWin
 
  */
 
@@ -1833,7 +1834,7 @@ void QtWin::setCurrentProcessExplicitAppUserModelID(const QString &id)
 ITaskbarList3 *qt_createITaskbarList3()
 {
     ITaskbarList3 *pTbList = 0;
-    HRESULT result = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, IID_ITaskbarList3, reinterpret_cast<void **>(&pTbList));
+    HRESULT result = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, qIID_ITaskbarList3, reinterpret_cast<void **>(&pTbList));
     if (SUCCEEDED(result)) {
         if (FAILED(pTbList->HrInit())) {
             pTbList->Release();
@@ -1849,7 +1850,7 @@ ITaskbarList3 *qt_createITaskbarList3()
 ITaskbarList2 *qt_createITaskbarList2()
 {
     ITaskbarList3 *pTbList = 0;
-    HRESULT result = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, IID_ITaskbarList2, reinterpret_cast<void **>(&pTbList));
+    HRESULT result = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, qIID_ITaskbarList2, reinterpret_cast<void **>(&pTbList));
     if (SUCCEEDED(result)) {
         if (FAILED(pTbList->HrInit())) {
             pTbList->Release();

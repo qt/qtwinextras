@@ -42,13 +42,26 @@
 #ifndef WINPROPKEY_P_H
 #define WINPROPKEY_P_H
 
+//
+//  W A R N I N G
+//  -------------
+//
+// This file is not part of the Qt API.  It exists for the convenience
+// of QtWinExtras. This header file may change from version to
+// version without notice, or even be removed.
+//
+// We mean it.
+//
+
+#include <QtGlobal>
 #include <propkey.h>
 
-#if _MSC_VER < 1600 || defined(Q_CC_MINGW)
+QT_BEGIN_NAMESPACE
 
-extern const PROPERTYKEY PKEY_AppUserModel_IsDestListSeparator;
-extern const PROPERTYKEY PKEY_Link_Arguments;
+extern const PROPERTYKEY qPKEY_Title;
+extern const PROPERTYKEY qPKEY_AppUserModel_IsDestListSeparator;
+extern const PROPERTYKEY qPKEY_Link_Arguments;
 
-#endif
+QT_END_NAMESPACE
 
 #endif // WINPROPKEY_P_H

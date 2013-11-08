@@ -36,13 +36,13 @@ HEADERS += \
     qwinthumbnailtoolbar_p.h \
     qwinthumbnailtoolbutton.h \
     qwinthumbnailtoolbutton_p.h \
-    qwinevent.h
+    qwinevent.h \
+    windowsguidsdefs_p.h
 
 QMAKE_DOCS = $$PWD/doc/qtwinextras.qdocconf
 
 DEFINES += NTDDI_VERSION=0x06010000 _WIN32_WINNT=0x0601
-LIBS += -lole32 -lshlwapi -lshell32
-LIBS -= -luuid
+LIBS_PRIVATE += -lole32 -lshlwapi -lshell32
 
 OTHER_FILES += \
     doc/qtwinextras.qdocconf \

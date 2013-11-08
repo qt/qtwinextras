@@ -39,7 +39,7 @@
 **
 ****************************************************************************/
 
-#include <QWinFunctions>
+#include <QtWin>
 
 #include <QGuiApplication>
 #include <QScopedArrayPointer>

@@ -45,6 +45,8 @@
 #include "qwinjumplistitem.h"
 #include "qwinjumplistcategory.h"
 #include "qwinjumplistcategory_p.h"
+#include "windowsguidsdefs_p.h"
+#include "winpropkey_p.h"
 
 #include <QDir>
 #include <QCoreApplication>
@@ -180,7 +182,7 @@ bool QWinJumpListPrivate::beginList()
     if (SUCCEEDED(hresult)) {
         UINT maxSlots = 0;
         IUnknown *array = 0;
-        hresult = pDestList->BeginList(&maxSlots, IID_IUnknown, reinterpret_cast<void **>(&array));
+        hresult = pDestList->BeginList(&maxSlots, qIID_IUnknown, reinterpret_cast<void **>(&array));
         if (array)
             array->Release();
     }
@@ -235,7 +237,7 @@ QList<QWinJumpListItem *> QWinJumpListPrivate::fromComCollection(IObjectArray *a
     array->GetCount(&count);
     for (UINT i = 0; i < count; ++i) {
         IUnknown *collectionItem = 0;
-        HRESULT hresult = array->GetAt(i, IID_IUnknown, reinterpret_cast<void **>(&collectionItem));
+        HRESULT hresult = array->GetAt(i, qIID_IUnknown, reinterpret_cast<void **>(&collectionItem));
         if (FAILED(hresult)) {
             QWinJumpListPrivate::warning("GetAt", hresult);
             continue;
@@ -243,10 +245,10 @@ QList<QWinJumpListItem *> QWinJumpListPrivate::fromComCollection(IObjectArray *a
         IShellItem2 *shellItem = 0;
         IShellLinkW *shellLink = 0;
         QWinJumpListItem *jumplistItem = 0;
-        if (SUCCEEDED(collectionItem->QueryInterface(IID_IShellItem2, reinterpret_cast<void **>(&shellItem)))) {
+        if (SUCCEEDED(collectionItem->QueryInterface(qIID_IShellItem2, reinterpret_cast<void **>(&shellItem)))) {
             jumplistItem = fromIShellItem(shellItem);
             shellItem->Release();
-        } else if (SUCCEEDED(collectionItem->QueryInterface(IID_IShellLinkW, reinterpret_cast<void **>(&shellLink)))) {
+        } else if (SUCCEEDED(collectionItem->QueryInterface(qIID_IShellLinkW, reinterpret_cast<void **>(&shellLink)))) {
             jumplistItem = fromIShellLink(shellLink);
             shellLink->Release();
         } else {
@@ -264,7 +266,7 @@ IObjectCollection *QWinJumpListPrivate::toComCollection(const QList<QWinJumpList
     if (list.isEmpty())
         return 0;
     IObjectCollection *collection = 0;
-    HRESULT hresult = CoCreateInstance(CLSID_EnumerableObjectCollection, 0, CLSCTX_INPROC_SERVER, IID_IObjectCollection, reinterpret_cast<void **>(&collection));
+    HRESULT hresult = CoCreateInstance(qCLSID_EnumerableObjectCollection, 0, CLSCTX_INPROC_SERVER, qIID_IObjectCollection, reinterpret_cast<void **>(&collection));
     if (FAILED(hresult)) {
         QWinJumpListPrivate::warning("QWinJumpList: failed to instantiate IObjectCollection", hresult);
         return 0;
@@ -284,9 +286,9 @@ QWinJumpListItem *QWinJumpListPrivate::fromIShellLink(IShellLinkW *link)
     QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Link);
 
     IPropertyStore *linkProps;
-    link->QueryInterface(IID_IPropertyStore, reinterpret_cast<void **>(&linkProps));
+    link->QueryInterface(qIID_IPropertyStore, reinterpret_cast<void **>(&linkProps));
     PROPVARIANT var;
-    linkProps->GetValue(PKEY_Link_Arguments, &var);
+    linkProps->GetValue(qPKEY_Link_Arguments, &var);
     item->setArguments(QStringList(QString::fromWCharArray(var.pwszVal)));
     PropVariantClear(&var);
     linkProps->Release();
@@ -334,7 +336,7 @@ IUnknown *QWinJumpListPrivate::toICustomDestinationListItem(const QWinJumpListIt
 IShellLinkW *QWinJumpListPrivate::toIShellLink(const QWinJumpListItem *item)
 {
     IShellLinkW *link = 0;
-    HRESULT hresult = CoCreateInstance(CLSID_ShellLink, 0, CLSCTX_INPROC_SERVER, IID_IShellLinkW, reinterpret_cast<void **>(&link));
+    HRESULT hresult = CoCreateInstance(CLSID_ShellLink, 0, CLSCTX_INPROC_SERVER, qIID_IShellLinkW, reinterpret_cast<void **>(&link));
     if (FAILED(hresult)) {
         QWinJumpListPrivate::warning("QWinJumpList: failed to instantiate IShellLinkW", hresult);
         return 0;
@@ -372,7 +374,7 @@ IShellLinkW *QWinJumpListPrivate::toIShellLink(const QWinJumpListItem *item)
 
     IPropertyStore *properties;
     PROPVARIANT titlepv;
-    hresult = link->QueryInterface(IID_IPropertyStore, reinterpret_cast<void **>(&properties));
+    hresult = link->QueryInterface(qIID_IPropertyStore, reinterpret_cast<void **>(&properties));
     if (FAILED(hresult)) {
         link->Release();
         return 0;
@@ -380,7 +382,7 @@ IShellLinkW *QWinJumpListPrivate::toIShellLink(const QWinJumpListItem *item)
 
     qt_qstringToNullTerminated(item->title(), buffer);
     InitPropVariantFromString(buffer, &titlepv);
-    properties->SetValue(PKEY_Title, titlepv);
+    properties->SetValue(qPKEY_Title, titlepv);
     properties->Commit();
     properties->Release();
     PropVariantClear(&titlepv);
@@ -393,7 +395,7 @@ IShellItem2 *QWinJumpListPrivate::toIShellItem(const QWinJumpListItem *item)
 {
     IShellItem2 *shellitem = 0;
     wchar_t *buffer = qt_qstringToNullTerminated(item->filePath());
-    qt_SHCreateItemFromParsingName(buffer, 0, IID_IShellItem2, reinterpret_cast<void **>(&shellitem));
+    qt_SHCreateItemFromParsingName(buffer, 0, qIID_IShellItem2, reinterpret_cast<void **>(&shellitem));
     delete[] buffer;
     return shellitem;
 }
@@ -401,12 +403,12 @@ IShellItem2 *QWinJumpListPrivate::toIShellItem(const QWinJumpListItem *item)
 IShellLinkW *QWinJumpListPrivate::makeSeparatorShellItem()
 {
     IShellLinkW *separator;
-    HRESULT res = CoCreateInstance(CLSID_ShellLink, 0, CLSCTX_INPROC_SERVER, IID_IShellLinkW, reinterpret_cast<void **>(&separator));
+    HRESULT res = CoCreateInstance(CLSID_ShellLink, 0, CLSCTX_INPROC_SERVER, qIID_IShellLinkW, reinterpret_cast<void **>(&separator));
     if (FAILED(res))
         return 0;
 
     IPropertyStore *properties;
-    res = separator->QueryInterface(IID_IPropertyStore, reinterpret_cast<void **>(&properties));
+    res = separator->QueryInterface(qIID_IPropertyStore, reinterpret_cast<void **>(&properties));
     if (FAILED(res)) {
         separator->Release();
         return 0;
@@ -414,7 +416,7 @@ IShellLinkW *QWinJumpListPrivate::makeSeparatorShellItem()
 
     PROPVARIANT isSeparator;
     InitPropVariantFromBoolean(TRUE, &isSeparator);
-    properties->SetValue(PKEY_AppUserModel_IsDestListSeparator, isSeparator);
+    properties->SetValue(qPKEY_AppUserModel_IsDestListSeparator, isSeparator);
     properties->Commit();
     properties->Release();
     PropVariantClear(&isSeparator);
@@ -430,7 +432,7 @@ QWinJumpList::QWinJumpList(QObject *parent) :
 {
     Q_D(QWinJumpList);
     d->q_ptr = this;
-    HRESULT hresult = CoCreateInstance(CLSID_DestinationList, 0, CLSCTX_INPROC_SERVER, IID_ICustomDestinationList, reinterpret_cast<void **>(&d_ptr->pDestList));
+    HRESULT hresult = CoCreateInstance(qCLSID_DestinationList, 0, CLSCTX_INPROC_SERVER, qIID_ICustomDestinationList, reinterpret_cast<void **>(&d_ptr->pDestList));
     if (FAILED(hresult))
         QWinJumpListPrivate::warning("CoCreateInstance", hresult);
     setIdentifier(defaultIdentifier());

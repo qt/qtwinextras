@@ -44,7 +44,7 @@
 #define QQUICKDWMFEATURES_P_H
 
 #include <QQuickItem>
-#include <QWinFunctions>
+#include <QtWin>
 
 #include "qquickwin_p.h"
 
