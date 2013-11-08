@@ -39,8 +39,8 @@
  **
  ****************************************************************************/
 
-#ifndef WINPROPKEY_P_H
-#define WINPROPKEY_P_H
+#ifndef WINDOWSGUIDSDEFS_P_H
+#define WINDOWSGUIDSDEFS_P_H
 
 //
 //  W A R N I N G
@@ -54,14 +54,29 @@
 //
 
 #include <QtGlobal>
-#include <propkey.h>
+#include <qt_windows.h>
 
 QT_BEGIN_NAMESPACE
 
-extern const PROPERTYKEY qPKEY_Title;
-extern const PROPERTYKEY qPKEY_AppUserModel_IsDestListSeparator;
-extern const PROPERTYKEY qPKEY_Link_Arguments;
+extern const GUID qCLSID_DestinationList;
+extern const GUID qCLSID_EnumerableObjectCollection;
+extern const GUID qIID_ICustomDestinationList;
+extern const GUID qIID_IApplicationDestinations;
+extern const GUID qCLSID_ApplicationDestinations;
+extern const GUID qIID_IApplicationDocumentLists;
+extern const GUID qCLSID_ApplicationDocumentLists;
+extern const GUID qIID_IObjectArray;
+extern const GUID qIID_IObjectCollection;
+extern const GUID qIID_IPropertyStore;
+extern const GUID qIID_ITaskbarList3;
+extern const GUID qIID_ITaskbarList4;
+extern const GUID qIID_IShellItem2;
+extern const GUID qIID_IShellLinkW;
+extern const GUID qIID_ITaskbarList;
+extern const GUID qIID_ITaskbarList2;
+extern const GUID qIID_IUnknown;
+extern const GUID qGUID_NULL;
 
 QT_END_NAMESPACE
 
-#endif // WINPROPKEY_P_H
+#endif // WINDOWSGUIDSDEFS_P_H

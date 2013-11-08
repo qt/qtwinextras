@@ -46,6 +46,7 @@
 #include "qwinfunctions_p.h"
 #include "qwinjumplist_p.h"
 #include "winshobjidl_p.h"
+#include "windowsguidsdefs_p.h"
 
 #include <shlobj.h>
 
@@ -98,7 +99,7 @@ void QWinJumpListCategoryPrivate::loadRecents()
 {
     Q_ASSERT(jumpList);
     IApplicationDocumentLists *pDocList = 0;
-    HRESULT hresult = CoCreateInstance(CLSID_ApplicationDocumentLists, 0, CLSCTX_INPROC_SERVER, IID_IApplicationDocumentLists, reinterpret_cast<void **>(&pDocList));
+    HRESULT hresult = CoCreateInstance(qCLSID_ApplicationDocumentLists, 0, CLSCTX_INPROC_SERVER, qIID_IApplicationDocumentLists, reinterpret_cast<void **>(&pDocList));
     if (SUCCEEDED(hresult)) {
         if (!jumpList->identifier().isEmpty()) {
             wchar_t *id = qt_qstringToNullTerminated(jumpList->identifier());
@@ -108,7 +109,7 @@ void QWinJumpListCategoryPrivate::loadRecents()
         if (SUCCEEDED(hresult)) {
             IObjectArray *array = 0;
             hresult = pDocList->GetList(type == QWinJumpListCategory::Recent ? ADLT_RECENT : ADLT_FREQUENT,
-                                        0, IID_IObjectArray, reinterpret_cast<void **>(&array));
+                                        0, qIID_IObjectArray, reinterpret_cast<void **>(&array));
             if (SUCCEEDED(hresult)) {
                 items = QWinJumpListPrivate::fromComCollection(array);
                 array->Release();
@@ -139,7 +140,7 @@ void QWinJumpListCategoryPrivate::addRecent(QWinJumpListItem *item)
 void QWinJumpListCategoryPrivate::clearRecents()
 {
     IApplicationDestinations *pDest = 0;
-    HRESULT hresult = CoCreateInstance(CLSID_ApplicationDestinations, 0, CLSCTX_INPROC_SERVER, IID_IApplicationDestinations, reinterpret_cast<void **>(&pDest));
+    HRESULT hresult = CoCreateInstance(qCLSID_ApplicationDestinations, 0, CLSCTX_INPROC_SERVER, qIID_IApplicationDestinations, reinterpret_cast<void **>(&pDest));
     if (SUCCEEDED(hresult)) {
         const QString identifier = jumpList ? jumpList->identifier() : QString();
         if (!identifier.isEmpty()) {

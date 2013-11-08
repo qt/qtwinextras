@@ -48,6 +48,7 @@
 #include "qwineventfilter_p.h"
 #include "qwinevent.h"
 #include "winshobjidl_p.h"
+#include "windowsguidsdefs_p.h"
 
 #include <QWindow>
 #include <QIcon>
@@ -96,16 +97,16 @@ static TBPFLAG nativeProgressState(QWinTaskbarProgress *progress)
 
 QWinTaskbarButtonPrivate::QWinTaskbarButtonPrivate() : progressBar(0), pTbList(0), window(0)
 {
-    HRESULT hresult = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, IID_ITaskbarList4, reinterpret_cast<void **>(&pTbList));
+    HRESULT hresult = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, qIID_ITaskbarList4, reinterpret_cast<void **>(&pTbList));
     if (FAILED(hresult)) {
         pTbList = 0;
         const QString err = QtWin::errorStringFromHresult(hresult);
-        qWarning("QWinTaskbarButton: IID_ITaskbarList4 was not created: %#010x, %s.", (unsigned)hresult, qPrintable(err));
+        qWarning("QWinTaskbarButton: qIID_ITaskbarList4 was not created: %#010x, %s.", (unsigned)hresult, qPrintable(err));
     } else if (FAILED(pTbList->HrInit())) {
         pTbList->Release();
         pTbList = 0;
         const QString err = QtWin::errorStringFromHresult(hresult);
-        qWarning("QWinTaskbarButton: IID_ITaskbarList4 was not initialized: %#010x, %s.", (unsigned)hresult, qPrintable(err));
+        qWarning("QWinTaskbarButton: qIID_ITaskbarList4 was not initialized: %#010x, %s.", (unsigned)hresult, qPrintable(err));
     }
 }
 

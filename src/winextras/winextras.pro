@@ -36,7 +36,8 @@ HEADERS += \
     qwinthumbnailtoolbar_p.h \
     qwinthumbnailtoolbutton.h \
     qwinthumbnailtoolbutton_p.h \
-    qwinevent.h
+    qwinevent.h \
+    windowsguidsdefs_p.h
 
 QMAKE_DOCS = $$PWD/doc/qtwinextras.qdocconf
 
