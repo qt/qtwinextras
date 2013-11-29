@@ -198,7 +198,7 @@ namespace QtWin
     inline void disableBlurBehindWindow(QWidget *window)
     {
         if (window->windowHandle())
-            enableBlurBehindWindow(window->windowHandle());
+            disableBlurBehindWindow(window->windowHandle());
     }
 
     inline void markFullscreenWindow(QWidget *window, bool fullscreen = true)
