@@ -45,6 +45,7 @@
 
 #include <QQuickItem>
 #include <QtWin>
+#include <QColor>
 
 #include "qquickwin_p.h"
 
