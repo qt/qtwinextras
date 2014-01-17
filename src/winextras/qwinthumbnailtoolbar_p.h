@@ -67,8 +67,8 @@ public:
     virtual bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) Q_DECL_OVERRIDE;
 
     static void initButtons(THUMBBUTTON *buttons);
-    static THUMBBUTTONFLAGS makeNativeButtonFlags(const QWinThumbnailToolButton *button);
-    static THUMBBUTTONMASK makeButtonMask(const QWinThumbnailToolButton *button);
+    static int makeNativeButtonFlags(const QWinThumbnailToolButton *button);
+    static int makeButtonMask(const QWinThumbnailToolButton *button);
     static void freeButtonResources(THUMBBUTTON *buttons);
     static QString msgComFailed(const char *function, HRESULT hresult);
 

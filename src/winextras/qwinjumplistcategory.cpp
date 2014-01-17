@@ -50,6 +50,10 @@
 
 #include <shlobj.h>
 
+#if defined(_MSC_VER) && _MSC_VER < 1600
+#  define SHARD_APPIDINFOLINK 0x7L
+#endif
+
 QT_BEGIN_NAMESPACE
 
 /*!

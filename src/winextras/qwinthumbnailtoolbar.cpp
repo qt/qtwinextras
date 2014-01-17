@@ -55,6 +55,10 @@
 #include "qwinfunctions.h"
 #include "qwineventfilter_p.h"
 
+#ifndef THBN_CLICKED
+#  define THBN_CLICKED 0x1800
+#endif
+
 QT_BEGIN_NAMESPACE
 
 static const int windowsLimitedThumbbarSize = 7;
@@ -250,6 +254,7 @@ QWinThumbnailToolBarPrivate::~QWinThumbnailToolBarPrivate()
 
 void QWinThumbnailToolBarPrivate::initToolbar()
 {
+#if !defined(_MSC_VER) || _MSC_VER >= 1600
     if (!pTbList || !window)
         return;
     THUMBBUTTON buttons[windowsLimitedThumbbarSize];
@@ -257,6 +262,10 @@ void QWinThumbnailToolBarPrivate::initToolbar()
     HRESULT hresult = pTbList->ThumbBarAddButtons(reinterpret_cast<HWND>(window->winId()), windowsLimitedThumbbarSize, buttons);
     if (FAILED(hresult))
         qWarning() << msgComFailed("ThumbBarAddButtons", hresult);
+#else
+    // ITaskbarList3::ThumbBarAddButtons() has a different signature in SDK 6.X
+    Q_UNIMPLEMENTED();
+#endif
 }
 
 void QWinThumbnailToolBarPrivate::clearToolbar()
@@ -281,8 +290,8 @@ void QWinThumbnailToolBarPrivate::_q_updateToolbar()
     // filling from the right fixes some strange bug which makes last button bg look like first btn bg
     for (int i = (windowsLimitedThumbbarSize - thumbbarSize); i < windowsLimitedThumbbarSize; i++) {
         QWinThumbnailToolButton *button = buttonList.at(i - (windowsLimitedThumbbarSize - thumbbarSize));
-        buttons[i].dwFlags = makeNativeButtonFlags(button);
-        buttons[i].dwMask  = makeButtonMask(button);
+        buttons[i].dwFlags = static_cast<THUMBBUTTONFLAGS>(makeNativeButtonFlags(button));
+        buttons[i].dwMask  = static_cast<THUMBBUTTONMASK>(makeButtonMask(button));
         if (!button->icon().isNull()) {;
             buttons[i].hIcon = QtWin::toHICON(button->icon().pixmap(GetSystemMetrics(SM_CXSMICON)));
             if (!buttons[i].hIcon)
@@ -340,9 +349,9 @@ void QWinThumbnailToolBarPrivate::initButtons(THUMBBUTTON *buttons)
     }
 }
 
-THUMBBUTTONFLAGS QWinThumbnailToolBarPrivate::makeNativeButtonFlags(const QWinThumbnailToolButton *button)
+int QWinThumbnailToolBarPrivate::makeNativeButtonFlags(const QWinThumbnailToolButton *button)
 {
-    THUMBBUTTONFLAGS nativeFlags = (THUMBBUTTONFLAGS)0;
+    int nativeFlags = 0;
     if (button->isEnabled())
         nativeFlags |= THBF_ENABLED;
     else
@@ -358,9 +367,9 @@ THUMBBUTTONFLAGS QWinThumbnailToolBarPrivate::makeNativeButtonFlags(const QWinTh
     return nativeFlags;
 }
 
-THUMBBUTTONMASK QWinThumbnailToolBarPrivate::makeButtonMask(const QWinThumbnailToolButton *button)
+int QWinThumbnailToolBarPrivate::makeButtonMask(const QWinThumbnailToolButton *button)
 {
-    THUMBBUTTONMASK mask = (THUMBBUTTONMASK)0;
+    int mask = 0;
     mask |= THB_FLAGS;
     if (!button->icon().isNull())
         mask |= THB_ICON;
