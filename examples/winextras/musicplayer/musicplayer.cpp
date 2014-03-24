@@ -321,7 +321,7 @@ void MusicPlayer::createTaskbar()
 
     taskbarProgress = taskbarButton->progress();
     connect(positionSlider, SIGNAL(valueChanged(int)), taskbarProgress, SLOT(setValue(int)));
-    connect(positionSlider, SIGNAL(rangeChanged(int, int)), taskbarProgress, SLOT(setRange(int, int)));
+    connect(positionSlider, SIGNAL(rangeChanged(int,int)), taskbarProgress, SLOT(setRange(int,int)));
 
     connect(&mediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(updateTaskbar()));
 }
