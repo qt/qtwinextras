@@ -1435,9 +1435,11 @@ QColor QtWin::colorizationColor(bool *opaqueBlend)
 {
     QWinEventFilter::setup();
 
-    DWORD colorization;
-    BOOL dummy;
-    qt_DwmGetColorizationColor(&colorization, &dummy);
+    DWORD colorization = 0;
+    BOOL dummy = false;
+    qtDwmApiDll.init();
+    if (qtDwmApiDll.dwmGetColorizationColor)
+        qtDwmApiDll.dwmGetColorizationColor(&colorization, &dummy);
     if (opaqueBlend)
         *opaqueBlend = dummy;
     return QColor::fromRgba(colorization);
@@ -1480,8 +1482,7 @@ QColor QtWin::realColorizationColor()
 void QtWin::setWindowExcludedFromPeek(QWindow *window, bool exclude)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
-    BOOL value = exclude;
-    qt_DwmSetWindowAttribute(reinterpret_cast<HWND>(window->winId()), qt_DWMWA_EXCLUDED_FROM_PEEK, &value, sizeof(value));
+    QtDwmApiDll::setBooleanWindowAttribute(reinterpret_cast<HWND>(window->winId()), qt_DWMWA_EXCLUDED_FROM_PEEK, exclude);
 }
 
 /*!
@@ -1498,9 +1499,7 @@ void QtWin::setWindowExcludedFromPeek(QWindow *window, bool exclude)
 bool QtWin::isWindowExcludedFromPeek(QWindow *window)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
-    BOOL value;
-    qt_DwmGetWindowAttribute(reinterpret_cast<HWND>(window->winId()), qt_DWMWA_EXCLUDED_FROM_PEEK, &value, sizeof(value));
-    return value;
+    return QtDwmApiDll::booleanWindowAttribute(reinterpret_cast<HWND>(window->winId()), qt_DWMWA_EXCLUDED_FROM_PEEK);
 }
 
 /*!
@@ -1521,8 +1520,7 @@ bool QtWin::isWindowExcludedFromPeek(QWindow *window)
 void QtWin::setWindowDisallowPeek(QWindow *window, bool disallow)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
-    BOOL value = disallow;
-    qt_DwmSetWindowAttribute(reinterpret_cast<HWND>(window->winId()), qt_DWMWA_DISALLOW_PEEK, &value, sizeof(value));
+    QtDwmApiDll::setBooleanWindowAttribute(reinterpret_cast<HWND>(window->winId()), qt_DWMWA_DISALLOW_PEEK, disallow);
 }
 
 /*!
@@ -1540,9 +1538,7 @@ void QtWin::setWindowDisallowPeek(QWindow *window, bool disallow)
 bool QtWin::isWindowPeekDisallowed(QWindow *window)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
-    BOOL value;
-    qt_DwmGetWindowAttribute(reinterpret_cast<HWND>(window->winId()), qt_DWMWA_DISALLOW_PEEK, &value, sizeof(value));
-    return value;
+    return QtDwmApiDll::booleanWindowAttribute(reinterpret_cast<HWND>(window->winId()), qt_DWMWA_DISALLOW_PEEK);
 }
 
 /*!
@@ -1564,7 +1560,7 @@ void QtWin::setWindowFlip3DPolicy(QWindow *window, QtWin::WindowFlip3DPolicy pol
 
     // Policy should be defaulted first, bug or smth.
     DWORD value = qt_DWMFLIP3D_DEFAULT;
-    qt_DwmSetWindowAttribute(handle, qt_DWMWA_FLIP3D_POLICY, &value, sizeof(value));
+    QtDwmApiDll::setWindowAttribute(handle, qt_DWMWA_FLIP3D_POLICY, value);
 
     switch (policy) {
     default :
@@ -1580,7 +1576,7 @@ void QtWin::setWindowFlip3DPolicy(QWindow *window, QtWin::WindowFlip3DPolicy pol
     }
 
     if (qt_DWMFLIP3D_DEFAULT != value)
-        qt_DwmSetWindowAttribute(handle, qt_DWMWA_FLIP3D_POLICY, &value, sizeof(value));
+        QtDwmApiDll::setWindowAttribute(handle, qt_DWMWA_FLIP3D_POLICY, value);
 }
 
 /*!
@@ -1598,9 +1594,10 @@ QtWin::WindowFlip3DPolicy QtWin::windowFlip3DPolicy(QWindow *window)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
 
-    DWORD value;
-    QtWin::WindowFlip3DPolicy policy;
-    qt_DwmGetWindowAttribute(reinterpret_cast<HWND>(window->winId()), qt_DWMWA_FLIP3D_POLICY, &value, sizeof(value));
+    const DWORD value =
+        QtDwmApiDll::windowAttribute<DWORD>(reinterpret_cast<HWND>(window->winId()),
+                                            qt_DWMWA_FLIP3D_POLICY, DWORD(qt_DWMFLIP3D_DEFAULT));
+    QtWin::WindowFlip3DPolicy policy = QtWin::FlipDefault;
     switch (value) {
     case qt_DWMFLIP3D_EXCLUDEABOVE :
         policy = QtWin::FlipExcludeAbove;
@@ -1609,7 +1606,6 @@ QtWin::WindowFlip3DPolicy QtWin::windowFlip3DPolicy(QWindow *window)
         policy = QtWin::FlipExcludeBelow;
         break;
     default :
-        policy = QtWin::FlipDefault;
         break;
     }
     return policy;
@@ -1619,8 +1615,11 @@ void qt_ExtendFrameIntoClientArea(QWindow *window, int left, int top, int right,
 {
     QWinEventFilter::setup();
 
-    MARGINS margins = {left, right, top, bottom};
-    qt_DwmExtendFrameIntoClientArea(reinterpret_cast<HWND>(window->winId()), &margins);
+    qtDwmApiDll.init();
+    if (qtDwmApiDll.dwmExtendFrameIntoClientArea) {
+        MARGINS margins = {left, right, top, bottom};
+        qtDwmApiDll.dwmExtendFrameIntoClientArea(reinterpret_cast<HWND>(window->winId()), &margins);
+    }
 }
 
 /*! \fn void QtWin::extendFrameIntoClientArea(QWidget *window, int left, int top, int right, int bottom)
@@ -1714,6 +1713,10 @@ void QtWin::enableBlurBehindWindow(QWindow *window, const QRegion &region)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
 
+    qtDwmApiDll.init();
+    if (!qtDwmApiDll.dwmEnableBlurBehindWindow)
+        return;
+
     qt_DWM_BLURBEHIND dwmbb = {0, 0, 0, 0};
     dwmbb.dwFlags = qt_DWM_BB_ENABLE;
     dwmbb.fEnable = TRUE;
@@ -1725,7 +1728,7 @@ void QtWin::enableBlurBehindWindow(QWindow *window, const QRegion &region)
             dwmbb.dwFlags |= qt_DWM_BB_BLURREGION;
         }
     }
-    qt_DwmEnableBlurBehindWindow(reinterpret_cast<HWND>(window->winId()), &dwmbb);
+    qtDwmApiDll.dwmEnableBlurBehindWindow(reinterpret_cast<HWND>(window->winId()), &dwmbb);
     if (rgn)
         DeleteObject(rgn);
 }
@@ -1767,7 +1770,9 @@ void QtWin::disableBlurBehindWindow(QWindow *window)
     qt_DWM_BLURBEHIND dwmbb = {0, 0, 0, 0};
     dwmbb.dwFlags = qt_DWM_BB_ENABLE;
     dwmbb.fEnable = FALSE;
-    qt_DwmEnableBlurBehindWindow(reinterpret_cast<HWND>(window->winId()), &dwmbb);
+    qtDwmApiDll.init();
+    if (qtDwmApiDll.dwmEnableBlurBehindWindow)
+        qtDwmApiDll.dwmEnableBlurBehindWindow(reinterpret_cast<HWND>(window->winId()), &dwmbb);
 }
 
 /*!
@@ -1779,8 +1784,10 @@ bool QtWin::isCompositionEnabled()
 {
     QWinEventFilter::setup();
 
-    BOOL enabled;
-    qt_DwmIsCompositionEnabled(&enabled);
+    BOOL enabled = FALSE;
+    qtDwmApiDll.init();
+    if (qtDwmApiDll.dwmIsCompositionEnabled)
+        qtDwmApiDll.dwmIsCompositionEnabled(&enabled);
     return enabled;
 }
 
@@ -1797,7 +1804,9 @@ void QtWin::setCompositionEnabled(bool enabled)
     QWinEventFilter::setup();
 
     UINT compositionEnabled = enabled;
-    qt_DwmEnableComposition(compositionEnabled);
+    qtDwmApiDll.init();
+    if (qtDwmApiDll.dwmEnableComposition)
+        qtDwmApiDll.dwmEnableComposition(compositionEnabled);
 }
 
 /*!
@@ -1823,9 +1832,11 @@ bool QtWin::isCompositionOpaque()
  */
 void QtWin::setCurrentProcessExplicitAppUserModelID(const QString &id)
 {
-    wchar_t *wid = qt_qstringToNullTerminated(id);
-    qt_SetCurrentProcessExplicitAppUserModelID(wid);
-    delete[] wid;
+    qtShell32Dll.init();
+    if (qtShell32Dll.setCurrentProcessExplicitAppUserModelID) {
+        QScopedArrayPointer<wchar_t> wid(qt_qstringToNullTerminated(id));
+        qtShell32Dll.setCurrentProcessExplicitAppUserModelID(wid.data());
+    }
 }
 
 /*!

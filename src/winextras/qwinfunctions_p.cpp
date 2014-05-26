@@ -46,136 +46,36 @@
 QT_BEGIN_NAMESPACE
 
 // in order to allow binary to load on WinXP...
+QtDwmApiDll qtDwmApiDll;
+QtShell32Dll qtShell32Dll;
 
-void qt_winextras_init();
-
-typedef HRESULT (STDAPICALLTYPE *DwmGetColorizationColor_t)(DWORD *, BOOL *);
-static DwmGetColorizationColor_t pDwmGetColorizationColor = 0;
-
-typedef HRESULT (STDAPICALLTYPE *DwmSetWindowAttribute_t)(HWND, DWORD, LPCVOID, DWORD);
-static DwmSetWindowAttribute_t pDwmSetWindowAttribute = 0;
-
-typedef HRESULT (STDAPICALLTYPE *DwmGetWindowAttribute_t)(HWND, DWORD, PVOID, DWORD);
-static DwmGetWindowAttribute_t pDwmGetWindowAttribute = 0;
-
-typedef HRESULT (STDAPICALLTYPE *DwmExtendFrameIntoClientArea_t)(HWND, const MARGINS *);
-static DwmExtendFrameIntoClientArea_t pDwmExtendFrameIntoClientArea = 0;
-
-typedef HRESULT (STDAPICALLTYPE *DwmEnableBlurBehindWindow_t)(HWND, const qt_DWM_BLURBEHIND *);
-DwmEnableBlurBehindWindow_t pDwmEnableBlurBehindWindow = 0;
-
-typedef HRESULT (STDAPICALLTYPE *DwmIsCompositionEnabled_t)(BOOL *);
-static DwmIsCompositionEnabled_t pDwmIsCompositionEnabled = 0;
-
-typedef HRESULT (STDAPICALLTYPE *DwmEnableComposition_t)(UINT);
-static DwmEnableComposition_t pDwmEnableComposition = 0;
-
-typedef HRESULT (STDAPICALLTYPE *SHCreateItemFromParsingName_t)(PCWSTR, IBindCtx *, REFIID, void **);
-static SHCreateItemFromParsingName_t pSHCreateItemFromParsingName = 0;
-
-typedef HRESULT (STDAPICALLTYPE *SetCurrentProcessExplicitAppUserModelID_t)(PCWSTR);
-static SetCurrentProcessExplicitAppUserModelID_t pSetCurrentProcessExplicitAppUserModelID = 0;
-
-HRESULT qt_DwmGetColorizationColor(DWORD *colorization, BOOL *opaqueBlend)
+void QtDwmApiDll::resolve()
 {
-    qt_winextras_init();
-    if (pDwmGetColorizationColor)
-        return pDwmGetColorizationColor(colorization, opaqueBlend);
-    else
-        return E_FAIL;
-}
-
-HRESULT qt_DwmSetWindowAttribute(HWND hwnd, DWORD dwAttribute, LPCVOID pvAttribute, DWORD cbAttribute)
-{
-    qt_winextras_init();
-    if (pDwmSetWindowAttribute)
-        return pDwmSetWindowAttribute(hwnd, dwAttribute, pvAttribute, cbAttribute);
-    else
-        return E_FAIL;
-}
-
-HRESULT qt_DwmGetWindowAttribute(HWND hwnd, DWORD dwAttribute, PVOID pvAttribute, DWORD cbAttribute)
-{
-    qt_winextras_init();
-    if (pDwmGetWindowAttribute)
-        return pDwmGetWindowAttribute(hwnd, dwAttribute, pvAttribute, cbAttribute);
-    else
-        return E_FAIL;
-}
-
-HRESULT qt_DwmExtendFrameIntoClientArea(HWND hwnd, const MARGINS *margins)
-{
-    qt_winextras_init();
-    if (pDwmExtendFrameIntoClientArea)
-        return pDwmExtendFrameIntoClientArea(hwnd, margins);
-    else
-        return E_FAIL;
-}
-
-HRESULT qt_DwmEnableBlurBehindWindow(HWND hwnd, const qt_DWM_BLURBEHIND *blurBehind)
-{
-    qt_winextras_init();
-    if (pDwmEnableBlurBehindWindow)
-        return pDwmEnableBlurBehindWindow(hwnd, blurBehind);
-    else
-        return E_FAIL;
-}
-
-HRESULT qt_DwmIsCompositionEnabled(BOOL *enabled)
-{
-    qt_winextras_init();
-    if (pDwmIsCompositionEnabled)
-        return pDwmIsCompositionEnabled(enabled);
-    else
-        return E_FAIL;
-}
-
-HRESULT qt_DwmEnableComposition(UINT enabled)
-{
-    qt_winextras_init();
-    if (pDwmEnableComposition)
-        return pDwmEnableComposition(enabled);
-    else
-        return E_FAIL;
-}
-
-HRESULT qt_SHCreateItemFromParsingName(PCWSTR path, IBindCtx *bindcontext, REFIID riid, void **ppv)
-{
-    qt_winextras_init();
-    if (pSHCreateItemFromParsingName)
-        return pSHCreateItemFromParsingName(path, bindcontext, riid, ppv);
-    else
-        return E_FAIL;
-}
-
-HRESULT qt_SetCurrentProcessExplicitAppUserModelID(PCWSTR appId)
-{
-    qt_winextras_init();
-    if (pSetCurrentProcessExplicitAppUserModelID)
-        return pSetCurrentProcessExplicitAppUserModelID(appId);
-    else
-        return E_FAIL;
-}
-
-void qt_winextras_init()
-{
-    static bool initialized = false;
-    if (initialized)
-        return;
-    HMODULE dwmapi  = LoadLibraryW(L"dwmapi.dll");
-    HMODULE shell32 = LoadLibraryW(L"shell32.dll");
-    if (dwmapi) {
-        pDwmExtendFrameIntoClientArea = (DwmExtendFrameIntoClientArea_t) GetProcAddress(dwmapi, "DwmExtendFrameIntoClientArea");
-        pDwmEnableBlurBehindWindow = (DwmEnableBlurBehindWindow_t) GetProcAddress(dwmapi, "DwmEnableBlurBehindWindow");
-        pDwmGetColorizationColor = (DwmGetColorizationColor_t) GetProcAddress(dwmapi, "DwmGetColorizationColor");
-        pDwmSetWindowAttribute   = (DwmSetWindowAttribute_t)   GetProcAddress(dwmapi, "DwmSetWindowAttribute");
-        pDwmGetWindowAttribute   = (DwmGetWindowAttribute_t)   GetProcAddress(dwmapi, "DwmGetWindowAttribute");
-        pDwmIsCompositionEnabled = (DwmIsCompositionEnabled_t) GetProcAddress(dwmapi, "DwmIsCompositionEnabled");
-        pDwmEnableComposition    = (DwmEnableComposition_t)    GetProcAddress(dwmapi, "DwmEnableComposition");
+    if (const HMODULE dwmapi = LoadLibraryW(L"dwmapi.dll")) {
+        dwmExtendFrameIntoClientArea =
+            (DwmExtendFrameIntoClientArea) GetProcAddress(dwmapi, "DwmExtendFrameIntoClientArea");
+        dwmEnableBlurBehindWindow =
+            (DwmEnableBlurBehindWindow) GetProcAddress(dwmapi, "DwmEnableBlurBehindWindow");
+        dwmGetColorizationColor =
+            (DwmGetColorizationColor) GetProcAddress(dwmapi, "DwmGetColorizationColor");
+        dwmSetWindowAttribute =
+            (DwmSetWindowAttribute) GetProcAddress(dwmapi, "DwmSetWindowAttribute");
+        dwmGetWindowAttribute =
+            (DwmGetWindowAttribute) GetProcAddress(dwmapi, "DwmGetWindowAttribute");
+        dwmIsCompositionEnabled =
+            (DwmIsCompositionEnabled) GetProcAddress(dwmapi, "DwmIsCompositionEnabled");
+        dwmEnableComposition =
+            (DwmEnableComposition) GetProcAddress(dwmapi, "DwmEnableComposition");
     }
-    if (shell32) {
-        pSHCreateItemFromParsingName = (SHCreateItemFromParsingName_t) GetProcAddress(shell32, "SHCreateItemFromParsingName");
-        pSetCurrentProcessExplicitAppUserModelID = (SetCurrentProcessExplicitAppUserModelID_t) GetProcAddress(shell32, "SetCurrentProcessExplicitAppUserModelID");
+}
+
+void QtShell32Dll::resolve()
+{
+    if (const HMODULE shell32 = LoadLibraryW(L"shell32.dll")) {
+        sHCreateItemFromParsingName =
+            (SHCreateItemFromParsingName) GetProcAddress(shell32, "SHCreateItemFromParsingName");
+        setCurrentProcessExplicitAppUserModelID =
+            (SetCurrentProcessExplicitAppUserModelID) GetProcAddress(shell32, "SetCurrentProcessExplicitAppUserModelID");
     }
 }
 

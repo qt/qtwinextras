@@ -90,15 +90,70 @@ const int qt_DWM_BB_ENABLE                = 0x00000001;
 const int qt_DWM_BB_BLURREGION            = 0x00000002;
 const int qt_DWM_BB_TRANSITIONONMAXIMIZED = 0x00000004;
 
-HRESULT qt_DwmGetColorizationColor(DWORD *colorization, BOOL *opaqueBlend);
-HRESULT qt_DwmSetWindowAttribute(HWND hwnd, DWORD dwAttribute, LPCVOID pvAttribute, DWORD cbAttribute);
-HRESULT qt_DwmGetWindowAttribute(HWND hwnd, DWORD dwAttribute, PVOID pvAttribute, DWORD cbAttribute);
-HRESULT qt_DwmExtendFrameIntoClientArea(HWND hwnd, const MARGINS *pMarInset);
-HRESULT qt_DwmEnableBlurBehindWindow(HWND hwnd, const qt_DWM_BLURBEHIND *blurBehind);
-HRESULT qt_DwmIsCompositionEnabled(BOOL *enabled);
-HRESULT qt_DwmEnableComposition(UINT enabled);
-HRESULT qt_SHCreateItemFromParsingName(PCWSTR, IBindCtx *, REFIID, void **);
-HRESULT qt_SetCurrentProcessExplicitAppUserModelID(PCWSTR appId);
+struct QtDwmApiDll
+{
+    typedef HRESULT (STDAPICALLTYPE *DwmGetColorizationColor)(DWORD *, BOOL *);
+    typedef HRESULT (STDAPICALLTYPE *DwmSetWindowAttribute)(HWND, DWORD, LPCVOID, DWORD);
+    typedef HRESULT (STDAPICALLTYPE *DwmGetWindowAttribute)(HWND, DWORD, PVOID, DWORD);
+    typedef HRESULT (STDAPICALLTYPE *DwmExtendFrameIntoClientArea)(HWND, const MARGINS *);
+    typedef HRESULT (STDAPICALLTYPE *DwmEnableBlurBehindWindow)(HWND, const qt_DWM_BLURBEHIND *);
+    typedef HRESULT (STDAPICALLTYPE *DwmIsCompositionEnabled)(BOOL *);
+    typedef HRESULT (STDAPICALLTYPE *DwmEnableComposition)(UINT);
+
+    QtDwmApiDll()
+        : dwmGetColorizationColor(0), dwmSetWindowAttribute(0), dwmGetWindowAttribute(0)
+        , dwmExtendFrameIntoClientArea(0), dwmEnableBlurBehindWindow(0)
+        , dwmIsCompositionEnabled(0), dwmEnableComposition(0)
+    {}
+
+    void init()
+    {
+        if (!dwmSetWindowAttribute && QSysInfo::windowsVersion() >= QSysInfo::WV_VISTA)
+            resolve();
+    }
+
+    void resolve();
+
+    template <class T> static T windowAttribute(HWND hwnd, DWORD attribute, T defaultValue);
+    template <class T> static void setWindowAttribute(HWND hwnd, DWORD attribute, T value);
+
+    static bool booleanWindowAttribute(HWND hwnd, DWORD attribute)
+        { return QtDwmApiDll::windowAttribute<BOOL>(hwnd, attribute, FALSE) != FALSE; }
+
+    static void setBooleanWindowAttribute(HWND hwnd, DWORD attribute, bool value)
+        { setWindowAttribute<BOOL>(hwnd, attribute, BOOL(value ? TRUE : FALSE)); }
+
+    DwmGetColorizationColor dwmGetColorizationColor;
+    DwmSetWindowAttribute dwmSetWindowAttribute;
+    DwmGetWindowAttribute dwmGetWindowAttribute;
+    DwmExtendFrameIntoClientArea dwmExtendFrameIntoClientArea;
+    DwmEnableBlurBehindWindow dwmEnableBlurBehindWindow;
+    DwmIsCompositionEnabled dwmIsCompositionEnabled;
+    DwmEnableComposition dwmEnableComposition;
+};
+
+struct QtShell32Dll
+
+{
+    typedef HRESULT (STDAPICALLTYPE *SHCreateItemFromParsingName)(PCWSTR, IBindCtx *, REFIID, void **);
+    typedef HRESULT (STDAPICALLTYPE *SetCurrentProcessExplicitAppUserModelID)(PCWSTR);
+
+    QtShell32Dll() : sHCreateItemFromParsingName(0), setCurrentProcessExplicitAppUserModelID(0) {}
+
+    void init()
+    {
+        if (!sHCreateItemFromParsingName && QSysInfo::windowsVersion() >= QSysInfo::WV_VISTA)
+            resolve();
+    }
+
+    void resolve();
+
+    SHCreateItemFromParsingName sHCreateItemFromParsingName; // Vista
+    SetCurrentProcessExplicitAppUserModelID setCurrentProcessExplicitAppUserModelID; // Windows 7
+};
+
+extern QtDwmApiDll qtDwmApiDll;
+extern QtShell32Dll qtShell32Dll;
 
 inline void qt_qstringToNullTerminated(const QString &src, wchar_t *dst)
 {
@@ -110,6 +165,24 @@ inline wchar_t *qt_qstringToNullTerminated(const QString &src)
     wchar_t *buffer = new wchar_t[src.length() + 1];
     qt_qstringToNullTerminated(src, buffer);
     return buffer;
+}
+
+template <class T>
+T QtDwmApiDll::windowAttribute(HWND hwnd, DWORD attribute, T defaultValue)
+{
+    qtDwmApiDll.init();
+    T value = defaultValue;
+    if (qtDwmApiDll.dwmGetWindowAttribute)
+        qtDwmApiDll.dwmGetWindowAttribute(hwnd, attribute, &value, sizeof(value));
+    return value;
+}
+
+template <class T>
+void QtDwmApiDll::setWindowAttribute(HWND hwnd, DWORD attribute, T value)
+{
+    qtDwmApiDll.init();
+    if (qtDwmApiDll.dwmSetWindowAttribute)
+        qtDwmApiDll.dwmSetWindowAttribute(hwnd, attribute, &value, sizeof(value));
 }
 
 QT_END_NAMESPACE

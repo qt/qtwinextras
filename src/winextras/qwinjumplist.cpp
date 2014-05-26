@@ -394,9 +394,11 @@ IShellLinkW *QWinJumpListPrivate::toIShellLink(const QWinJumpListItem *item)
 IShellItem2 *QWinJumpListPrivate::toIShellItem(const QWinJumpListItem *item)
 {
     IShellItem2 *shellitem = 0;
-    wchar_t *buffer = qt_qstringToNullTerminated(item->filePath());
-    qt_SHCreateItemFromParsingName(buffer, 0, qIID_IShellItem2, reinterpret_cast<void **>(&shellitem));
-    delete[] buffer;
+    qtShell32Dll.init();
+    if (qtShell32Dll.sHCreateItemFromParsingName) {
+        QScopedArrayPointer<wchar_t> buffer(qt_qstringToNullTerminated(item->filePath()));
+        qtShell32Dll.sHCreateItemFromParsingName(buffer.data(), 0, qIID_IShellItem2, reinterpret_cast<void **>(&shellitem));
+    }
     return shellitem;
 }
 
