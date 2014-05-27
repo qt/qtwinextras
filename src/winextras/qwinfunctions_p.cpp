@@ -66,6 +66,14 @@ void QtDwmApiDll::resolve()
             (DwmIsCompositionEnabled) GetProcAddress(dwmapi, "DwmIsCompositionEnabled");
         dwmEnableComposition =
             (DwmEnableComposition) GetProcAddress(dwmapi, "DwmEnableComposition");
+        if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS7) {
+            dwmSetIconicThumbnail =
+                (DwmSetIconicThumbnail) GetProcAddress(dwmapi, "DwmSetIconicThumbnail");
+            dwmSetIconicLivePreviewBitmap =
+                (DwmSetIconicLivePreviewBitmap) GetProcAddress(dwmapi, "DwmSetIconicLivePreviewBitmap");
+            dwmInvalidateIconicBitmaps =
+                (DwmInvalidateIconicBitmaps) GetProcAddress(dwmapi, "DwmInvalidateIconicBitmaps");
+        }
     }
 }
 

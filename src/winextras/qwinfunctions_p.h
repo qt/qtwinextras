@@ -99,11 +99,15 @@ struct QtDwmApiDll
     typedef HRESULT (STDAPICALLTYPE *DwmEnableBlurBehindWindow)(HWND, const qt_DWM_BLURBEHIND *);
     typedef HRESULT (STDAPICALLTYPE *DwmIsCompositionEnabled)(BOOL *);
     typedef HRESULT (STDAPICALLTYPE *DwmEnableComposition)(UINT);
+    typedef HRESULT (STDAPICALLTYPE *DwmSetIconicThumbnail)(HWND, HBITMAP, DWORD);
+    typedef HRESULT (STDAPICALLTYPE *DwmSetIconicLivePreviewBitmap)(HWND, HBITMAP, POINT *, DWORD);
+    typedef HRESULT (STDAPICALLTYPE *DwmInvalidateIconicBitmaps)(HWND);
 
     QtDwmApiDll()
         : dwmGetColorizationColor(0), dwmSetWindowAttribute(0), dwmGetWindowAttribute(0)
         , dwmExtendFrameIntoClientArea(0), dwmEnableBlurBehindWindow(0)
         , dwmIsCompositionEnabled(0), dwmEnableComposition(0)
+        , dwmSetIconicThumbnail(0), dwmSetIconicLivePreviewBitmap(0), dwmInvalidateIconicBitmaps(0)
     {}
 
     void init()
@@ -130,6 +134,9 @@ struct QtDwmApiDll
     DwmEnableBlurBehindWindow dwmEnableBlurBehindWindow;
     DwmIsCompositionEnabled dwmIsCompositionEnabled;
     DwmEnableComposition dwmEnableComposition;
+    DwmSetIconicThumbnail dwmSetIconicThumbnail;
+    DwmSetIconicLivePreviewBitmap dwmSetIconicLivePreviewBitmap;
+    DwmInvalidateIconicBitmaps dwmInvalidateIconicBitmaps;
 };
 
 struct QtShell32Dll

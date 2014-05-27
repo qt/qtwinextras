@@ -45,6 +45,7 @@
 #include "qwinthumbnailtoolbutton.h"
 #include "qwinthumbnailtoolbutton_p.h"
 #include "windowsguidsdefs_p.h"
+#include "qwinfunctions.h"
 
 #include <QWindow>
 #include <QCoreApplication>
@@ -53,13 +54,24 @@
 
 #include "qwinevent.h"
 #include "qwinfunctions.h"
+#include "qwinfunctions_p.h"
 #include "qwineventfilter_p.h"
 
 #ifndef THBN_CLICKED
 #  define THBN_CLICKED 0x1800
 #endif
 
+#ifndef WM_DWMSENDICONICLIVEPREVIEWBITMAP
+#  define WM_DWMSENDICONICLIVEPREVIEWBITMAP 0x0326
+#endif
+
+#ifndef WM_DWMSENDICONICTHUMBNAIL
+#  define WM_DWMSENDICONICTHUMBNAIL 0x0323
+#endif
+
 QT_BEGIN_NAMESPACE
+
+enum { dWM_SIT_DISPLAYFRAME = 1 , dWMWA_FORCE_ICONIC_REPRESENTATION = 7, dWMWA_HAS_ICONIC_BITMAP = 10 };
 
 static const int windowsLimitedThumbbarSize = 7;
 
@@ -117,7 +129,10 @@ void QWinThumbnailToolBar::setWindow(QWindow *window)
     if (d->window != window) {
         if (d->window) {
             d->window->removeEventFilter(d);
-            d->clearToolbar();
+            if (d->window->handle()) {
+                d->clearToolbar();
+                setIconicPixmapNotificationsEnabled(false);
+            }
         }
         d->window = window;
         if (d->window) {
@@ -209,6 +224,196 @@ int QWinThumbnailToolBar::count() const
     return d->buttonList.size();
 }
 
+void QWinThumbnailToolBarPrivate::updateIconicPixmapsEnabled(bool invalidate)
+{
+    Q_Q(QWinThumbnailToolBar);
+    qtDwmApiDll.init();
+    const HWND hwnd = handle();
+    if (!hwnd) {
+         qWarning() << Q_FUNC_INFO << "invoked with hwnd=0";
+         return;
+    }
+    if (!qtDwmApiDll.dwmInvalidateIconicBitmaps)
+        return;
+    const bool enabled = iconicThumbnail || iconicLivePreview;
+    q->setIconicPixmapNotificationsEnabled(enabled);
+    if (enabled && invalidate) {
+        const HRESULT hr = qtDwmApiDll.dwmInvalidateIconicBitmaps(hwnd);
+        if (FAILED(hr))
+            qWarning() << QWinThumbnailToolBarPrivate::msgComFailed("DwmInvalidateIconicBitmaps", hr);
+    }
+}
+
+/*
+    QWinThumbnailToolBarPrivate::IconicPixmapCache caches a HBITMAP of for one of
+    the iconic thumbnail or live preview pixmaps. When the messages
+    WM_DWMSENDICONICLIVEPREVIEWBITMAP or WM_DWMSENDICONICTHUMBNAIL are received
+    (after setting the DWM window attributes accordingly), the bitmap matching the
+    maximum size is constructed on demand.
+ */
+
+void QWinThumbnailToolBarPrivate::IconicPixmapCache::deleteBitmap()
+{
+    if (m_bitmap) {
+        DeleteObject(m_bitmap);
+        m_size = QSize();
+        m_bitmap = 0;
+    }
+}
+
+bool QWinThumbnailToolBarPrivate::IconicPixmapCache::setPixmap(const QPixmap &pixmap)
+{
+    if (pixmap.cacheKey() == m_pixmap.cacheKey())
+        return false;
+    deleteBitmap();
+    m_pixmap = pixmap;
+    return true;
+}
+
+HBITMAP QWinThumbnailToolBarPrivate::IconicPixmapCache::bitmap(const QSize &maxSize)
+{
+    if (m_pixmap.isNull())
+        return 0;
+    if (m_bitmap && m_size.width() <= maxSize.width() && m_size.height() <= maxSize.height())
+        return m_bitmap;
+    deleteBitmap();
+    QPixmap pixmap = m_pixmap;
+    if (pixmap.width() >= maxSize.width() || pixmap.height() >= maxSize.width())
+        pixmap = pixmap.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    if (const HBITMAP bitmap = QtWin::toHBITMAP(pixmap, QtWin::HBitmapAlpha)) {
+        m_size = pixmap.size();
+        m_bitmap = bitmap;
+    }
+    return m_bitmap;
+}
+
+/*!
+    \fn  QWinThumbnailToolBar::iconicThumbnailPixmapRequested()
+
+    This signal is emitted when the operating system requests a new iconic thumbnail pixmap,
+    typically when the thumbnail is shown.
+
+    \since 5.4
+    \sa iconicThumbnailPixmap
+*/
+
+/*!
+    \fn QWinThumbnailToolBar::iconicLivePreviewPixmapRequested()
+
+    This signal is emitted when the operating system requests a new iconic live preview pixmap,
+    typically when the user ALT-tabs to the application.
+
+    \since 5.4
+    \sa iconicLivePreviewPixmap
+*/
+
+/*!
+    \property QWinThumbnailToolBar::iconicPixmapNotificationsEnabled
+    \brief whether signals iconicThumbnailPixmapRequested() and iconicLivePreviewPixmapRequested()
+     will be emitted
+
+    \since 5.4
+    \sa QWinThumbnailToolBar::iconicThumbnailPixmap, QWinThumbnailToolBar::iconicLivePreviewPixmap
+ */
+
+bool QWinThumbnailToolBar::iconicPixmapNotificationsEnabled() const
+{
+    Q_D(const QWinThumbnailToolBar);
+    const HWND hwnd = d->handle();
+    if (!hwnd || !qtDwmApiDll.dwmGetWindowAttribute)
+        return false;
+    qtDwmApiDll.init();
+    return qtDwmApiDll.dwmGetWindowAttribute && hwnd
+        && QtDwmApiDll::booleanWindowAttribute(hwnd, dWMWA_FORCE_ICONIC_REPRESENTATION);
+}
+
+void QWinThumbnailToolBar::setIconicPixmapNotificationsEnabled(bool enabled)
+{
+    Q_D(const QWinThumbnailToolBar);
+    const HWND hwnd = d->handle();
+    if (!hwnd) {
+        qWarning() << Q_FUNC_INFO << "invoked with hwnd=0";
+        return;
+    }
+    qtDwmApiDll.init();
+    if (!qtDwmApiDll.dwmSetWindowAttribute || iconicPixmapNotificationsEnabled() == enabled)
+        return;
+    QtDwmApiDll::setBooleanWindowAttribute(hwnd, dWMWA_FORCE_ICONIC_REPRESENTATION, enabled);
+    QtDwmApiDll::setBooleanWindowAttribute(hwnd, dWMWA_HAS_ICONIC_BITMAP, enabled);
+}
+
+/*!
+    \property QWinThumbnailToolBar::iconicThumbnailPixmap
+    \brief the pixmap for use as a thumbnail representation
+
+    \since 5.4
+    \sa QWinThumbnailToolBar::iconicPixmapNotificationsEnabled
+ */
+
+void QWinThumbnailToolBar::setIconicThumbnailPixmap(const QPixmap &pixmap)
+{
+    Q_D(QWinThumbnailToolBar);
+    const bool changed = d->iconicThumbnail.setPixmap(pixmap);
+    if (d->hasHandle()) // Potentially 0 when invoked from QML loading, see _q_updateToolbar()
+        d->updateIconicPixmapsEnabled(changed && !d->withinIconicThumbnailRequest);
+}
+
+QPixmap QWinThumbnailToolBar::iconicThumbnailPixmap() const
+{
+    Q_D(const QWinThumbnailToolBar);
+    return d->iconicThumbnail.pixmap();
+}
+
+/*!
+    \property QWinThumbnailToolBar::iconicLivePreviewPixmap
+    \brief the pixmap for use as a live (peek) preview when tabbing into the application
+
+    \since 5.4
+ */
+
+void QWinThumbnailToolBar::setIconicLivePreviewPixmap(const QPixmap &pixmap)
+{
+    Q_D(QWinThumbnailToolBar);
+    const bool changed = d->iconicLivePreview.setPixmap(pixmap);
+    if (d->hasHandle()) // Potentially 0 when invoked from QML loading, see _q_updateToolbar()
+        d->updateIconicPixmapsEnabled(changed && !d->withinIconicLivePreviewRequest);
+}
+
+QPixmap QWinThumbnailToolBar::iconicLivePreviewPixmap() const
+{
+    Q_D(const QWinThumbnailToolBar);
+    return d->iconicLivePreview.pixmap();
+}
+
+inline void QWinThumbnailToolBarPrivate::updateIconicThumbnail(const MSG *message)
+{
+    qtDwmApiDll.init();
+    if (!qtDwmApiDll.dwmSetIconicThumbnail || !iconicThumbnail)
+        return;
+    const QSize maxSize(HIWORD(message->lParam), LOWORD(message->lParam));
+    if (const HBITMAP bitmap = iconicThumbnail.bitmap(maxSize)) {
+        const HRESULT hr = qtDwmApiDll.dwmSetIconicThumbnail(message->hwnd, bitmap, dWM_SIT_DISPLAYFRAME);
+        if (FAILED(hr))
+            qWarning() << QWinThumbnailToolBarPrivate::msgComFailed("DwmSetIconicThumbnail", hr);
+    }
+}
+
+inline void QWinThumbnailToolBarPrivate::updateIconicLivePreview(const MSG *message)
+{
+    qtDwmApiDll.init();
+    if (!qtDwmApiDll.dwmSetIconicLivePreviewBitmap || !iconicLivePreview)
+        return;
+    RECT rect;
+    GetClientRect(message->hwnd, &rect);
+    const QSize maxSize(rect.right, rect.bottom);
+    POINT offset = {0, 0};
+    if (const HBITMAP bitmap = iconicLivePreview.bitmap(maxSize)) {
+        const HRESULT hr = qtDwmApiDll.dwmSetIconicLivePreviewBitmap(message->hwnd, bitmap, &offset, dWM_SIT_DISPLAYFRAME);
+        if (FAILED(hr))
+            qWarning() << QWinThumbnailToolBarPrivate::msgComFailed("DwmSetIconicLivePreviewBitmap", hr);
+    }
+}
+
 /*!
     Removes all buttons from the thumbnail toolbar.
  */
@@ -239,7 +444,8 @@ static inline ITaskbarList4 *createTaskbarList()
 }
 
 QWinThumbnailToolBarPrivate::QWinThumbnailToolBarPrivate() :
-    QObject(0), updateScheduled(false), window(0), pTbList(createTaskbarList()), q_ptr(0)
+    QObject(0), updateScheduled(false), window(0), pTbList(createTaskbarList()), q_ptr(0),
+    withinIconicThumbnailRequest(false), withinIconicLivePreviewRequest(false)
 {
     buttonList.reserve(windowsLimitedThumbbarSize);
     QCoreApplication::instance()->installNativeEventFilter(this);
@@ -252,6 +458,16 @@ QWinThumbnailToolBarPrivate::~QWinThumbnailToolBarPrivate()
     QCoreApplication::instance()->removeNativeEventFilter(this);
 }
 
+inline bool QWinThumbnailToolBarPrivate::hasHandle() const
+{
+    return window && window->handle();
+}
+
+inline HWND QWinThumbnailToolBarPrivate::handle() const
+{
+    return hasHandle() ? reinterpret_cast<HWND>(window->winId()) : HWND(0);
+}
+
 void QWinThumbnailToolBarPrivate::initToolbar()
 {
 #if !defined(_MSC_VER) || _MSC_VER >= 1600
@@ -259,7 +475,7 @@ void QWinThumbnailToolBarPrivate::initToolbar()
         return;
     THUMBBUTTON buttons[windowsLimitedThumbbarSize];
     initButtons(buttons);
-    HRESULT hresult = pTbList->ThumbBarAddButtons(reinterpret_cast<HWND>(window->winId()), windowsLimitedThumbbarSize, buttons);
+    HRESULT hresult = pTbList->ThumbBarAddButtons(handle(), windowsLimitedThumbbarSize, buttons);
     if (FAILED(hresult))
         qWarning() << msgComFailed("ThumbBarAddButtons", hresult);
 #else
@@ -274,7 +490,7 @@ void QWinThumbnailToolBarPrivate::clearToolbar()
         return;
     THUMBBUTTON buttons[windowsLimitedThumbbarSize];
     initButtons(buttons);
-    HRESULT hresult = pTbList->ThumbBarUpdateButtons(reinterpret_cast<HWND>(window->winId()), windowsLimitedThumbbarSize, buttons);
+    HRESULT hresult = pTbList->ThumbBarUpdateButtons(handle(), windowsLimitedThumbbarSize, buttons);
     if (FAILED(hresult))
         qWarning() << msgComFailed("ThumbBarUpdateButtons", hresult);
 }
@@ -301,9 +517,10 @@ void QWinThumbnailToolBarPrivate::_q_updateToolbar()
             buttons[i].szTip[button->toolTip().left(sizeof(buttons[i].szTip)/sizeof(buttons[i].szTip[0]) - 1).toWCharArray(buttons[i].szTip)] = 0;
         }
     }
-    HRESULT hresult = pTbList->ThumbBarUpdateButtons(reinterpret_cast<HWND>(window->winId()), windowsLimitedThumbbarSize, buttons);
+    HRESULT hresult = pTbList->ThumbBarUpdateButtons(handle(), windowsLimitedThumbbarSize, buttons);
     if (FAILED(hresult))
         qWarning() << msgComFailed("ThumbBarUpdateButtons", hresult);
+    updateIconicPixmapsEnabled(false);
     freeButtonResources(buttons);
 }
 
@@ -327,13 +544,30 @@ bool QWinThumbnailToolBarPrivate::eventFilter(QObject *object, QEvent *event)
 
 bool QWinThumbnailToolBarPrivate::nativeEventFilter(const QByteArray &, void *message, long *result)
 {
-    MSG *msg = static_cast<MSG *>(message);
-    if (window && msg->message == WM_COMMAND && HIWORD(msg->wParam) == THBN_CLICKED && msg->hwnd == reinterpret_cast<HWND>(window->winId())) {
-        int buttonId = LOWORD(msg->wParam);
-        buttonId = buttonId - (windowsLimitedThumbbarSize - qMin(windowsLimitedThumbbarSize, buttonList.size()));
-        buttonList.at(buttonId)->click();
-        if (result)
-            *result = 0;
+    const MSG *msg = static_cast<const MSG *>(message);
+    if (handle() != msg->hwnd)
+        return false;
+    switch (msg->message) {
+    case WM_COMMAND:
+        if (HIWORD(msg->wParam) == THBN_CLICKED) {
+            const int buttonId = LOWORD(msg->wParam) - (windowsLimitedThumbbarSize - qMin(windowsLimitedThumbbarSize, buttonList.size()));
+            buttonList.at(buttonId)->click();
+            if (result)
+                *result = 0;
+            return true;
+        }
+        break;
+    case WM_DWMSENDICONICTHUMBNAIL:
+        withinIconicThumbnailRequest = true;
+        emit q_func()->iconicThumbnailPixmapRequested();
+        withinIconicThumbnailRequest = false;
+        updateIconicThumbnail(msg);
+        return true;
+    case WM_DWMSENDICONICLIVEPREVIEWBITMAP:
+        withinIconicLivePreviewRequest = true;
+        emit q_func()->iconicLivePreviewPixmapRequested();
+        withinIconicLivePreviewRequest = false;
+        updateIconicLivePreview(msg);
         return true;
     }
     return false;

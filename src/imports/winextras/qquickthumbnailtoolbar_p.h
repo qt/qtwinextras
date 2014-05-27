@@ -45,8 +45,11 @@
 
 #include <QQuickItem>
 #include <QWinThumbnailToolBar>
+#include <QUrl>
 
 QT_BEGIN_NAMESPACE
+
+class QVariant;
 
 class QQuickThumbnailToolButton;
 
@@ -56,6 +59,9 @@ class QQuickThumbnailToolBar : public QQuickItem
     Q_PROPERTY(int count READ count NOTIFY countChanged)
     Q_PROPERTY(QQmlListProperty<QObject> data READ data)
     Q_PROPERTY(QQmlListProperty<QQuickThumbnailToolButton> buttons READ buttons NOTIFY buttonsChanged)
+    Q_PROPERTY(bool iconicNotificationsEnabled READ iconicNotificationsEnabled WRITE setIconicNotificationsEnabled NOTIFY iconicNotificationsEnabledChanged)
+    Q_PROPERTY(QUrl iconicThumbnailSource READ iconicThumbnailSource WRITE setIconicThumbnailSource NOTIFY iconicThumbnailSourceChanged)
+    Q_PROPERTY(QUrl iconicLivePreviewSource READ iconicLivePreviewSource WRITE setIconicLivePreviewSource NOTIFY iconicLivePreviewSourceChanged)
     Q_CLASSINFO("DefaultProperty", "data")
 
 public:
@@ -70,12 +76,28 @@ public:
     Q_INVOKABLE void addButton(QQuickThumbnailToolButton *button);
     Q_INVOKABLE void removeButton(QQuickThumbnailToolButton *button);
 
+    bool iconicNotificationsEnabled() const;
+    void setIconicNotificationsEnabled(bool);
+    QUrl iconicThumbnailSource() const { return m_iconicThumbnailSource; }
+    void setIconicThumbnailSource(const QUrl &);
+    QUrl iconicLivePreviewSource() const { return m_iconicLivePreviewSource; }
+    void setIconicLivePreviewSource(const QUrl &);
+
 public Q_SLOTS:
     void clear();
 
 Q_SIGNALS:
     void countChanged();
     void buttonsChanged();
+    void iconicNotificationsEnabledChanged();
+    void iconicThumbnailSourceChanged();
+    void iconicThumbnailRequested();
+    void iconicLivePreviewSourceChanged();
+    void iconicLivePreviewRequested();
+
+private Q_SLOTS:
+    void iconicThumbnailLoaded(const QVariant &);
+    void iconicLivePreviewLoaded(const QVariant &);
 
 protected:
     void itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data);
@@ -87,6 +109,8 @@ private:
 
     QWinThumbnailToolBar m_toolbar;
     QList<QQuickThumbnailToolButton *> m_buttons;
+    QUrl m_iconicThumbnailSource;
+    QUrl m_iconicLivePreviewSource;
 };
 
 QT_END_NAMESPACE

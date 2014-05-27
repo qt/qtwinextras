@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the test suite of the Qt Toolkit.
@@ -55,6 +55,8 @@ ApplicationWindow {
 
     ThumbnailToolBar {
         id: toolBar
+        iconicThumbnailSource : "qrc:/qt-project.org/qmessagebox/images/qtlogo-64.png"
+        iconicLivePreviewSource : "qrc:/qt-project.org/qmessagebox/images/qtlogo-64.png"
 
         ThumbnailToolButton {
             tooltip: "Button #1"

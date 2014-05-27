@@ -47,6 +47,7 @@
 #include <QtCore/QHash>
 #include <QtCore/QList>
 #include <QtGui/QIcon>
+#include <QtGui/QPixmap>
 #include <QtCore/QAbstractNativeEventFilter>
 
 #include "winshobjidl_p.h"
@@ -56,6 +57,27 @@ QT_BEGIN_NAMESPACE
 class QWinThumbnailToolBarPrivate : public QObject, QAbstractNativeEventFilter
 {
 public:
+    class IconicPixmapCache
+    {
+    public:
+        IconicPixmapCache() : m_bitmap(0) {}
+        ~IconicPixmapCache() { deleteBitmap(); }
+
+        operator bool() const { return !m_pixmap.isNull(); }
+
+        QPixmap pixmap() const { return m_pixmap; }
+        bool setPixmap(const QPixmap &p);
+
+        HBITMAP bitmap(const QSize &maxSize);
+
+    private:
+        void deleteBitmap();
+
+        QPixmap m_pixmap;
+        QSize m_size;
+        HBITMAP m_bitmap;
+    };
+
     QWinThumbnailToolBarPrivate();
     ~QWinThumbnailToolBarPrivate();
     void initToolbar();
@@ -77,9 +99,20 @@ public:
     QWindow *window;
     ITaskbarList4 * const pTbList;
 
+    IconicPixmapCache iconicThumbnail;
+    IconicPixmapCache iconicLivePreview;
+
 private:
+    bool hasHandle() const;
+    HWND handle() const;
+    void updateIconicPixmapsEnabled(bool invalidate);
+    void updateIconicThumbnail(const MSG *message);
+    void updateIconicLivePreview(const MSG *message);
+
     QWinThumbnailToolBar *q_ptr;
     Q_DECLARE_PUBLIC(QWinThumbnailToolBar)
+    bool withinIconicThumbnailRequest;
+    bool withinIconicLivePreviewRequest;
 };
 
 QT_END_NAMESPACE

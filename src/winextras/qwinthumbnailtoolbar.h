@@ -48,6 +48,7 @@
 
 QT_BEGIN_NAMESPACE
 
+class QPixmap;
 class QWindow;
 class QWinThumbnailToolButton;
 class QWinThumbnailToolBarPrivate;
@@ -57,6 +58,9 @@ class Q_WINEXTRAS_EXPORT QWinThumbnailToolBar : public QObject
     Q_OBJECT
     Q_PROPERTY(int count READ count STORED false)
     Q_PROPERTY(QWindow *window READ window WRITE setWindow)
+    Q_PROPERTY(bool iconicPixmapNotificationsEnabled READ iconicPixmapNotificationsEnabled WRITE setIconicPixmapNotificationsEnabled)
+    Q_PROPERTY(QPixmap iconicThumbnailPixmap READ iconicThumbnailPixmap WRITE setIconicThumbnailPixmap)
+    Q_PROPERTY(QPixmap iconicLivePreviewPixmap READ iconicLivePreviewPixmap WRITE setIconicLivePreviewPixmap)
 
 public:
     explicit QWinThumbnailToolBar(QObject *parent = 0);
@@ -71,8 +75,20 @@ public:
     QList<QWinThumbnailToolButton *> buttons() const;
     int count() const;
 
+    bool iconicPixmapNotificationsEnabled() const;
+    void setIconicPixmapNotificationsEnabled(bool enabled);
+
+    QPixmap iconicThumbnailPixmap() const;
+    QPixmap iconicLivePreviewPixmap() const;
+
 public Q_SLOTS:
     void clear();
+    void setIconicThumbnailPixmap(const QPixmap &);
+    void setIconicLivePreviewPixmap(const QPixmap &);
+
+Q_SIGNALS:
+    void iconicThumbnailPixmapRequested();
+    void iconicLivePreviewPixmapRequested();
 
 private:
     Q_DISABLE_COPY(QWinThumbnailToolBar)
