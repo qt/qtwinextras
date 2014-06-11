@@ -40,7 +40,7 @@ qhp.QtWinExtras.subprojects.examples.indexTitle = Qt Windows Extras Examples
 qhp.QtWinExtras.subprojects.examples.selectors = fake:example
 qhp.QtWinExtras.subprojects.qmltypes.title = QML Types
 qhp.QtWinExtras.subprojects.qmltypes.indexTitle = Qt Windows Extras QML Types
-qhp.QtWinExtras.subprojects.qmltypes.selectors = fake:qmlclass
+qhp.QtWinExtras.subprojects.qmltypes.selectors = qmlclass
 qhp.QtWinExtras.subprojects.qmltypes.sortPages = true
 
 navigation.landingpage = "Qt Windows Extras"
