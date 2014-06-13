@@ -2,6 +2,8 @@ TARGET = QtWinExtras
 
 load(qt_module)
 
+QT += gui-private core-private
+
 SOURCES += \
     qwinfunctions.cpp \
     qwinfunctions_p.cpp \
@@ -14,7 +16,8 @@ SOURCES += \
     qwineventfilter.cpp \
     qwinthumbnailtoolbar.cpp \
     qwinthumbnailtoolbutton.cpp \
-    qwinevent.cpp
+    qwinevent.cpp \
+    qwinmime.cpp
 
 HEADERS += \
     qwinfunctions.h \
@@ -37,7 +40,8 @@ HEADERS += \
     qwinthumbnailtoolbutton.h \
     qwinthumbnailtoolbutton_p.h \
     qwinevent.h \
-    windowsguidsdefs_p.h
+    windowsguidsdefs_p.h \
+    qwinmime.h
 
 QMAKE_DOCS = $$PWD/doc/qtwinextras.qdocconf
 
