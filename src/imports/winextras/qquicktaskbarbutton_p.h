@@ -47,10 +47,9 @@
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
 
-#include "qquickiconloader_p.h"
-
 QT_BEGIN_NAMESPACE
 
+class QVariant;
 class QQuickTaskbarButtonPrivate;
 
 class QQuickTaskbarOverlay : public QObject
@@ -73,11 +72,10 @@ Q_SIGNALS:
     void accessibleDescriptionChanged();
 
 private Q_SLOTS:
-    void iconLoaded();
+    void iconLoaded(const QVariant &);
 
 private:
     QUrl m_iconSource;
-    QQuickIconLoader m_loader;
     QWinTaskbarButton *m_button;
 };
 

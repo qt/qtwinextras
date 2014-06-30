@@ -1,7 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
- ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+ ** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -44,7 +44,11 @@
 #define QQUICKICONLOADER_P_H
 
 #include <QObject>
+#include <QVariant>
+#include <QUrl>
 #include <QIcon>
+#include <QPixmap>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 
@@ -52,28 +56,76 @@ class QIcon;
 class QQmlEngine;
 class QNetworkReply;
 
-class QQuickIconLoader : public QObject
+class QQuickIconLoader
+{
+public:
+    enum LoadResult {
+        LoadOk,
+        LoadError,
+        LoadNetworkRequestStarted,
+    };
+
+    // Load a QIcon (pass type = QMetaType::QIcon) or a QPixmap (pass type =
+    // QMetaType::QPixmap) from url. The function takes an object and member
+    // function pointer to a slot accepting a QVariant. For resources that can
+    // loaded synchronously ("file", "qrc" or "image"), the member function pointer
+    // will be invoked immediately with the result. For network resources, it will be
+    // connected to an object handling the network reply and invoked once it finishes.
+    template <typename Object>
+    static LoadResult load(const QUrl &url, const QQmlEngine *engine,
+                           QVariant::Type type, const QSize &requestedSize,
+                           Object *receiver, void (Object::*function)(const QVariant &));
+
+private:
+    QQuickIconLoader() {}
+    static QVariant loadFromFile(const QUrl &url, QVariant::Type type);
+    static QVariant loadFromImageProvider(const QUrl &url, const QQmlEngine *engine,
+                                          QVariant::Type type, QSize requestedSize);
+    static QNetworkReply *loadFromNetwork(const QUrl &url, const QQmlEngine *engine);
+};
+
+// Internal handler which loads the resource once QNetworkReply finishes
+class QQuickIconLoaderNetworkReplyHandler : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit QQuickIconLoader(QObject *parent = 0);
-    void load(const QUrl &url, QQmlEngine *engine);
-    QIcon icon() const;
+    explicit QQuickIconLoaderNetworkReplyHandler(QNetworkReply *reply, QVariant::Type);
 
 Q_SIGNALS:
-    void finished();
+    void finished(const QVariant &);
 
 private Q_SLOTS:
-    void onRequestFinished(QNetworkReply*);
+    void onRequestFinished();
 
 private:
-    void loadFromFile(const QUrl &url);
-    void loadFromNetwork(const QUrl &url, QQmlEngine *engine);
-    void loadFromImageProvider(const QUrl &url, QQmlEngine *engine);
-
-    QIcon m_icon;
+    const QVariant::Type m_type;
 };
+
+template <typename Object>
+QQuickIconLoader::LoadResult
+    QQuickIconLoader::load(const QUrl &url, const QQmlEngine *engine,
+                           QVariant::Type type, const QSize &requestedSize,
+                           Object *receiver, void (Object::*function)(const QVariant &))
+{
+    const QString scheme = url.scheme();
+    if (scheme.startsWith(QLatin1String("http"))) {
+        if (QNetworkReply *reply = QQuickIconLoader::loadFromNetwork(url, engine)) {
+            QQuickIconLoaderNetworkReplyHandler *handler = new QQuickIconLoaderNetworkReplyHandler(reply, type);
+            QObject::connect(handler, &QQuickIconLoaderNetworkReplyHandler::finished, receiver, function);
+            return LoadNetworkRequestStarted;
+        }
+        return LoadError;
+    }
+    const QVariant resource = scheme == QLatin1String("image")
+        ? QQuickIconLoader::loadFromImageProvider(url, engine, type, requestedSize)
+        : QQuickIconLoader::loadFromFile(url, type); // qrc, file
+    if (resource.isValid()) {
+        (receiver->*function)(resource);
+        return LoadOk;
+    }
+    return LoadError;
+}
 
 QT_END_NAMESPACE
 

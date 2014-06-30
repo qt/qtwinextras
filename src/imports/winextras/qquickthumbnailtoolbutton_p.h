@@ -1,7 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
- ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+ ** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -47,8 +47,6 @@
 #include <QWinThumbnailToolBar>
 #include <QUrl>
 
-#include "qquickiconloader_p.h"
-
 QT_BEGIN_NAMESPACE
 
 class QQuickThumbnailToolButton : public QObject
@@ -92,12 +90,11 @@ Q_SIGNALS:
     void flatChanged();
 
 private Q_SLOTS:
-    void iconLoaded();
+    void iconLoaded(const QVariant &);
 
 private:
     QUrl m_iconSource;
     QWinThumbnailToolButton *m_button;
-    QQuickIconLoader m_loader;
 
     friend class QQuickThumbnailToolBar;
 };

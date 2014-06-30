@@ -1,7 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
- ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+ ** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -41,7 +41,10 @@
  ****************************************************************************/
 
 #include "qquicktaskbarbutton_p.h"
+#include "qquickiconloader_p.h"
+
 #include <QQuickWindow>
+#include <QVariant>
 
 QT_BEGIN_NAMESPACE
 
@@ -73,7 +76,6 @@ QT_BEGIN_NAMESPACE
 QQuickTaskbarOverlay::QQuickTaskbarOverlay(QWinTaskbarButton *button, QObject *parent) :
     QObject(parent), m_button(button)
 {
-    connect(&m_loader, SIGNAL(finished()), SLOT(iconLoaded()));
 }
 
 QUrl QQuickTaskbarOverlay::iconSource() const
@@ -83,10 +85,20 @@ QUrl QQuickTaskbarOverlay::iconSource() const
 
 void QQuickTaskbarOverlay::setIconSource(const QUrl &iconSource)
 {
-    if (m_iconSource != iconSource) {
+    if (m_iconSource == iconSource)
+        return;
+
+    if (iconSource.isEmpty()) {
+        m_button->clearOverlayIcon();
         m_iconSource = iconSource;
         emit iconSourceChanged();
-        m_loader.load(m_iconSource, qmlEngine(parent()));
+        return;
+    }
+
+    if (QQuickIconLoader::load(iconSource, qmlEngine(parent()), QVariant::Icon, QSize(),
+                               this, &QQuickTaskbarOverlay::iconLoaded) != QQuickIconLoader::LoadError) {
+        m_iconSource = iconSource;
+        emit iconSourceChanged();
     }
 }
 
@@ -103,11 +115,9 @@ void QQuickTaskbarOverlay::setAccessibleDescription(const QString &description)
     }
 }
 
-void QQuickTaskbarOverlay::iconLoaded()
+void QQuickTaskbarOverlay::iconLoaded(const QVariant &value)
 {
-    QIcon icon = m_loader.icon();
-    if (!icon.isNull())
-        m_button->setOverlayIcon(icon);
+    m_button->setOverlayIcon(value.value<QIcon>());
 }
 
 QQuickTaskbarButton::QQuickTaskbarButton(QQuickItem *parent) : QQuickItem(parent),

@@ -1,7 +1,7 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
- ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+ ** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
  ** This file is part of the QtWinExtras module of the Qt Toolkit.
@@ -41,6 +41,7 @@
  ****************************************************************************/
 
 #include "qquickthumbnailtoolbutton_p.h"
+#include "qquickiconloader_p.h"
 
 #include <QWinThumbnailToolButton>
 
@@ -66,7 +67,6 @@ QQuickThumbnailToolButton::QQuickThumbnailToolButton(QObject *parent) :
     QObject(parent), m_button(new QWinThumbnailToolButton(this))
 {
     connect(m_button, SIGNAL(clicked()), SIGNAL(clicked()));
-    connect(&m_loader, SIGNAL(finished()), SLOT(iconLoaded()));
 }
 
 QQuickThumbnailToolButton::~QQuickThumbnailToolButton()
@@ -80,10 +80,19 @@ QQuickThumbnailToolButton::~QQuickThumbnailToolButton()
  */
 void QQuickThumbnailToolButton::setIconSource(const QUrl &iconSource)
 {
-    if (m_iconSource != iconSource) {
+    if (m_iconSource == iconSource)
+        return;
+
+    if (iconSource.isEmpty()) {
+        m_button->setIcon(QIcon());
         m_iconSource = iconSource;
         emit iconSourceChanged();
-        m_loader.load(m_iconSource, qmlEngine(this));
+    }
+
+    if (QQuickIconLoader::load(iconSource, qmlEngine(this), QVariant::Icon, QSize(),
+                               this, &QQuickThumbnailToolButton::iconLoaded) != QQuickIconLoader::LoadError) {
+        m_iconSource = iconSource;
+        emit iconSourceChanged();
     }
 }
 
@@ -213,11 +222,10 @@ bool QQuickThumbnailToolButton::isFlat() const
     return m_button->isFlat();
 }
 
-void QQuickThumbnailToolButton::iconLoaded()
+void QQuickThumbnailToolButton::iconLoaded(const QVariant &value)
 {
-    QIcon icon = m_loader.icon();
-    if (!icon.isNull())
-        m_button->setIcon(icon);
+    if (value.isValid())
+        m_button->setIcon(value.value<QIcon>());
 }
 
 QT_END_NAMESPACE
