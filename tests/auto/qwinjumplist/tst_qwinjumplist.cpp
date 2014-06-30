@@ -59,6 +59,13 @@ private slots:
     void testItems();
 };
 
+static inline QByteArray msgFileNameMismatch(const QString &f1, const QString &f2)
+{
+    const QString result = QLatin1Char('"') + f1 + QStringLiteral("\" != \"")
+        + f2 + QLatin1Char('"');
+    return result.toLocal8Bit();
+}
+
 void tst_QWinJumpList::testRecent()
 {
     QScopedPointer<QWinJumpList> jumplist(new QWinJumpList);
@@ -95,7 +102,10 @@ void tst_QWinJumpList::testRecent()
 
     QWinJumpListItem* item = recent2->items().value(0);
     QVERIFY(item);
-    QCOMPARE(item->filePath(), QCoreApplication::applicationFilePath());
+    const QString itemPath = item->filePath();
+    const QString applicationFilePath = QCoreApplication::applicationFilePath();
+    QVERIFY2(!itemPath.compare(applicationFilePath, Qt::CaseInsensitive),
+             msgFileNameMismatch(itemPath, applicationFilePath));
     QEXPECT_FAIL("", "QWinJumpListItem::title not supported for recent items", Continue);
     QCOMPARE(item->title(), QStringLiteral("tst_QWinJumpList"));
 
@@ -139,7 +149,10 @@ void tst_QWinJumpList::testFrequent()
 
     QWinJumpListItem* item = frequent2->items().value(0);
     QVERIFY(item);
-    QCOMPARE(item->filePath(), QCoreApplication::applicationFilePath());
+    const QString itemPath = item->filePath();
+    const QString applicationFilePath = QCoreApplication::applicationFilePath();
+    QVERIFY2(!itemPath.compare(applicationFilePath, Qt::CaseInsensitive),
+             msgFileNameMismatch(itemPath, applicationFilePath));
     QEXPECT_FAIL("", "QWinJumpListItem::title not supported for frequent items", Continue);
     QCOMPARE(item->title(), QStringLiteral("tst_QWinJumpList"));
 
