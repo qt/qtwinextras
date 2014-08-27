@@ -137,7 +137,7 @@ void QWinTaskbarButtonPrivate::updateOverlayIcon()
         pTbList->SetOverlayIcon(handle(), NULL, descrPtr);
 
     if (hicon)
-        DeleteObject(hicon);
+        DestroyIcon(hicon);
     if (descrPtr)
         delete[] descrPtr;
 }
