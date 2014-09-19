@@ -216,7 +216,7 @@ static inline QString errorMessageFromComError(const _com_error &comError)
      TCHAR *message = Q_NULLPTR;
      FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
                    NULL, comError.Error(), MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT),
-                   message, 0, NULL);
+                   reinterpret_cast<LPWSTR>(&message), 0, NULL);
      if (message) {
          const QString result = QString::fromWCharArray(message).trimmed();
          LocalFree((HLOCAL)message);
