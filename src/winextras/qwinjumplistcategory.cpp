@@ -120,8 +120,9 @@ void QWinJumpListCategoryPrivate::loadRecents()
 void QWinJumpListCategoryPrivate::addRecent(QWinJumpListItem *item)
 {
     Q_ASSERT(item->type() == QWinJumpListItem::Link);
-    const QString identifier = jumpList ? jumpList->identifier() : QString();
-    wchar_t *id = qt_qstringToNullTerminated(identifier);
+    wchar_t *id = 0;
+    if (jumpList && !jumpList->identifier().isEmpty())
+        id = qt_qstringToNullTerminated(jumpList->identifier());
 
     SHARDAPPIDINFOLINK info;
     info.pszAppID = id;
