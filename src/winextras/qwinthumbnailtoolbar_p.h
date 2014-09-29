@@ -83,7 +83,6 @@ public:
     static void initButtons(THUMBBUTTON *buttons);
     static int makeNativeButtonFlags(const QWinThumbnailToolButton *button);
     static int makeButtonMask(const QWinThumbnailToolButton *button);
-    static void freeButtonResources(THUMBBUTTON *buttons);
     static QString msgComFailed(const char *function, HRESULT hresult);
 
     bool updateScheduled;
