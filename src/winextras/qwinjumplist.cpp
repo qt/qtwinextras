@@ -91,17 +91,6 @@ static QString createArguments(const QStringList &arguments)
     return args;
 }
 
-static QString defaultIdentifier()
-{
-    // CompanyName.ProductName(.SubProduct).VersionInformation
-    QStringList identifier(QCoreApplication::applicationName());
-    if (!QCoreApplication::organizationName().isEmpty())
-        identifier.prepend(QCoreApplication::organizationName());
-    if (!QCoreApplication::applicationVersion().isEmpty())
-        identifier.append(QCoreApplication::applicationVersion());
-    return identifier.join(QLatin1Char('.'));
-}
-
 QWinJumpListPrivate::QWinJumpListPrivate() :
     pDestList(0), recent(0), frequent(0), tasks(0), dirty(false)
 {
@@ -429,7 +418,6 @@ QWinJumpList::QWinJumpList(QObject *parent) :
     HRESULT hresult = CoCreateInstance(qCLSID_DestinationList, 0, CLSCTX_INPROC_SERVER, qIID_ICustomDestinationList, reinterpret_cast<void **>(&d_ptr->pDestList));
     if (FAILED(hresult))
         QWinJumpListPrivate::warning("CoCreateInstance", hresult);
-    setIdentifier(defaultIdentifier());
     d->invalidate();
 }
 
@@ -452,15 +440,12 @@ QWinJumpList::~QWinJumpList()
     \property QWinJumpList::identifier
     \brief the jump list identifier
 
-    Specifies a unique identifier for the application jump list.
-    See \l {Application User Model IDs} on MSDN for further details.
+    Specifies an optional explicit unique identifier for the
+    application jump list.
 
-    The default value is based on:
-    \list
-    \li QCoreApplication::organizationName
-    \li QCoreApplication::applicationName
-    \li QCoreApplication::applicationVersion
-    \endlist
+    The default value is empty; a system-defined internal identifier
+    is used instead. See \l {Application User Model IDs} on MSDN for
+    further details.
 
     \note The identifier cannot have more than \c 128 characters and
     cannot contain spaces. A too long identifier is automatically truncated

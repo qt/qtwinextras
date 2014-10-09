@@ -493,6 +493,7 @@ void QWinThumbnailToolBarPrivate::_q_updateToolbar()
     if (!pTbList || !window)
         return;
     THUMBBUTTON buttons[windowsLimitedThumbbarSize];
+    QList<HICON> createdIcons;
     initButtons(buttons);
     const int thumbbarSize = qMin(buttonList.size(), windowsLimitedThumbbarSize);
     // filling from the right fixes some strange bug which makes last button bg look like first btn bg
@@ -504,6 +505,8 @@ void QWinThumbnailToolBarPrivate::_q_updateToolbar()
             buttons[i].hIcon = QtWin::toHICON(button->icon().pixmap(GetSystemMetrics(SM_CXSMICON)));
             if (!buttons[i].hIcon)
                 buttons[i].hIcon = (HICON)LoadImage(0, IDI_APPLICATION, IMAGE_ICON, SM_CXSMICON, SM_CYSMICON, LR_SHARED);
+            else
+                createdIcons << buttons[i].hIcon;
         }
         if (!button->toolTip().isEmpty()) {
             buttons[i].szTip[button->toolTip().left(sizeof(buttons[i].szTip)/sizeof(buttons[i].szTip[0]) - 1).toWCharArray(buttons[i].szTip)] = 0;
@@ -513,7 +516,14 @@ void QWinThumbnailToolBarPrivate::_q_updateToolbar()
     if (FAILED(hresult))
         qWarning() << msgComFailed("ThumbBarUpdateButtons", hresult);
     updateIconicPixmapsEnabled(false);
-    freeButtonResources(buttons);
+    for (int i = 0; i < windowsLimitedThumbbarSize; i++) {
+        if (buttons[i].hIcon) {
+            if (createdIcons.contains(buttons[i].hIcon))
+                DestroyIcon(buttons[i].hIcon);
+            else
+                DeleteObject(buttons[i].hIcon);
+        }
+    }
 }
 
 void QWinThumbnailToolBarPrivate::_q_scheduleUpdate()
@@ -602,14 +612,6 @@ int QWinThumbnailToolBarPrivate::makeButtonMask(const QWinThumbnailToolButton *b
     if (!button->toolTip().isEmpty())
         mask |= THB_TOOLTIP;
     return mask;
-}
-
-void QWinThumbnailToolBarPrivate::freeButtonResources(THUMBBUTTON *buttons)
-{
-    for (int i = 0; i < windowsLimitedThumbbarSize; i++) {
-        if (buttons[i].hIcon)
-            DeleteObject(buttons[i].hIcon);
-    }
 }
 
 QString QWinThumbnailToolBarPrivate::msgComFailed(const char *function, HRESULT hresult)
