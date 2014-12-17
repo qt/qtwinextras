@@ -92,7 +92,7 @@ MainWindow::MainWindow()
     QMenu *fileMenu = menuBar()->addMenu("&File");
     QAction *quitAction = fileMenu->addAction("&Quit");
     quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
-    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+    connect(quitAction, &QAction::triggered, QCoreApplication::quit);
     setCentralWidget(m_logEdit);
 }
 
@@ -102,13 +102,13 @@ void MainWindow::initThumbnailToolBar()
     QWinThumbnailToolButton *testButton = new QWinThumbnailToolButton(m_thumbnailToolBar);
     testButton->setToolTip("Test");
     testButton->setIcon(style()->standardIcon(QStyle::SP_ComputerIcon));
-    connect(testButton, SIGNAL(clicked()), this, SLOT(testButtonClicked()));
+    connect(testButton, &QWinThumbnailToolButton::clicked, this, &MainWindow::testButtonClicked);
     m_thumbnailToolBar->addButton(testButton);
     m_thumbnailToolBar->setIconicPixmapNotificationsEnabled(true);
-    connect(m_thumbnailToolBar, SIGNAL(iconicLivePreviewPixmapRequested()),
-            this, SLOT(updateIconicLivePreviewPixmap()));
-    connect(m_thumbnailToolBar, SIGNAL(iconicThumbnailPixmapRequested()),
-            this, SLOT(updateIconicThumbnailPixmap()));
+    connect(m_thumbnailToolBar, &QWinThumbnailToolBar::iconicLivePreviewPixmapRequested,
+            this, &MainWindow::updateIconicLivePreviewPixmap);
+    connect(m_thumbnailToolBar, &QWinThumbnailToolBar::iconicThumbnailPixmapRequested,
+            this, &MainWindow::updateIconicThumbnailPixmap);
 }
 
 void MainWindow::logText(const QString &text)

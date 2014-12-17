@@ -63,9 +63,9 @@ TestWidget::TestWidget(QWidget *parent) :
         }
     }
 
-    connect(ui->btnUpdate,   SIGNAL(clicked()), SLOT(updateJumpList()));
-    connect(ui->btnOpenFile, SIGNAL(clicked()), SLOT(openFile()));
-    connect(ui->btnClose, SIGNAL(clicked()), qApp, SLOT(quit()));
+    connect(ui->btnUpdate,   &QAbstractButton::clicked, this, &TestWidget::updateJumpList);
+    connect(ui->btnOpenFile, &QAbstractButton::clicked, this, &TestWidget::openFile);
+    connect(ui->btnClose, &QAbstractButton::clicked, QCoreApplication::quit);
 }
 
 TestWidget::~TestWidget()

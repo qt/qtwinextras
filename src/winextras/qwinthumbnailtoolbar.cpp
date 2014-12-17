@@ -161,7 +161,8 @@ void QWinThumbnailToolBar::addButton(QWinThumbnailToolButton *button)
             button->d_func()->toolbar->removeButton(button);
         }
         button->d_func()->toolbar = this;
-        connect(button, SIGNAL(changed()), this, SLOT(_q_scheduleUpdate()));
+        connect(button, &QWinThumbnailToolButton::changed,
+                d, &QWinThumbnailToolBarPrivate::_q_scheduleUpdate);
         d->buttonList.append(button);
         d->_q_scheduleUpdate();
     }
@@ -175,7 +176,9 @@ void QWinThumbnailToolBar::removeButton(QWinThumbnailToolButton *button)
     Q_D(QWinThumbnailToolBar);
     if (button && d->buttonList.contains(button)) {
         button->d_func()->toolbar = 0;
-        disconnect(button, SIGNAL(changed()), this, SLOT(_q_scheduleUpdate()));
+        disconnect(button, &QWinThumbnailToolButton::changed,
+                   d, &QWinThumbnailToolBarPrivate::_q_scheduleUpdate);
+
         d->buttonList.removeAll(button);
         d->_q_scheduleUpdate();
     }
@@ -530,9 +533,8 @@ void QWinThumbnailToolBarPrivate::_q_scheduleUpdate()
 {
     if (updateScheduled)
         return;
-    Q_Q(QWinThumbnailToolBar);
     updateScheduled = true;
-    QTimer::singleShot(0, q, SLOT(_q_updateToolbar()));
+    QTimer::singleShot(0, this, &QWinThumbnailToolBarPrivate::_q_updateToolbar);
 }
 
 bool QWinThumbnailToolBarPrivate::eventFilter(QObject *object, QEvent *event)

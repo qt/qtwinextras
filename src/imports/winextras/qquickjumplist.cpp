@@ -78,7 +78,7 @@ QQuickJumpListCategory *QQuickJumpList::recent() const
     if (!m_recent) {
         QQuickJumpList *that = const_cast<QQuickJumpList *>(this);
         that->m_recent = new QQuickJumpListCategory(that);
-        connect(m_recent, SIGNAL(visibilityChanged()), that, SLOT(rebuild()));
+        connect(m_recent, &QQuickJumpListCategory::visibilityChanged, that, &QQuickJumpList::rebuild);
         m_recent->setVisible(false);
     }
     return m_recent;
@@ -95,7 +95,7 @@ QQuickJumpListCategory *QQuickJumpList::frequent() const
     if (!m_frequent) {
         QQuickJumpList *that = const_cast<QQuickJumpList *>(this);
         that->m_frequent = new QQuickJumpListCategory(that);
-        connect(m_frequent, SIGNAL(visibilityChanged()), that, SLOT(rebuild()));
+        connect(m_frequent, &QQuickJumpListCategory::visibilityChanged, that, &QQuickJumpList::rebuild);
         m_frequent->setVisible(false);
     }
     return m_frequent;
@@ -111,7 +111,7 @@ QQuickJumpListCategory *QQuickJumpList::tasks() const
     if (!m_tasks) {
         QQuickJumpList *that = const_cast<QQuickJumpList *>(this);
         that->m_tasks = new QQuickJumpListCategory(that);
-        connect(m_tasks, SIGNAL(visibilityChanged()), that, SLOT(rebuild()));
+        connect(m_tasks, &QQuickJumpListCategory::visibilityChanged, that, &QQuickJumpList::rebuild);
     }
     return m_tasks;
 }
@@ -120,11 +120,11 @@ void QQuickJumpList::setTasks(QQuickJumpListCategory *tasks)
 {
     if (m_tasks != tasks) {
         if (m_tasks)
-            disconnect(m_tasks, SIGNAL(visibilityChanged()), this, SLOT(rebuild()));
+            disconnect(m_tasks, &QQuickJumpListCategory::visibilityChanged, this, &QQuickJumpList::rebuild);
         delete m_tasks;
         m_tasks = tasks;
         if (m_tasks)
-            connect(m_tasks, SIGNAL(visibilityChanged()), this, SLOT(rebuild()));
+            connect(m_tasks, &QQuickJumpListCategory::visibilityChanged, this, &QQuickJumpList::rebuild);
         emit tasksChanged();
     }
 }
@@ -177,7 +177,7 @@ void QQuickJumpList::data_append(QQmlListProperty<QObject> *property, QObject *o
 {
     if (QQuickJumpListCategory *category = qobject_cast<QQuickJumpListCategory *>(object)) {
         QQuickJumpList *jumpList = static_cast<QQuickJumpList *>(property->object);
-        connect(category, SIGNAL(visibilityChanged()), jumpList, SLOT(rebuild()));
+        connect(category, &QQuickJumpListCategory::visibilityChanged, jumpList, &QQuickJumpList::rebuild);
         jumpList->m_categories.append(category);
         emit jumpList->categoriesChanged();
     }

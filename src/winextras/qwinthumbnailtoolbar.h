@@ -87,9 +87,6 @@ private:
     Q_DECLARE_PRIVATE(QWinThumbnailToolBar)
     QScopedPointer<QWinThumbnailToolBarPrivate> d_ptr;
     friend class QWinThumbnailToolButton;
-
-    Q_PRIVATE_SLOT(d_func(), void _q_updateToolbar())
-    Q_PRIVATE_SLOT(d_func(), void _q_scheduleUpdate())
 };
 
 QT_END_NAMESPACE

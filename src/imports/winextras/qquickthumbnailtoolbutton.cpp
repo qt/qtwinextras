@@ -58,7 +58,7 @@ QT_BEGIN_NAMESPACE
 QQuickThumbnailToolButton::QQuickThumbnailToolButton(QObject *parent) :
     QObject(parent), m_button(new QWinThumbnailToolButton(this))
 {
-    connect(m_button, SIGNAL(clicked()), SIGNAL(clicked()));
+    connect(m_button, &QWinThumbnailToolButton::clicked, this, &QQuickThumbnailToolButton::clicked);
 }
 
 QQuickThumbnailToolButton::~QQuickThumbnailToolButton()

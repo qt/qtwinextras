@@ -45,16 +45,21 @@ TestWidget::TestWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->btnPeekDisallow, SIGNAL(clicked()), SLOT(onDisallowPeekClicked()));
-    connect(ui->btnPeekExclude,  SIGNAL(clicked()), SLOT(onExcludeFromPeekClicked()));
-    connect(ui->radioFlipDefault, SIGNAL(clicked()), SLOT(onFlip3DPolicyChanged()));
-    connect(ui->radioFlipAbove,   SIGNAL(clicked()), SLOT(onFlip3DPolicyChanged()));
-    connect(ui->radioFlipBelow,   SIGNAL(clicked()), SLOT(onFlip3DPolicyChanged()));
-    connect(ui->btnFrameReset, SIGNAL(clicked()), SLOT(onResetGlassFrameClicked()));
-    connect(ui->frameTop,    SIGNAL(valueChanged(int)), SLOT(onGlassMarginsChanged()));
-    connect(ui->frameRight,  SIGNAL(valueChanged(int)), SLOT(onGlassMarginsChanged()));
-    connect(ui->frameBottom, SIGNAL(valueChanged(int)), SLOT(onGlassMarginsChanged()));
-    connect(ui->frameLeft,   SIGNAL(valueChanged(int)), SLOT(onGlassMarginsChanged()));
+    connect(ui->btnPeekDisallow,  &QAbstractButton::clicked, this, &TestWidget::onDisallowPeekClicked);
+    connect(ui->btnPeekExclude,   &QAbstractButton::clicked, this, &TestWidget::onExcludeFromPeekClicked);
+    connect(ui->radioFlipDefault, &QAbstractButton::clicked, this, &TestWidget::onFlip3DPolicyChanged);
+    connect(ui->radioFlipAbove,   &QAbstractButton::clicked, this, &TestWidget::onFlip3DPolicyChanged);
+    connect(ui->radioFlipBelow,   &QAbstractButton::clicked, this, &TestWidget::onFlip3DPolicyChanged);
+    connect(ui->btnFrameReset,    &QAbstractButton::clicked, this, &TestWidget::onResetGlassFrameClicked);
+    typedef void(QSpinBox::*IntSignal)(int);
+    connect(ui->frameTop, static_cast<IntSignal>(&QSpinBox::valueChanged),
+            this, &TestWidget::onGlassMarginsChanged);
+    connect(ui->frameRight, static_cast<IntSignal>(&QSpinBox::valueChanged),
+            this, &TestWidget::onGlassMarginsChanged);
+    connect(ui->frameBottom, static_cast<IntSignal>(&QSpinBox::valueChanged),
+            this, &TestWidget::onGlassMarginsChanged);
+    connect(ui->frameLeft, static_cast<IntSignal>(&QSpinBox::valueChanged),
+            this, &TestWidget::onGlassMarginsChanged);
 }
 
 TestWidget::~TestWidget()
