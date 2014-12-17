@@ -81,15 +81,25 @@ public slots:
 private:
     QWinThumbnailToolBar *m_thumbnailToolBar;
     QPlainTextEdit *m_logEdit;
+    QAction *m_enableIconicPixmapAction;
+    QAction *m_enableIconicLivePreviewAction;
 };
 
 MainWindow::MainWindow()
     : m_thumbnailToolBar(new QWinThumbnailToolBar(this))
     , m_logEdit(new QPlainTextEdit)
+    , m_enableIconicPixmapAction(new QAction("Enable Iconic Pixmap", this))
+    , m_enableIconicLivePreviewAction(new QAction("Enable LivePreview", this))
 {
     setMinimumWidth(400);
     setWindowTitle(QStringLiteral("QWinThumbnailToolBar ") + QLatin1String(QT_VERSION_STR));
     QMenu *fileMenu = menuBar()->addMenu("&File");
+    m_enableIconicPixmapAction->setCheckable(true);
+    m_enableIconicPixmapAction->setChecked(true);
+    m_enableIconicLivePreviewAction->setCheckable(true);
+    m_enableIconicLivePreviewAction->setChecked(true);
+    fileMenu->addAction(m_enableIconicPixmapAction);
+    fileMenu->addAction(m_enableIconicLivePreviewAction);
     QAction *quitAction = fileMenu->addAction("&Quit");
     quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
     connect(quitAction, &QAction::triggered, QCoreApplication::quit);
@@ -126,6 +136,8 @@ void MainWindow::testButtonClicked()
 void MainWindow::updateIconicThumbnailPixmap()
 {
     static int n = 1;
+    if (!m_enableIconicPixmapAction->isChecked())
+        return;
     const QString number = QString::number(n++);
     logText(QLatin1String(__FUNCTION__) + QLatin1Char(' ') + number);
     const QPixmap pixmap =
@@ -136,6 +148,8 @@ void MainWindow::updateIconicThumbnailPixmap()
 void MainWindow::updateIconicLivePreviewPixmap()
 {
     static int n = 1;
+    if (!m_enableIconicLivePreviewAction->isChecked())
+        return;
     const QString number = QString::number(n++);
     logText(QLatin1String(__FUNCTION__) + QLatin1Char(' ') + number);
     const QPixmap pixmap =
