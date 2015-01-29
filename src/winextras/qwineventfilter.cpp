@@ -85,7 +85,7 @@ bool QWinEventFilter::nativeEventFilter(const QByteArray &, void *message, long 
     if (event) {
         window = findWindow(msg->hwnd);
         if (window)
-            qApp->sendEvent(window, event);
+            QCoreApplication::sendEvent(window, event);
         delete event;
     }
 
@@ -106,13 +106,10 @@ void QWinEventFilter::setup()
 
 QWindow *QWinEventFilter::findWindow(HWND handle)
 {
-    QWindow *w = 0;
-    QWindowList list = qApp->topLevelWindows();
-    for (int i = 0; i < list.size(); i++) {
-        if (list.at(i)->winId() == reinterpret_cast<WId>(handle)) {
-            w = list.at(i);
-            break;
-        }
+    const WId wid = reinterpret_cast<WId>(handle);
+    foreach (QWindow *topLevel, QGuiApplication::topLevelWindows()) {
+        if (topLevel->handle() && topLevel->winId() == wid)
+            return topLevel;
     }
-    return w;
+    return Q_NULLPTR;
 }
