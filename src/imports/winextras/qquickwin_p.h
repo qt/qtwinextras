@@ -43,7 +43,6 @@ QT_BEGIN_NAMESPACE
 class QQuickWin : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(HBitmapFormat WindowFlip3DPolicy)
 
 public:
     enum HBitmapFormat
@@ -52,6 +51,7 @@ public:
         HBitmapPremultipliedAlpha = QtWin::HBitmapPremultipliedAlpha,
         HBitmapAlpha = QtWin::HBitmapAlpha
     };
+    Q_ENUM(HBitmapFormat)
 
     enum WindowFlip3DPolicy
     {
@@ -59,6 +59,7 @@ public:
         FlipExcludeBelow = QtWin::FlipExcludeBelow,
         FlipExcludeAbove = QtWin::FlipExcludeAbove
     };
+    Q_ENUM(WindowFlip3DPolicy)
 };
 
 QT_END_NAMESPACE
