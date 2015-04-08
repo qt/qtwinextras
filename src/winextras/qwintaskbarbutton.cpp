@@ -104,7 +104,8 @@ QWinTaskbarButtonPrivate::QWinTaskbarButtonPrivate() : progressBar(0), pTbList(0
 
 QWinTaskbarButtonPrivate::~QWinTaskbarButtonPrivate()
 {
-    pTbList->Release();
+    if (pTbList)
+        pTbList->Release();
 }
 
 HWND QWinTaskbarButtonPrivate::handle()
