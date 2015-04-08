@@ -54,7 +54,7 @@ QT_BEGIN_NAMESPACE
     \class QWinTaskbarButton
     \inmodule QtWinExtras
     \brief The QWinTaskbarButton class represents the Windows taskbar button for
-    a window.
+    a top-level window (Windows 7 and newer).
 
     \since 5.2
 
@@ -70,6 +70,9 @@ QT_BEGIN_NAMESPACE
     and QWinTaskbarProgress classes to adjust the look of the taskbar button:
 
     \snippet code/taskbar.cpp taskbar_cpp
+
+    \note The class wraps API only available since Windows 7. Instantiating it
+    on Windows XP or Windows Vista causes a runtime warning.
 
     \sa QWinTaskbarProgress
  */
