@@ -41,6 +41,7 @@
 #include "winpropkey_p.h"
 
 #include <QDir>
+#include <QtCore/QDebug>
 #include <QCoreApplication>
 #include <qt_windows.h>
 #include <propvarutil.h>
@@ -562,6 +563,27 @@ void QWinJumpList::clear()
         category->clear();
     d->destroy();
 }
+
+#ifndef QT_NO_DEBUG_STREAM
+
+QDebug operator<<(QDebug debug, const QWinJumpList *jumplist)
+{
+    QDebugStateSaver saver(debug);
+    debug.nospace();
+    debug.noquote();
+    debug << "QWinJumpList(";
+    if (jumplist) {
+        debug << "(identifier=\"" << jumplist->identifier() << "\", recent="
+            << jumplist->recent() << ", frequent=" << jumplist->frequent()
+            << ", tasks=" << jumplist->tasks()
+            << ", categories=" << jumplist->categories();
+    } else {
+        debug << '0';
+    }
+    debug << ')';
+    return debug;
+}
+#endif // !QT_NO_DEBUG_STREAM
 
 QT_END_NAMESPACE
 
