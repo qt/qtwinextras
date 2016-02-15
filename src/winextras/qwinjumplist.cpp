@@ -106,7 +106,7 @@ QWinJumpListPrivate::QWinJumpListPrivate() :
 void QWinJumpListPrivate::warning(const char *function, HRESULT hresult)
 {
     const QString err = QtWin::errorStringFromHresult(hresult);
-    qWarning("QWinJumpList: %s() failed: %#010x, %s.", function, (unsigned)hresult, qPrintable(err));
+    qWarning("QWinJumpList: %s() failed: %#010x, %s.", function, unsigned(hresult), qPrintable(err));
 }
 
 QString QWinJumpListPrivate::iconsDirPath()
@@ -331,8 +331,13 @@ IShellLinkW *QWinJumpListPrivate::toIShellLink(const QWinJumpListItem *item)
     }
 
     const QString args = createArguments(item->arguments());
-    const int iconPathSize = QWinJumpListPrivate::iconsDirPath().size() + sizeof(void *)*2 + 4; // path + ptr-name-in-hex + .ico
-    const int bufferSize = qMax(args.size(), qMax(item->workingDirectory().size(), qMax(item->description().size(), qMax(item->title().size(), qMax(item->filePath().size(), iconPathSize))))) + 1;
+    const int iconPathSize = QWinJumpListPrivate::iconsDirPath().size()
+        + int(sizeof(void *)) * 2 + 4; // path + ptr-name-in-hex + .ico
+    const int bufferSize = qMax(args.size(),
+                                qMax(item->workingDirectory().size(),
+                                     qMax(item->description().size(),
+                                          qMax(item->title().size(),
+                                               qMax(item->filePath().size(), iconPathSize))))) + 1;
     wchar_t *buffer = new wchar_t[bufferSize];
 
     if (!item->description().isEmpty()) {

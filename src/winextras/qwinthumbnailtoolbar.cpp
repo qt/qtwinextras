@@ -430,7 +430,7 @@ static inline ITaskbarList4 *createTaskbarList()
     if (FAILED(hresult)) {
         const QString err = QtWin::errorStringFromHresult(hresult);
         qWarning("QWinThumbnailToolBar: qIID_ITaskbarList4 was not created: %#010x, %s.",
-                 (unsigned)hresult, qPrintable(err));
+                 unsigned(hresult), qPrintable(err));
         return 0;
     }
     hresult = result->HrInit();
@@ -438,7 +438,7 @@ static inline ITaskbarList4 *createTaskbarList()
         result->Release();
         const QString err = QtWin::errorStringFromHresult(hresult);
         qWarning("QWinThumbnailToolBar: qIID_ITaskbarList4 was not initialized: %#010x, %s.",
-                 (unsigned)hresult, qPrintable(err));
+                 unsigned(hresult), qPrintable(err));
         return 0;
     }
     return result;
@@ -513,7 +513,7 @@ void QWinThumbnailToolBarPrivate::_q_updateToolbar()
         if (!button->icon().isNull()) {;
             buttons[i].hIcon = QtWin::toHICON(button->icon().pixmap(GetSystemMetrics(SM_CXSMICON)));
             if (!buttons[i].hIcon)
-                buttons[i].hIcon = (HICON)LoadImage(0, IDI_APPLICATION, IMAGE_ICON, SM_CXSMICON, SM_CYSMICON, LR_SHARED);
+                buttons[i].hIcon = static_cast<HICON>(LoadImage(0, IDI_APPLICATION, IMAGE_ICON, SM_CXSMICON, SM_CYSMICON, LR_SHARED));
             else
                 createdIcons << buttons[i].hIcon;
         }
@@ -587,7 +587,7 @@ void QWinThumbnailToolBarPrivate::initButtons(THUMBBUTTON *buttons)
 {
     for (int i = 0; i < windowsLimitedThumbbarSize; i++) {
         memset(&buttons[i], 0, sizeof buttons[i]);
-        buttons[i].iId = i;
+        buttons[i].iId = UINT(i);
         buttons[i].dwFlags = THBF_HIDDEN;
         buttons[i].dwMask  = THB_FLAGS;
     }
@@ -626,7 +626,7 @@ QString QWinThumbnailToolBarPrivate::msgComFailed(const char *function, HRESULT 
 {
     return QString::fromLatin1("QWinThumbnailToolBar: %1() failed: #%2: %3")
             .arg(QLatin1String(function))
-            .arg((unsigned)hresult, 10, 16, QLatin1Char('0'))
+            .arg(unsigned(hresult), 10, 16, QLatin1Char('0'))
             .arg(QtWin::errorStringFromHresult(hresult));
 }
 
