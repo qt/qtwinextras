@@ -49,6 +49,13 @@
 
 #include <QtQml/QtQml>
 
+static void initResources()
+{
+#ifdef QT_STATIC
+    Q_INIT_RESOURCE(qmake_QtWinExtras);
+#endif
+}
+
 QT_BEGIN_NAMESPACE
 
 class QWinExtrasQmlPlugin : public QQmlExtensionPlugin
@@ -57,6 +64,7 @@ class QWinExtrasQmlPlugin : public QQmlExtensionPlugin
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
 
 public:
+    QWinExtrasQmlPlugin(QObject *parent = 0) : QQmlExtensionPlugin(parent) { initResources(); }
     void registerTypes(const char *uri) Q_DECL_OVERRIDE
     {
         Q_ASSERT(uri == QLatin1String("QtWinExtras"));
