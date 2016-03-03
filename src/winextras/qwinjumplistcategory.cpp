@@ -38,6 +38,17 @@
  **
  ****************************************************************************/
 
+#include <QtCore/QtGlobal>
+
+#ifdef Q_CC_MINGW // MinGW: Include the correct definition of SHARDAPPIDINFOLINK
+#  if defined(NTDDI_VERSION) && NTDDI_VERSION < 0x06010000
+#     undef NTDDI_VERSION
+#  endif
+#  ifndef NTDDI_VERSION
+#    define NTDDI_VERSION 0x06010000
+#  endif
+#endif // Q_CC_MINGW
+
 #include "qwinjumplistcategory.h"
 #include "qwinjumplistcategory_p.h"
 #include "qwinjumplistitem_p.h"
@@ -49,10 +60,6 @@
 #include <QtCore/QDebug>
 
 #include <shlobj.h>
-
-#if defined(_MSC_VER) && _MSC_VER < 1600
-#  define SHARD_APPIDINFOLINK 0x7L
-#endif
 
 QT_BEGIN_NAMESPACE
 
