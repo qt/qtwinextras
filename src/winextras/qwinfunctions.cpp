@@ -69,6 +69,8 @@ Q_GUI_EXPORT HBITMAP qt_createIconMask(const QBitmap &bitmap);
 Q_GUI_EXPORT HBITMAP qt_pixmapToWinHBITMAP(const QPixmap &p, int hbitmapFormat = 0);
 Q_GUI_EXPORT QPixmap qt_pixmapFromWinHBITMAP(HBITMAP bitmap, int hbitmapFormat = 0);
 Q_GUI_EXPORT HICON   qt_pixmapToWinHICON(const QPixmap &p);
+Q_GUI_EXPORT HBITMAP qt_imageToWinHBITMAP(const QImage &imageIn, int hbitmapFormat = 0);
+Q_GUI_EXPORT QImage qt_imageFromWinHBITMAP(HBITMAP bitmap, int hbitmapFormat = 0);
 Q_GUI_EXPORT QImage  qt_imageFromWinHBITMAP(HDC hdc, HBITMAP bitmap, int w, int h);
 Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON(HICON icon);
 
@@ -139,6 +141,22 @@ HICON QtWin::toHICON(const QPixmap &p)
 }
 
 /*!
+    \since 5.12
+
+    Creates a \c HBITMAP equivalent of the QImage \a image,
+    based on the given \a format. Returns the \c HBITMAP handle.
+
+    It is the caller's responsibility to free the \c HBITMAP data
+    after use.
+
+    \sa imageFromHBITMAP()
+*/
+HBITMAP QtWin::imageToHBITMAP(const QImage &image, QtWin::HBitmapFormat format)
+{
+    return qt_imageToWinHBITMAP(image, format);
+}
+
+/*!
     \since 5.2
 
     Returns a QImage that is equivalent to the
@@ -150,6 +168,19 @@ HICON QtWin::toHICON(const QPixmap &p)
 QImage QtWin::imageFromHBITMAP(HDC hdc, HBITMAP bitmap, int width, int height)
 {
     return qt_imageFromWinHBITMAP(hdc, bitmap, width, height);
+}
+
+/*!
+    \since 5.12
+
+    Returns a QImage that is equivalent to the
+    given \a bitmap.  The conversion is based on the specified \a format.
+
+    \sa imageToHBITMAP()
+*/
+QImage QtWin::imageFromHBITMAP(HBITMAP bitmap, QtWin::HBitmapFormat format)
+{
+    return qt_imageFromWinHBITMAP(bitmap, format);
 }
 
 /*!
