@@ -214,25 +214,6 @@ QRegion QtWin::fromHRGN(HRGN hrgn)
     return region;
 }
 
-// Re-engineered from the inline function _com_error::ErrorMessage().
-// We cannot use it directly since it uses swprintf_s(), which is not
-// present in the MSVCRT.DLL found on Windows XP (QTBUG-35617).
-static inline QString errorMessageFromComError(const _com_error &comError)
-{
-     TCHAR *message = Q_NULLPTR;
-     FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-                   NULL, DWORD(comError.Error()), MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT),
-                   reinterpret_cast<LPWSTR>(&message), 0, NULL);
-     if (message) {
-         const QString result = QString::fromWCharArray(message).trimmed();
-         LocalFree(message);
-         return result;
-     }
-     if (const WORD wCode = comError.WCode())
-         return QStringLiteral("IDispatch error #") + QString::number(wCode);
-     return QStringLiteral("Unknown error HRESULT(0x0)") + QString::number(comError.Error(), 16);
-}
-
 /*!
     \since 5.2
 
@@ -242,7 +223,7 @@ static inline QString errorMessageFromComError(const _com_error &comError)
 QString QtWin::stringFromHresult(HRESULT hresult)
 {
     _com_error error(hresult);
-    return errorMessageFromComError(error);
+    return QString::fromWCharArray(error.ErrorMessage());
 }
 
 /*!
