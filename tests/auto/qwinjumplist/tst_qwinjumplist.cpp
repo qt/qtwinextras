@@ -55,8 +55,8 @@ static inline QByteArray msgFileNameMismatch(const QString &f1, const QString &f
 
 void tst_QWinJumpList::testRecent()
 {
-    if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS10)
-        QSKIP("QTBUG-48751: Recent items do not work on Windows 10", Continue);
+    if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS8_1)
+        QSKIP("QTBUG-48751: Recent items do not work on Windows 8.1 or 10", Continue);
     QScopedPointer<QWinJumpList> jumplist(new QWinJumpList);
     QWinJumpListCategory *recent1 = jumplist->recent();
     QVERIFY(recent1);
@@ -104,8 +104,8 @@ void tst_QWinJumpList::testRecent()
 
 void tst_QWinJumpList::testFrequent()
 {
-    if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS10)
-        QSKIP("QTBUG-48751: Frequent items do not work on Windows 10", Continue);
+    if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS8_1)
+        QSKIP("QTBUG-48751: Frequent items do not work on Windows 8.1 or 10", Continue);
     QScopedPointer<QWinJumpList> jumplist(new QWinJumpList);
     QWinJumpListCategory *frequent1 = jumplist->frequent();
     QVERIFY(frequent1);
