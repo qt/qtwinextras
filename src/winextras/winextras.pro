@@ -43,7 +43,7 @@ HEADERS += \
 
 QMAKE_DOCS = $$PWD/doc/qtwinextras.qdocconf
 
-LIBS_PRIVATE += -lole32 -lshlwapi -lshell32
+LIBS_PRIVATE += -lole32 -lshlwapi -lshell32 -ldwmapi
 win32:!qtHaveModule(opengl)|contains(QT_CONFIG, dynamicgl):LIBS_PRIVATE += -lgdi32
 
 OTHER_FILES += \

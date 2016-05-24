@@ -321,11 +321,9 @@ bool QWinThumbnailToolBar::iconicPixmapNotificationsEnabled() const
 {
     Q_D(const QWinThumbnailToolBar);
     const HWND hwnd = d->handle();
-    if (!hwnd || !qtDwmApiDll.dwmGetWindowAttribute)
+    if (!hwnd)
         return false;
-    qtDwmApiDll.init();
-    return qtDwmApiDll.dwmGetWindowAttribute && hwnd
-        && QtDwmApiDll::booleanWindowAttribute(hwnd, dWMWA_FORCE_ICONIC_REPRESENTATION);
+    return QtDwmApiDll::booleanWindowAttribute(hwnd, dWMWA_FORCE_ICONIC_REPRESENTATION);
 }
 
 void QWinThumbnailToolBar::setIconicPixmapNotificationsEnabled(bool enabled)
@@ -336,8 +334,7 @@ void QWinThumbnailToolBar::setIconicPixmapNotificationsEnabled(bool enabled)
         qWarning() << Q_FUNC_INFO << "invoked with hwnd=0";
         return;
     }
-    qtDwmApiDll.init();
-    if (!qtDwmApiDll.dwmSetWindowAttribute || iconicPixmapNotificationsEnabled() == enabled)
+    if (iconicPixmapNotificationsEnabled() == enabled)
         return;
     QtDwmApiDll::setBooleanWindowAttribute(hwnd, dWMWA_FORCE_ICONIC_REPRESENTATION, enabled);
     QtDwmApiDll::setBooleanWindowAttribute(hwnd, dWMWA_HAS_ICONIC_BITMAP, enabled);

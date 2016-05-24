@@ -49,22 +49,8 @@ QtShell32Dll qtShell32Dll;
 
 void QtDwmApiDll::resolve()
 {
-    if (const HMODULE dwmapi = LoadLibraryW(L"dwmapi.dll")) {
-        dwmExtendFrameIntoClientArea =
-            (DwmExtendFrameIntoClientArea) GetProcAddress(dwmapi, "DwmExtendFrameIntoClientArea");
-        dwmEnableBlurBehindWindow =
-            (DwmEnableBlurBehindWindow) GetProcAddress(dwmapi, "DwmEnableBlurBehindWindow");
-        dwmGetColorizationColor =
-            (DwmGetColorizationColor) GetProcAddress(dwmapi, "DwmGetColorizationColor");
-        dwmSetWindowAttribute =
-            (DwmSetWindowAttribute) GetProcAddress(dwmapi, "DwmSetWindowAttribute");
-        dwmGetWindowAttribute =
-            (DwmGetWindowAttribute) GetProcAddress(dwmapi, "DwmGetWindowAttribute");
-        dwmIsCompositionEnabled =
-            (DwmIsCompositionEnabled) GetProcAddress(dwmapi, "DwmIsCompositionEnabled");
-        dwmEnableComposition =
-            (DwmEnableComposition) GetProcAddress(dwmapi, "DwmEnableComposition");
-        if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS7) {
+    if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS7) {
+        if (const HMODULE dwmapi = LoadLibraryW(L"dwmapi.dll")) {
             dwmSetIconicThumbnail =
                 (DwmSetIconicThumbnail) GetProcAddress(dwmapi, "DwmSetIconicThumbnail");
             dwmSetIconicLivePreviewBitmap =
@@ -77,11 +63,11 @@ void QtDwmApiDll::resolve()
 
 void QtShell32Dll::resolve()
 {
-    if (const HMODULE shell32 = LoadLibraryW(L"shell32.dll")) {
-        sHCreateItemFromParsingName =
-            (SHCreateItemFromParsingName) GetProcAddress(shell32, "SHCreateItemFromParsingName");
-        setCurrentProcessExplicitAppUserModelID =
-            (SetCurrentProcessExplicitAppUserModelID) GetProcAddress(shell32, "SetCurrentProcessExplicitAppUserModelID");
+    if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS7) {
+        if (const HMODULE shell32 = LoadLibraryW(L"shell32.dll")) {
+            setCurrentProcessExplicitAppUserModelID =
+                    (SetCurrentProcessExplicitAppUserModelID) GetProcAddress(shell32, "SetCurrentProcessExplicitAppUserModelID");
+        }
     }
 }
 
