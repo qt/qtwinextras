@@ -53,7 +53,7 @@ class VolumeButton : public QToolButton
     Q_PROPERTY(int volume READ volume WRITE setVolume NOTIFY volumeChanged)
 
 public:
-    VolumeButton(QWidget *parent = 0);
+    explicit VolumeButton(QWidget *parent = nullptr);
 
     int volume() const;
 
@@ -67,9 +67,9 @@ signals:
     void volumeChanged(int volume);
 
 private:
-    QMenu *menu;
-    QLabel *label;
-    QSlider *slider;
+    QMenu *menu = nullptr;
+    QLabel *label = nullptr;
+    QSlider *slider = nullptr;
 };
 
 #endif // VOLUMEBUTTON_H

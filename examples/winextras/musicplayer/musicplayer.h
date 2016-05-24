@@ -58,20 +58,25 @@ class MusicPlayer : public QWidget
 {
     Q_OBJECT
 public:
-    MusicPlayer(QWidget *parent = 0);
+    explicit MusicPlayer(QWidget *parent = nullptr);
+
+    static QStringList supportedMimeTypes();
+    static QStringList supportedSuffixes();
 
 public slots:
     void openFile();
-    void playFile(const QString& filePath);
+    void playUrl(const QUrl& url);
     void togglePlayback();
     void seekForward();
     void seekBackward();
 
 protected:
-    bool event(QEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    bool event(QEvent *event) override;
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 private slots:
     void stylize();
@@ -92,20 +97,21 @@ private:
     void createTaskbar();
     void createThumbnailToolBar();
 
-    QWinTaskbarButton* taskbarButton;
-    QWinTaskbarProgress* taskbarProgress;
-    QWinThumbnailToolBar* thumbnailToolBar;
-    QWinThumbnailToolButton *playToolButton;
-    QWinThumbnailToolButton *forwardToolButton;
-    QWinThumbnailToolButton *backwardToolButton;
+    QWinTaskbarButton *taskbarButton = nullptr;
+    QWinTaskbarProgress *taskbarProgress = nullptr;
+    QWinThumbnailToolBar *thumbnailToolBar = nullptr;
+    QWinThumbnailToolButton *playToolButton = nullptr;
+    QWinThumbnailToolButton *forwardToolButton = nullptr;
+    QWinThumbnailToolButton *backwardToolButton = nullptr;
 
     QMediaPlayer mediaPlayer;
-    QAbstractButton *playButton;
-    VolumeButton *volumeButton;
-    QSlider *positionSlider;
-    QLabel *positionLabel;
-    QLabel *infoLabel;
+    QAbstractButton *playButton = nullptr;
+    VolumeButton *volumeButton = nullptr;
+    QSlider *positionSlider = nullptr;
+    QLabel *positionLabel = nullptr;
+    QLabel *infoLabel = nullptr;
     QPoint offset;
+    QString fileName;
 };
 
 #endif // MUSICPLAYER_H

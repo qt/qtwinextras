@@ -44,7 +44,7 @@
 #include <QtWinExtras>
 
 VolumeButton::VolumeButton(QWidget *parent) :
-    QToolButton(parent), menu(0), label(0), slider(0)
+    QToolButton(parent)
 {
     setIcon(style()->standardIcon(QStyle::SP_MediaVolume));
     setPopupMode(QToolButton::InstantPopup);

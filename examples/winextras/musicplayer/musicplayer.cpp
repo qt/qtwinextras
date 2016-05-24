@@ -44,11 +44,7 @@
 #include <QtWidgets>
 #include <QtWinExtras>
 
-MusicPlayer::MusicPlayer(QWidget *parent) : QWidget(parent),
-    taskbarButton(0), taskbarProgress(0), thumbnailToolBar(0),
-    playToolButton(0), forwardToolButton(0), backwardToolButton(0),
-    mediaPlayer(0), playButton(0), volumeButton(0),
-    positionSlider(0), positionLabel(0), infoLabel(0)
+MusicPlayer::MusicPlayer(QWidget *parent) : QWidget(parent)
 {
     createWidgets();
     createShortcuts();
@@ -67,25 +63,42 @@ MusicPlayer::MusicPlayer(QWidget *parent) : QWidget(parent),
             this, &MusicPlayer::updateState);
 
     stylize();
+    setAcceptDrops(true);
+}
+
+QStringList MusicPlayer::supportedMimeTypes()
+{
+    QStringList result = QMediaPlayer::supportedMimeTypes();
+    if (result.isEmpty())
+        result.append(QStringLiteral("audio/mpeg"));
+    return result;
 }
 
 void MusicPlayer::openFile()
 {
-    const QStringList musicPaths = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
-    const QString filePath =
-        QFileDialog::getOpenFileName(this, tr("Open File"),
-                                     musicPaths.isEmpty() ? QDir::homePath() : musicPaths.first(),
-                                     tr("MP3 files (*.mp3);;All files (*.*)"));
-    if (!filePath.isEmpty())
-        playFile(filePath);
+    QFileDialog fileDialog(this);
+    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog.setWindowTitle(tr("Open File"));
+    fileDialog.setMimeTypeFilters(MusicPlayer::supportedMimeTypes());
+    fileDialog.setDirectory(QStandardPaths::standardLocations(QStandardPaths::MusicLocation).value(0, QDir::homePath()));
+    if (fileDialog.exec() == QDialog::Accepted)
+        playUrl(fileDialog.selectedUrls().constFirst());
 }
 
-void MusicPlayer::playFile(const QString &filePath)
+void MusicPlayer::playUrl(const QUrl &url)
 {
     playButton->setEnabled(true);
-    infoLabel->setText(QFileInfo(filePath).fileName());
-
-    mediaPlayer.setMedia(QUrl::fromLocalFile(filePath));
+    if (url.isLocalFile()) {
+        const QString filePath = url.toLocalFile();
+        setWindowFilePath(filePath);
+        infoLabel->setText(QDir::toNativeSeparators(filePath));
+        fileName = QFileInfo(filePath).fileName();
+    } else {
+        setWindowFilePath(QString());
+        infoLabel->setText(url.toString());
+        fileName.clear();
+    }
+    mediaPlayer.setMedia(url);
     mediaPlayer.play();
 }
 
@@ -118,6 +131,27 @@ bool MusicPlayer::event(QEvent *event)
 }
 //! [0]
 
+static bool canHandleDrop(const QDropEvent *event)
+{
+    const QList<QUrl> urls = event->mimeData()->urls();
+    if (urls.size() != 1)
+        return false;
+    QMimeDatabase mimeDatabase;
+    return MusicPlayer::supportedMimeTypes().
+        contains(mimeDatabase.mimeTypeForUrl(urls.constFirst()).name());
+}
+
+void MusicPlayer::dragEnterEvent(QDragEnterEvent *event)
+{
+    event->setAccepted(canHandleDrop(event));
+}
+
+void MusicPlayer::dropEvent(QDropEvent *event)
+{
+    event->accept();
+    playUrl(event->mimeData()->urls().constFirst());
+}
+
 void MusicPlayer::mousePressEvent(QMouseEvent *event)
 {
     offset = event->globalPos() - pos();
@@ -143,11 +177,11 @@ void MusicPlayer::stylize()
         QtWin::extendFrameIntoClientArea(this, -1, -1, -1, -1);
         setAttribute(Qt::WA_TranslucentBackground, true);
         setAttribute(Qt::WA_NoSystemBackground, false);
-        setStyleSheet("MusicPlayer { background: transparent; }");
+        setStyleSheet(QStringLiteral("MusicPlayer { background: transparent; }"));
     } else {
         QtWin::resetExtendedFrame(this);
         setAttribute(Qt::WA_TranslucentBackground, false);
-        setStyleSheet(QString("MusicPlayer { background: %1; }").arg(QtWin::realColorizationColor().name()));
+        setStyleSheet(QStringLiteral("MusicPlayer { background: %1; }").arg(QtWin::realColorizationColor().name()));
     }
     volumeButton->stylize();
 }
@@ -164,12 +198,20 @@ void MusicPlayer::updateState(QMediaPlayer::State state)
     }
 }
 
+static QString formatTime(qint64 timeMilliSeconds)
+{
+    qint64 seconds = timeMilliSeconds / 1000;
+    const qint64 minutes = seconds / 60;
+    seconds -= minutes * 60;
+    return QStringLiteral("%1:%2")
+        .arg(minutes, 2, 10, QLatin1Char('0'))
+        .arg(seconds, 2, 10, QLatin1Char('0'));
+}
+
 void MusicPlayer::updatePosition(qint64 position)
 {
     positionSlider->setValue(position);
-
-    QTime duration(0, position / 60000, qRound((position % 60000) / 1000.0));
-    positionLabel->setText(duration.toString(tr("mm:ss")));
+    positionLabel->setText(formatTime(position));
 }
 
 void MusicPlayer::updateDuration(qint64 duration)
@@ -177,6 +219,7 @@ void MusicPlayer::updateDuration(qint64 duration)
     positionSlider->setRange(0, duration);
     positionSlider->setEnabled(duration > 0);
     positionSlider->setPageStep(duration / 10);
+    updateInfo();
 }
 
 void MusicPlayer::setPosition(int position)
@@ -189,20 +232,27 @@ void MusicPlayer::setPosition(int position)
 void MusicPlayer::updateInfo()
 {
     QStringList info;
-    QString author = mediaPlayer.metaData("Author").toString();
-    if (!author.isEmpty())
-        info += author;
-    QString title = mediaPlayer.metaData("Title").toString();
-    if (!title.isEmpty())
-        info += title;
-    if (!info.isEmpty())
-        infoLabel->setText(info.join(tr(" - ")));
+    if (!fileName.isEmpty())
+        info.append(fileName);
+    if (mediaPlayer.isMetaDataAvailable()) {
+        QString author = mediaPlayer.metaData(QStringLiteral("Author")).toString();
+        if (!author.isEmpty())
+            info.append(author);
+        QString title = mediaPlayer.metaData(QStringLiteral("Title")).toString();
+        if (!title.isEmpty())
+            info.append(title);
+    }
+    info.append(formatTime(mediaPlayer.duration()));
+    infoLabel->setText(info.join(tr(" - ")));
 }
 
 void MusicPlayer::handleError()
 {
     playButton->setEnabled(false);
-    infoLabel->setText(tr("Error: %1").arg(mediaPlayer.errorString()));
+    const QString errorString = mediaPlayer.errorString();
+    infoLabel->setText(errorString.isEmpty()
+                       ? tr("Unknown error #%1").arg(int(mediaPlayer.error()))
+                       : tr("Error: %1").arg(errorString));
 }
 
 //! [2]

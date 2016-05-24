@@ -41,50 +41,79 @@
 #include "musicplayer.h"
 
 #include <QApplication>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
+#include <QDesktopWidget>
 #include <QFileInfo>
+#include <QMimeDatabase>
 #include <QSettings>
 #include <QIcon>
 #include <QDir>
+#include <QUrl>
 
 //! [0]
-static void associateFileTypes(const QStringList &fileTypes)
+static bool associateFileTypes()
 {
     QString displayName = QGuiApplication::applicationDisplayName();
     QString filePath = QCoreApplication::applicationFilePath();
     QString fileName = QFileInfo(filePath).fileName();
 
-    QSettings settings("HKEY_CURRENT_USER\\Software\\Classes\\Applications\\" + fileName, QSettings::NativeFormat);
-    settings.setValue("FriendlyAppName", displayName);
+    const QString key = QStringLiteral("HKEY_CURRENT_USER\\Software\\Classes\\Applications\\") + fileName;
+    QSettings settings(key, QSettings::NativeFormat);
+    if (settings.status() != QSettings::NoError) {
+        qWarning() << "Cannot access registry key" << key;
+        return false;
+    }
+    settings.setValue(QStringLiteral("FriendlyAppName"), displayName);
 
-    settings.beginGroup("SupportedTypes");
-    foreach (const QString& fileType, fileTypes)
-        settings.setValue(fileType, QString());
+    settings.beginGroup(QStringLiteral("SupportedTypes"));
+    QMimeDatabase mimeDatabase;
+    foreach (const QString &fileType, MusicPlayer::supportedMimeTypes()) {
+        foreach (QString suffix, mimeDatabase.mimeTypeForName(fileType).suffixes()) {
+            suffix.prepend('.');
+            settings.setValue(suffix, QString());
+        }
+    }
     settings.endGroup();
 
-    settings.beginGroup("shell");
-    settings.beginGroup("open");
-    settings.setValue("FriendlyAppName", displayName);
-    settings.beginGroup("Command");
-    settings.setValue(".", QChar('"') + QDir::toNativeSeparators(filePath) + QString("\" \"%1\""));
+    settings.beginGroup(QStringLiteral("shell"));
+    settings.beginGroup(QStringLiteral("open"));
+    settings.setValue(QStringLiteral("FriendlyAppName"), displayName);
+    settings.beginGroup(QStringLiteral("Command"));
+    settings.setValue(QStringLiteral("."),
+                      QLatin1Char('"') + QDir::toNativeSeparators(filePath) + QStringLiteral("\" \"%1\""));
+
+    return true;
 }
 //! [0]
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    app.setApplicationName("MusicPlayer");
-    app.setOrganizationName("QtWinExtras");
-    app.setOrganizationDomain("qt-project.org");
-    app.setApplicationDisplayName("QtWinExtras Music Player");
-    app.setWindowIcon(QIcon(":/logo.png"));
+    QCoreApplication::setApplicationName(QStringLiteral("MusicPlayer"));
+    QCoreApplication::setApplicationVersion( QLatin1String(QT_VERSION_STR));
+    QCoreApplication::setOrganizationName(QStringLiteral("QtWinExtras"));
+    QCoreApplication::setOrganizationDomain("qt-project.org");
+    QGuiApplication::setApplicationDisplayName(QStringLiteral("QtWinExtras Music Player"));
+    QApplication::setWindowIcon(QIcon(QStringLiteral(":/logo.png")));
 
-    associateFileTypes(QStringList(".mp3"));
+    if (!associateFileTypes())
+        return -1;
+
+    QCommandLineParser parser;
+    parser.setApplicationDescription(QGuiApplication::applicationDisplayName());
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.addPositionalArgument(QStringLiteral("url"), MusicPlayer::tr("The URL to open."));
+    parser.process(app);
 
     MusicPlayer player;
-    const QStringList arguments = QCoreApplication::arguments();
-    if (arguments.size() > 1)
-        player.playFile(arguments.at(1));
-    player.resize(300, 60);
+
+    if (!parser.positionalArguments().isEmpty())
+        player.playUrl(QUrl::fromUserInput(parser.positionalArguments().constFirst(), QDir::currentPath(), QUrl::AssumeLocalFile));
+
+    const QRect availableGeometry = QApplication::desktop()->availableGeometry(&player);
+    player.resize(availableGeometry.width() / 6, availableGeometry.height() / 17);
     player.show();
 
     return app.exec();
