@@ -5,6 +5,8 @@ IMPORT_VERSION = 1.0
 
 QT += qml quick winextras winextras-private
 
+DEFINES += QT_NO_FOREACH
+
 QML_FILES += \
     JumpListLink.qml \
     JumpListDestination.qml \

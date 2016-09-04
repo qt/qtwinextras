@@ -2,6 +2,8 @@ TARGET = QtWinExtras
 
 QT += gui-private core-private
 
+DEFINES += QT_NO_FOREACH
+
 SOURCES += \
     qwinfunctions.cpp \
     qwinfunctions_p.cpp \

@@ -148,7 +148,7 @@ void QWinJumpListPrivate::_q_rebuild()
             appendKnownCategory(KDC_RECENT);
         if (frequent && frequent->isVisible())
             appendKnownCategory(KDC_FREQUENT);
-        foreach (QWinJumpListCategory *category, categories) {
+        for (QWinJumpListCategory *category : qAsConst(categories)) {
             if (category->isVisible())
                 appendCustomCategory(category);
         }
@@ -272,7 +272,7 @@ IObjectCollection *QWinJumpListPrivate::toComCollection(const QList<QWinJumpList
         QWinJumpListPrivate::warning("QWinJumpList: failed to instantiate IObjectCollection", hresult);
         return 0;
     }
-    Q_FOREACH (QWinJumpListItem *item, list) {
+    for (QWinJumpListItem *item : list) {
         IUnknown *iitem = toICustomDestinationListItem(item);
         if (iitem) {
             collection->AddObject(iitem);
@@ -562,7 +562,7 @@ void QWinJumpList::addCategory(QWinJumpListCategory *category)
 QWinJumpListCategory *QWinJumpList::addCategory(const QString &title, const QList<QWinJumpListItem *> items)
 {
     QWinJumpListCategory *category = new QWinJumpListCategory(title);
-    foreach (QWinJumpListItem *item, items)
+    for (QWinJumpListItem *item : items)
         category->addItem(item);
     addCategory(category);
     return category;
@@ -580,7 +580,7 @@ void QWinJumpList::clear()
     frequent()->clear();
     if (d->tasks)
         d->tasks->clear();
-    foreach (QWinJumpListCategory *category, d->categories)
+    for (QWinJumpListCategory *category : qAsConst(d->categories))
         category->clear();
     d->destroy();
 }

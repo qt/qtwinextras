@@ -113,7 +113,8 @@ void QWinEventFilter::setup()
 QWindow *QWinEventFilter::findWindow(HWND handle)
 {
     const WId wid = reinterpret_cast<WId>(handle);
-    foreach (QWindow *topLevel, QGuiApplication::topLevelWindows()) {
+    const auto topLevels = QGuiApplication::topLevelWindows();
+    for (QWindow *topLevel : topLevels) {
         if (topLevel->handle() && topLevel->winId() == wid)
             return topLevel;
     }
