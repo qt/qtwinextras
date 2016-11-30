@@ -85,11 +85,6 @@ QT_BEGIN_NAMESPACE
             A jump list category of tasks.
  */
 
-QWinJumpListCategoryPrivate::QWinJumpListCategoryPrivate() :
-    visible(false), jumpList(0), type(QWinJumpListCategory::Custom)
-{
-}
-
 QWinJumpListCategory *QWinJumpListCategoryPrivate::create(QWinJumpListCategory::Type type, QWinJumpList *jumpList)
 {
     QWinJumpListCategory *category = new QWinJumpListCategory;

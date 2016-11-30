@@ -62,8 +62,6 @@ class QWinJumpListPrivate
     Q_DECLARE_PUBLIC(QWinJumpList)
 
 public:
-    QWinJumpListPrivate();
-
     static QWinJumpListPrivate *get(QWinJumpList *list)
     {
         return list->d_func();
@@ -92,14 +90,14 @@ public:
     static IShellItem2 *toIShellItem(const QWinJumpListItem *item);
     static IShellLinkW *makeSeparatorShellItem();
 
-    QWinJumpList *q_ptr;
-    ICustomDestinationList *pDestList;
-    QWinJumpListCategory *recent;
-    QWinJumpListCategory *frequent;
-    QWinJumpListCategory *tasks;
+    QWinJumpList *q_ptr = nullptr;
+    ICustomDestinationList *pDestList = nullptr;
+    QWinJumpListCategory *recent = nullptr;
+    QWinJumpListCategory *frequent = nullptr;
+    QWinJumpListCategory *tasks = nullptr;
     QList<QWinJumpListCategory *> categories;
     QString identifier;
-    bool dirty;
+    bool dirty = false;
 };
 
 QT_END_NAMESPACE

@@ -61,16 +61,15 @@ class QWinThumbnailToolBar;
 class QWinThumbnailToolButtonPrivate
 {
 public:
-    QWinThumbnailToolButtonPrivate() : enabled(true), interactive(true), dismiss(false), visible(true), flat(false), toolbar(Q_NULLPTR) {}
     QString toolTip;
     QIcon icon;
-    bool enabled;
-    bool interactive;
-    bool dismiss;
-    bool visible;
-    bool flat;
+    bool enabled = true;
+    bool interactive = true;
+    bool dismiss = false;
+    bool visible = true;
+    bool flat = false;
 
-    QWinThumbnailToolBar *toolbar;
+    QWinThumbnailToolBar *toolbar = nullptr;
 };
 
 QT_END_NAMESPACE

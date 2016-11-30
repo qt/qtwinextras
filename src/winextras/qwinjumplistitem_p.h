@@ -74,8 +74,8 @@ public:
     QString description;
     QIcon icon;
     QStringList arguments;
-    QWinJumpListItem::Type type;
-    QWinJumpListCategory *category;
+    QWinJumpListItem::Type type = QWinJumpListItem::Destination;
+    QWinJumpListCategory *category = nullptr;
 };
 
 QT_END_NAMESPACE

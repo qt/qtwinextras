@@ -61,8 +61,6 @@ class QWinJumpList;
 class QWinJumpListCategoryPrivate
 {
 public:
-    QWinJumpListCategoryPrivate();
-
     static QWinJumpListCategoryPrivate *get(QWinJumpListCategory *category)
     {
         return category->d_func();
@@ -75,10 +73,10 @@ public:
     void addRecent(QWinJumpListItem *item);
     void clearRecents();
 
-    bool visible;
+    bool visible = false;
     QString title;
-    QWinJumpList *jumpList;
-    QWinJumpListCategory::Type type;
+    QWinJumpList *jumpList = nullptr;
+    QWinJumpListCategory::Type type = QWinJumpListCategory::Custom;
     QList<QWinJumpListItem *> items;
 };
 

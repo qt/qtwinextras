@@ -94,20 +94,13 @@ QT_BEGIN_NAMESPACE
 class QWinTaskbarProgressPrivate
 {
 public:
-    QWinTaskbarProgressPrivate();
-
-    int value;
-    int minimum;
-    int maximum;
-    bool visible;
-    bool paused;
-    bool stopped;
+    int value = 0;
+    int minimum = 0;
+    int maximum = 100;
+    bool visible = false;
+    bool paused = false;
+    bool stopped = false;
 };
-
-QWinTaskbarProgressPrivate::QWinTaskbarProgressPrivate() :
-    value(0), minimum(0), maximum(100), visible(false), paused(false), stopped(false)
-{
-}
 
 /*!
     Constructs a QWinTaskbarProgress with the parent object \a parent.

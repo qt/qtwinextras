@@ -111,11 +111,6 @@ static QString createArguments(const QStringList &arguments)
     return args;
 }
 
-QWinJumpListPrivate::QWinJumpListPrivate() :
-    pDestList(0), recent(0), frequent(0), tasks(0), dirty(false)
-{
-}
-
 void QWinJumpListPrivate::warning(const char *function, HRESULT hresult)
 {
     const QString err = QtWin::errorStringFromHresult(hresult);
