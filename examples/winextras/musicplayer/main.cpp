@@ -68,8 +68,10 @@ static bool associateFileTypes()
 
     settings.beginGroup(QStringLiteral("SupportedTypes"));
     QMimeDatabase mimeDatabase;
-    foreach (const QString &fileType, MusicPlayer::supportedMimeTypes()) {
-        foreach (QString suffix, mimeDatabase.mimeTypeForName(fileType).suffixes()) {
+    const QStringList supportedMimeTypes = MusicPlayer::supportedMimeTypes();
+    for (const QString &fileType : supportedMimeTypes) {
+        const QStringList suffixes = mimeDatabase.mimeTypeForName(fileType).suffixes();
+        for (QString suffix : suffixes) {
             suffix.prepend('.');
             settings.setValue(suffix, QString());
         }
