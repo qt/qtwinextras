@@ -1,15 +1,11 @@
 # C++ objects and libs
 
-*.slo
-*.lo
-*.o
 *.a
 *.la
 *.lai
-*.so
 *.dll
-*.dylib
 *.obj
+*_wrapper.bat
 
 # Visual Studio generated files
 
