@@ -97,7 +97,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName(QStringLiteral("QtWinExtras"));
     QCoreApplication::setOrganizationDomain("qt-project.org");
     QGuiApplication::setApplicationDisplayName(QStringLiteral("QtWinExtras Music Player"));
-    QApplication::setWindowIcon(QIcon(QStringLiteral(":/logo.png")));
 
     if (!associateFileTypes())
         return -1;

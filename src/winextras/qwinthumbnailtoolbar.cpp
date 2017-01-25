@@ -199,7 +199,7 @@ void QWinThumbnailToolBar::setButtons(const QList<QWinThumbnailToolButton *> &bu
 {
     Q_D(QWinThumbnailToolBar);
     d->buttonList.clear();
-    Q_FOREACH (QWinThumbnailToolButton *button, buttons)
+    for (QWinThumbnailToolButton *button : buttons)
         addButton(button);
     d->_q_updateToolbar();
 }

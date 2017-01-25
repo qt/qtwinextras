@@ -170,8 +170,8 @@ void QQuickJumpList::rebuild()
     jumpList.frequent()->setVisible(m_frequent && m_frequent->isVisible());
     if (m_tasks && m_tasks->isVisible()) {
         jumpList.tasks()->setVisible(true);
-        const QList<QWinJumpListItem *> &itemList = m_tasks->toItemList();
-        for (QWinJumpListItem *item : itemList)
+        const auto items = m_tasks->toItemList();
+        for (QWinJumpListItem *item : items)
             jumpList.tasks()->addItem(item);
     }
     for (QQuickJumpListCategory *category : qAsConst(m_categories)) {
