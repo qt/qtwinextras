@@ -41,6 +41,6 @@ OTHER_FILES += \
     JumpListDestination.qml \
     JumpListSeparator.qml
 
-qtConfig(dynamicgl):LIBS_PRIVATE += -luser32
+!qtHaveModule(opengl)|qtConfig(dynamicgl):LIBS_PRIVATE += -luser32
 
 load(qml_plugin)
