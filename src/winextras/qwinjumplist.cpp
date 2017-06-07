@@ -60,6 +60,7 @@
 #include <QDir>
 #include <QtCore/QDebug>
 #include <QCoreApplication>
+#include <QRegularExpression>
 #include <qt_windows.h>
 #include <propvarutil.h>
 
@@ -95,7 +96,7 @@ static QString createArguments(const QStringList &arguments)
     for (int i=0; i<arguments.size(); ++i) {
         QString tmp = arguments.at(i);
         // Quotes are escaped and their preceding backslashes are doubled.
-        tmp.replace(QRegExp(QLatin1String("(\\\\*)\"")), QLatin1String("\\1\\1\\\""));
+        tmp.replace(QRegularExpression(QLatin1String("(\\\\*)\"")), QLatin1String("\\1\\1\\\""));
         if (tmp.isEmpty() || tmp.contains(QLatin1Char(' ')) || tmp.contains(QLatin1Char('\t'))) {
             // The argument must not end with a \ since this would be interpreted
             // as escaping the quote -- rather put the \ behind the quote: e.g.
