@@ -166,7 +166,7 @@ void QWinTaskbarButtonPrivate::_q_updateProgress()
         const int max = progressBar->maximum();
         const int range = max - min;
         if (range > 0) {
-            const int value = 100 * (progressBar->value() - min) / range;
+            const int value = qRound(double(100) * (double(progressBar->value() - min)) / double(range));
             pTbList->SetProgressValue(handle(), ULONGLONG(value), 100);
         }
     }
