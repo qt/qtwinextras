@@ -41,7 +41,7 @@
 #include <QtCore/QtGlobal>
 
 #ifdef Q_CC_MINGW // MinGW: Enable SHCreateItemFromParsingName()
-#  if defined(_WIN32_IE) && _WIN32_IE << 0x0700 // _WIN32_IE_IE70
+#  if defined(_WIN32_IE) && _WIN32_IE < 0x0700 // _WIN32_IE_IE70
 #     undef _WIN32_IE
 #  endif
 #  ifndef _WIN32_IE
