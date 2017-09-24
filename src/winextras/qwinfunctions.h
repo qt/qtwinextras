@@ -89,7 +89,7 @@ namespace QtWin
     Q_WINEXTRAS_EXPORT QString stringFromHresult(HRESULT hresult);
     Q_WINEXTRAS_EXPORT QString errorStringFromHresult(HRESULT hresult);
 
-    Q_WINEXTRAS_EXPORT QColor colorizationColor(bool *opaqueBlend = Q_NULLPTR);
+    Q_WINEXTRAS_EXPORT QColor colorizationColor(bool *opaqueBlend = nullptr);
     Q_WINEXTRAS_EXPORT QColor realColorizationColor();
 
     Q_WINEXTRAS_EXPORT void setWindowExcludedFromPeek(QWindow *window, bool exclude);

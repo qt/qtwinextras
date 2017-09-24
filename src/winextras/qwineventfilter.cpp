@@ -118,5 +118,5 @@ QWindow *QWinEventFilter::findWindow(HWND handle)
         if (topLevel->handle() && topLevel->winId() == wid)
             return topLevel;
     }
-    return Q_NULLPTR;
+    return nullptr;
 }
