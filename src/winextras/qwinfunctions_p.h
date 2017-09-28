@@ -64,20 +64,8 @@ enum qt_DWMWINDOWATTRIBUTE // Not present in MinGW 4.9
     qt_DWMWA_EXCLUDED_FROM_PEEK = 12,
 };
 
-struct QtDwmApiDll
+namespace QtDwmApiDll
 {
-    typedef HRESULT (STDAPICALLTYPE *DwmSetIconicThumbnail)(HWND, HBITMAP, DWORD); // Windows 7
-    typedef HRESULT (STDAPICALLTYPE *DwmSetIconicLivePreviewBitmap)(HWND, HBITMAP, POINT *, DWORD);
-    typedef HRESULT (STDAPICALLTYPE *DwmInvalidateIconicBitmaps)(HWND);
-
-    void init()
-    {
-        if (!dwmSetIconicThumbnail)
-            resolve();
-    }
-
-    void resolve();
-
     template <class T> static T windowAttribute(HWND hwnd, DWORD attribute, T defaultValue);
     template <class T> static void setWindowAttribute(HWND hwnd, DWORD attribute, T value);
 
@@ -86,29 +74,7 @@ struct QtDwmApiDll
 
     static void setBooleanWindowAttribute(HWND hwnd, DWORD attribute, bool value)
         { setWindowAttribute<BOOL>(hwnd, attribute, BOOL(value ? TRUE : FALSE)); }
-
-    DwmSetIconicThumbnail dwmSetIconicThumbnail = nullptr;
-    DwmSetIconicLivePreviewBitmap dwmSetIconicLivePreviewBitmap = nullptr;
-    DwmInvalidateIconicBitmaps dwmInvalidateIconicBitmaps = nullptr;
 };
-
-struct QtShell32Dll
-{
-    typedef HRESULT (STDAPICALLTYPE *SetCurrentProcessExplicitAppUserModelID)(PCWSTR);
-
-    void init()
-    {
-        if (!setCurrentProcessExplicitAppUserModelID)
-            resolve();
-    }
-
-    void resolve();
-
-    SetCurrentProcessExplicitAppUserModelID setCurrentProcessExplicitAppUserModelID = nullptr; // Windows 7
-};
-
-extern QtDwmApiDll qtDwmApiDll;
-extern QtShell32Dll qtShell32Dll;
 
 inline void qt_qstringToNullTerminated(const QString &src, wchar_t *dst)
 {
