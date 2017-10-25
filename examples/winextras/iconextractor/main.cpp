@@ -265,22 +265,22 @@ static const char description[] =
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
-    QCoreApplication::setApplicationName("Icon Extractor");
-    QCoreApplication::setOrganizationName("QtProject");
-    QCoreApplication::setApplicationVersion(QT_VERSION_STR);
+    QCoreApplication::setApplicationName(QStringLiteral("Icon Extractor"));
+    QCoreApplication::setOrganizationName(QStringLiteral("QtProject"));
+    QCoreApplication::setApplicationVersion(QLatin1String(QT_VERSION_STR));
     QCommandLineParser parser;
     parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsCompactedShortOptions);
     parser.setApplicationDescription(QLatin1String(description));
     parser.addHelpOption();
     parser.addVersionOption();
-    const QCommandLineOption largeIconOption("large", "Extract large icons");
+    const QCommandLineOption largeIconOption(QStringLiteral("large"), QStringLiteral("Extract large icons"));
     parser.addOption(largeIconOption);
-    const QCommandLineOption shellIconOption("shell", "Extract shell icons using SHGetFileInfo()");
+    const QCommandLineOption shellIconOption(QStringLiteral("shell"), QStringLiteral("Extract shell icons using SHGetFileInfo()"));
     parser.addOption(shellIconOption);
-    const QCommandLineOption shellOverlayOption("overlay", "Extract shell overlay icons");
+    const QCommandLineOption shellOverlayOption(QStringLiteral("overlay"), QStringLiteral("Extract shell overlay icons"));
     parser.addOption(shellOverlayOption);
-    parser.addPositionalArgument("file", "The file to open.");
-    parser.addPositionalArgument("image file folder", "The folder to store the images.");
+    parser.addPositionalArgument(QStringLiteral("file"), QStringLiteral("The file to open."));
+    parser.addPositionalArgument(QStringLiteral("image file folder"), QStringLiteral("The folder to store the images."));
     parser.process(app);
     const QStringList &positionalArguments = parser.positionalArguments();
     if (positionalArguments.isEmpty())
