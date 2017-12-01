@@ -176,15 +176,15 @@ HRGN qt_RectToHRGN(const QRect &rc)
  */
 HRGN QtWin::toHRGN(const QRegion &region)
 {
-    if (region.isNull() || region.rectCount() == 0) {
+    const int size = region.rectCount();
+    if (size == 0)
         return 0;
-    }
+
     HRGN resultRgn = 0;
-    QVector<QRect> rects = region.rects();
-    resultRgn = qt_RectToHRGN(rects.at(0));
-    const int size = rects.size();
+    const auto rects = region.begin();
+    resultRgn = qt_RectToHRGN(rects[0]);
     for (int i = 1; i < size; i++) {
-        HRGN tmpRgn = qt_RectToHRGN(rects.at(i));
+        HRGN tmpRgn = qt_RectToHRGN(rects[i]);
         int err = CombineRgn(resultRgn, resultRgn, tmpRgn, RGN_OR);
         if (err == ERROR)
             qWarning("Error combining HRGNs.");
