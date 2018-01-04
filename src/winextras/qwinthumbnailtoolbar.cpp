@@ -470,7 +470,6 @@ inline HWND QWinThumbnailToolBarPrivate::handle() const
 
 void QWinThumbnailToolBarPrivate::initToolbar()
 {
-#if !defined(_MSC_VER) || _MSC_VER >= 1600
     if (!pTbList || !window)
         return;
     THUMBBUTTON buttons[windowsLimitedThumbbarSize];
@@ -478,10 +477,6 @@ void QWinThumbnailToolBarPrivate::initToolbar()
     HRESULT hresult = pTbList->ThumbBarAddButtons(handle(), windowsLimitedThumbbarSize, buttons);
     if (FAILED(hresult))
         qWarning() << msgComFailed("ThumbBarAddButtons", hresult);
-#else
-    // ITaskbarList3::ThumbBarAddButtons() has a different signature in SDK 6.X
-    Q_UNIMPLEMENTED();
-#endif
 }
 
 void QWinThumbnailToolBarPrivate::clearToolbar()
