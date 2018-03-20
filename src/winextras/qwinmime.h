@@ -51,6 +51,11 @@ QT_BEGIN_NAMESPACE
 
 class QMimeData;
 
+#ifdef Q_CLANG_QDOC
+typedef struct _FORMATETC {} FORMATETC;
+typedef struct _STGMEDIUM {} STGMEDIUM;
+#endif
+
 class Q_WINEXTRAS_EXPORT QWinMime // Keep in sync with QWindowsMime in the Windows platform plugin.
 {
     Q_DISABLE_COPY(QWinMime)
