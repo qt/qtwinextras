@@ -52,13 +52,12 @@
 #include "windowsguidsdefs_p.h"
 #include "qwinfunctions.h"
 
-#include <QWindow>
-#include <QCoreApplication>
-#include <QTimer>
-#include <QDebug>
+#include <QtGui/qwindow.h>
+#include <QtCore/qcoreapplication.h>
+#include <QtCore/qtimer.h>
+#include <QtCore/qdebug.h>
 
 #include "qwinevent.h"
-#include "qwinfunctions.h"
 #include "qwinfunctions_p.h"
 #include "qwineventfilter_p.h"
 

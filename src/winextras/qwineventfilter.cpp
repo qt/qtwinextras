@@ -40,8 +40,8 @@
 #include "qwineventfilter_p.h"
 #include "qwinfunctions.h"
 #include "qwinevent.h"
-#include <QGuiApplication>
-#include <QWindow>
+#include <QtGui/qguiapplication.h>
+#include <QtGui/qwindow.h>
 
 #ifndef WM_DWMCOLORIZATIONCOLORCHANGED
 #   define WM_DWMCOLORIZATIONCOLORCHANGED 0x0320

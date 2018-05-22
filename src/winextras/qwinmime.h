@@ -43,9 +43,9 @@
 #include <QtWinExtras/qwinextrasglobal.h>
 
 #include <QtCore/qt_windows.h>
-#include <QtCore/QVector>
-#include <QtCore/QList>
-#include <QtCore/QVariant>
+#include <QtCore/qvector.h>
+#include <QtCore/qlist.h>
+#include <QtCore/qvariant.h>
 
 QT_BEGIN_NAMESPACE
 

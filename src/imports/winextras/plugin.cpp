@@ -47,7 +47,7 @@
 #include "qquickthumbnailtoolbutton_p.h"
 #include "qquickwin_p.h"
 
-#include <QtQml/QtQml>
+#include <QtQml/qqmlextensionplugin.h>
 
 QT_BEGIN_NAMESPACE
 

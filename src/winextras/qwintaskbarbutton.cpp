@@ -48,9 +48,9 @@
 #include "winshobjidl_p.h"
 #include "windowsguidsdefs_p.h"
 
-#include <QWindow>
-#include <QIcon>
-#include <QPair>
+#include <QtGui/qwindow.h>
+#include <QtGui/qicon.h>
+#include <QtCore/qpair.h>
 #include <dwmapi.h>
 #include <shobjidl.h>
 

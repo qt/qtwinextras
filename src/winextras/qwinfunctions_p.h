@@ -51,8 +51,8 @@
 // We mean it.
 //
 
-#include <QString>
-#include <qt_windows.h>
+#include <QtCore/qstring.h>
+#include <QtCore/qt_windows.h>
 #include <uxtheme.h>
 #include <dwmapi.h>
 

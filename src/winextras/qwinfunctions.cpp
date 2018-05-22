@@ -50,15 +50,15 @@
 #include "qwineventfilter_p.h"
 #include "windowsguidsdefs_p.h"
 
-#include <QGuiApplication>
-#include <QWindow>
-#include <QSettings>
-#include <QPixmap>
-#include <QBitmap>
-#include <QImage>
-#include <QColor>
-#include <QRegion>
-#include <QMargins>
+#include <QtGui/qguiapplication.h>
+#include <QtGui/qwindow.h>
+#include <QtGui/qpixmap.h>
+#include <QtGui/qbitmap.h>
+#include <QtGui/qimage.h>
+#include <QtGui/qcolor.h>
+#include <QtGui/qregion.h>
+#include <QtCore/qmargins.h>
+#include <QtCore/qsettings.h>
 
 #include <comdef.h>
 #include "winshobjidl_p.h"
