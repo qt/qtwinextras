@@ -119,9 +119,7 @@ QWinThumbnailToolBar::QWinThumbnailToolBar(QObject *parent) :
 /*!
     Destroys and clears the QWinThumbnailToolBar.
  */
-QWinThumbnailToolBar::~QWinThumbnailToolBar()
-{
-}
+QWinThumbnailToolBar::~QWinThumbnailToolBar() = default;
 
 /*!
     \property QWinThumbnailToolBar::window
@@ -518,12 +516,12 @@ void QWinThumbnailToolBarPrivate::_q_updateToolbar()
     if (FAILED(hresult))
         qWarning() << msgComFailed("ThumbBarUpdateButtons", hresult);
     updateIconicPixmapsEnabled(false);
-    for (int i = 0; i < windowsLimitedThumbbarSize; i++) {
-        if (buttons[i].hIcon) {
-            if (createdIcons.contains(buttons[i].hIcon))
-                DestroyIcon(buttons[i].hIcon);
+    for (auto & button : buttons) {
+        if (button.hIcon) {
+            if (createdIcons.contains(button.hIcon))
+                DestroyIcon(button.hIcon);
             else
-                DeleteObject(buttons[i].hIcon);
+                DeleteObject(button.hIcon);
         }
     }
 }

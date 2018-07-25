@@ -86,9 +86,7 @@ QWinJumpListItem::QWinJumpListItem(QWinJumpListItem::Type type) :
 /*!
     Destroys the QWinJumpListItem.
  */
-QWinJumpListItem::~QWinJumpListItem()
-{
-}
+QWinJumpListItem::~QWinJumpListItem() = default;
 
 /*!
     Sets the item \a type.

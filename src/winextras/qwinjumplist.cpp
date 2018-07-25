@@ -120,7 +120,8 @@ void QWinJumpListPrivate::warning(const char *function, HRESULT hresult)
 
 QString QWinJumpListPrivate::iconsDirPath()
 {
-    QString iconDirPath = QDir::tempPath() + QLatin1Char('/') + QCoreApplication::instance()->applicationName() + QLatin1String("/qt-jl-icons/");
+    QString iconDirPath = QDir::tempPath() + QLatin1Char('/')
+        + QCoreApplication::applicationName() + QLatin1String("/qt-jl-icons/");
     QDir().mkpath(iconDirPath);
     return iconDirPath;
 }

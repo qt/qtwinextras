@@ -152,8 +152,7 @@ void QWinTaskbarButtonPrivate::updateOverlayIcon()
 
     if (hicon)
         DestroyIcon(hicon);
-    if (descrPtr)
-        delete[] descrPtr;
+    delete[] descrPtr;
 }
 
 void QWinTaskbarButtonPrivate::_q_updateProgress()
@@ -189,9 +188,7 @@ QWinTaskbarButton::QWinTaskbarButton(QObject *parent) :
 /*!
     Destroys the QWinTaskbarButton.
  */
-QWinTaskbarButton::~QWinTaskbarButton()
-{
-}
+QWinTaskbarButton::~QWinTaskbarButton() = default;
 
 /*!
     \property QWinTaskbarButton::window
