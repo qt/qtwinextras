@@ -69,10 +69,10 @@ namespace QtDwmApiDll
     template <class T> static T windowAttribute(HWND hwnd, DWORD attribute, T defaultValue);
     template <class T> static void setWindowAttribute(HWND hwnd, DWORD attribute, T value);
 
-    static bool booleanWindowAttribute(HWND hwnd, DWORD attribute)
+    inline bool booleanWindowAttribute(HWND hwnd, DWORD attribute)
         { return QtDwmApiDll::windowAttribute<BOOL>(hwnd, attribute, FALSE) != FALSE; }
 
-    static void setBooleanWindowAttribute(HWND hwnd, DWORD attribute, bool value)
+    inline void setBooleanWindowAttribute(HWND hwnd, DWORD attribute, bool value)
         { setWindowAttribute<BOOL>(hwnd, attribute, BOOL(value ? TRUE : FALSE)); }
 };
 
