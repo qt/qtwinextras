@@ -1,3 +1,3 @@
-requires(!winrt:!wince)
+requires(!winrt)
 
 load(qt_parts)
