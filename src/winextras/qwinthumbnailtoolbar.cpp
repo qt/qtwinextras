@@ -543,7 +543,11 @@ bool QWinThumbnailToolBarPrivate::eventFilter(QObject *object, QEvent *event)
     return QObject::eventFilter(object, event);
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+bool QWinThumbnailToolBarPrivate::nativeEventFilter(const QByteArray &, void *message, qintptr *result)
+#else
 bool QWinThumbnailToolBarPrivate::nativeEventFilter(const QByteArray &, void *message, long *result)
+#endif
 {
     const MSG *msg = static_cast<const MSG *>(message);
     if (handle() != msg->hwnd)

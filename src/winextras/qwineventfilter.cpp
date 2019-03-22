@@ -63,7 +63,11 @@ QWinEventFilter::~QWinEventFilter()
     instance = 0;
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+bool QWinEventFilter::nativeEventFilter(const QByteArray &, void *message, qintptr *result)
+#else
 bool QWinEventFilter::nativeEventFilter(const QByteArray &, void *message, long *result)
+#endif
 {
     MSG *msg = static_cast<MSG *>(message);
     bool filterOut = false;
