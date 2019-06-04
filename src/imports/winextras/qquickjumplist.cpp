@@ -65,13 +65,11 @@ QT_BEGIN_NAMESPACE
  */
 
 QQuickJumpList::QQuickJumpList(QObject *parent) :
-    QObject(parent), m_recent(0), m_frequent(0), m_tasks(0)
+    QObject(parent)
 {
 }
 
-QQuickJumpList::~QQuickJumpList()
-{
-}
+QQuickJumpList::~QQuickJumpList() = default;
 
 /*!
     \qmlproperty JumpListCategory JumpList::recent

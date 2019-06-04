@@ -441,8 +441,7 @@ static inline ITaskbarList4 *createTaskbarList()
 }
 
 QWinThumbnailToolBarPrivate::QWinThumbnailToolBarPrivate() :
-    QObject(0), updateScheduled(false), window(0), pTbList(createTaskbarList()), q_ptr(0),
-    withinIconicThumbnailRequest(false), withinIconicLivePreviewRequest(false)
+    QObject(nullptr), pTbList(createTaskbarList())
 {
     buttonList.reserve(windowsLimitedThumbbarSize);
     QCoreApplication::instance()->installNativeEventFilter(this);

@@ -48,9 +48,7 @@ QQuickJumpListItem::QQuickJumpListItem(QObject *parent) :
 {
 }
 
-QQuickJumpListItem::~QQuickJumpListItem()
-{
-}
+QQuickJumpListItem::~QQuickJumpListItem() = default;
 
 int QQuickJumpListItem::type() const
 {

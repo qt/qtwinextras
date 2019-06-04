@@ -61,13 +61,11 @@ QT_BEGIN_NAMESPACE
  */
 
 QQuickJumpListCategory::QQuickJumpListCategory(QObject *parent) :
-    QObject(parent), m_visible(true)
+    QObject(parent)
 {
 }
 
-QQuickJumpListCategory::~QQuickJumpListCategory()
-{
-}
+QQuickJumpListCategory::~QQuickJumpListCategory() = default;
 
 /*!
     \qmlproperty list<QtObject> JumpListCategory::data

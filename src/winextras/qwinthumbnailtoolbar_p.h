@@ -69,7 +69,7 @@ public:
     class IconicPixmapCache
     {
     public:
-        IconicPixmapCache() : m_bitmap(0) {}
+        IconicPixmapCache() = default;
         ~IconicPixmapCache() { deleteBitmap(); }
 
         operator bool() const { return !m_pixmap.isNull(); }
@@ -84,7 +84,7 @@ public:
 
         QPixmap m_pixmap;
         QSize m_size;
-        HBITMAP m_bitmap;
+        HBITMAP m_bitmap = nullptr;
     };
 
     QWinThumbnailToolBarPrivate();
@@ -106,9 +106,9 @@ public:
     static int makeButtonMask(const QWinThumbnailToolButton *button);
     static QString msgComFailed(const char *function, HRESULT hresult);
 
-    bool updateScheduled;
+    bool updateScheduled = false;
     QList<QWinThumbnailToolButton *> buttonList;
-    QWindow *window;
+    QWindow *window = nullptr;
     ITaskbarList4 * const pTbList;
 
     IconicPixmapCache iconicThumbnail;
@@ -121,10 +121,10 @@ private:
     void updateIconicThumbnail(const MSG *message);
     void updateIconicLivePreview(const MSG *message);
 
-    QWinThumbnailToolBar *q_ptr;
+    QWinThumbnailToolBar *q_ptr = nullptr;
     Q_DECLARE_PUBLIC(QWinThumbnailToolBar)
-    bool withinIconicThumbnailRequest;
-    bool withinIconicLivePreviewRequest;
+    bool withinIconicThumbnailRequest = false;
+    bool withinIconicLivePreviewRequest = false;
 };
 
 QT_END_NAMESPACE

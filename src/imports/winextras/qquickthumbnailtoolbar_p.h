@@ -109,7 +109,7 @@ private Q_SLOTS:
     void iconicLivePreviewLoaded(const QVariant &);
 
 protected:
-    void itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data);
+    void itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data) override;
 
 private:
     static void addData(QQmlListProperty<QObject> *property, QObject *button);

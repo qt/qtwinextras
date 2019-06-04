@@ -50,8 +50,8 @@ public:
     ~TestWidget();
 
 protected:
-    void changeEvent(QEvent *e);
-    bool event(QEvent *);
+    void changeEvent(QEvent *e) override;
+    bool event(QEvent *) override;
 
 private:
     Ui::TestWidget *ui;

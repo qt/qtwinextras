@@ -74,9 +74,7 @@ QQuickThumbnailToolBar::QQuickThumbnailToolBar(QQuickItem *parent) :
             this, &QQuickThumbnailToolBar::iconicLivePreviewRequested);
 }
 
-QQuickThumbnailToolBar::~QQuickThumbnailToolBar()
-{
-}
+QQuickThumbnailToolBar::~QQuickThumbnailToolBar() = default;
 
 int QQuickThumbnailToolBar::count() const
 {

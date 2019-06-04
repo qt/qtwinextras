@@ -86,7 +86,7 @@ public:
                            Object *receiver, void (Object::*function)(const QVariant &));
 
 private:
-    QQuickIconLoader() {}
+    QQuickIconLoader() = default;
     static QVariant loadFromFile(const QUrl &url, QVariant::Type type);
     static QVariant loadFromImageProvider(const QUrl &url, const QQmlEngine *engine,
                                           QVariant::Type type, QSize requestedSize);

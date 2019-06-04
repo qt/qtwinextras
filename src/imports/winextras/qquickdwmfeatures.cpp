@@ -71,9 +71,7 @@ QQuickDwmFeatures::QQuickDwmFeatures(QQuickItem *parent) :
     QWinEventFilter::setup();
 }
 
-QQuickDwmFeatures::~QQuickDwmFeatures()
-{
-}
+QQuickDwmFeatures::~QQuickDwmFeatures() = default;
 
 void QQuickDwmFeatures::setCompositionEnabled(bool enabled)
 {
