@@ -50,7 +50,7 @@ void tst_QWinThumbnailToolBar::testWindow()
 
     QWinThumbnailToolBar *tbar2 = new QWinThumbnailToolBar(&window);
     QCOMPARE(tbar2->window(), &window);
-    tbar2->setWindow(0);
+    tbar2->setWindow(nullptr);
     QVERIFY(!tbar2->window());
 }
 
@@ -60,7 +60,7 @@ void tst_QWinThumbnailToolBar::testButtons()
     QCOMPARE(tbar.count(), 0);
     QVERIFY(tbar.buttons().isEmpty());
 
-    tbar.addButton(0);
+    tbar.addButton(nullptr);
     QCOMPARE(tbar.count(), 0);
     QVERIFY(tbar.buttons().isEmpty());
 

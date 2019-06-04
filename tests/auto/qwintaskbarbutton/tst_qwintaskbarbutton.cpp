@@ -52,7 +52,7 @@ void tst_QWinTaskbarButton::testWindow()
 
     QWinTaskbarButton *btn2 = new QWinTaskbarButton(&window);
     QCOMPARE(btn2->window(), &window);
-    btn2->setWindow(0);
+    btn2->setWindow(nullptr);
     QVERIFY(!btn2->window());
 }
 

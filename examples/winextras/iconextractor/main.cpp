@@ -99,7 +99,7 @@ static PixmapEntryList extractIcons(const QString &sourceFile, bool large)
 {
     const QString nativeName = QDir::toNativeSeparators(sourceFile);
     const wchar_t *sourceFileC = reinterpret_cast<const wchar_t *>(nativeName.utf16());
-    const UINT iconCount = ExtractIconEx(sourceFileC, -1, 0, 0, 0);
+    const UINT iconCount = ExtractIconEx(sourceFileC, -1, nullptr, nullptr, 0);
     if (!iconCount) {
         std::wcerr << sourceFile << " does not appear to contain icons.\n";
         return PixmapEntryList();
@@ -107,8 +107,8 @@ static PixmapEntryList extractIcons(const QString &sourceFile, bool large)
 
     QScopedArrayPointer<HICON> icons(new HICON[iconCount]);
     const UINT extractedIconCount = large ?
-        ExtractIconEx(sourceFileC, 0, icons.data(), 0, iconCount) :
-        ExtractIconEx(sourceFileC, 0, 0, icons.data(), iconCount);
+        ExtractIconEx(sourceFileC, 0, icons.data(), nullptr, iconCount) :
+        ExtractIconEx(sourceFileC, 0, nullptr, icons.data(), iconCount);
     if (!extractedIconCount) {
         qErrnoWarning("Failed to extract icons from %s", qPrintable(sourceFile));
         return PixmapEntryList();
@@ -145,7 +145,7 @@ static QPixmap pixmapFromShellImageList(int iImageList, const SHFILEINFO &info)
     if (FAILED(SHGetImageList(iImageList, iID_IImageList, reinterpret_cast<void **>(&imageList))))
         return result;
 
-    HICON hIcon = 0;
+    HICON hIcon = nullptr;
     if (SUCCEEDED(imageList->GetIcon(info.iIcon, ILD_TRANSPARENT, &hIcon))) {
         result = QtWin::fromHICON(hIcon);
         DestroyIcon(hIcon);

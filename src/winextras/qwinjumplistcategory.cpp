@@ -104,8 +104,8 @@ void QWinJumpListCategoryPrivate::invalidate()
 void QWinJumpListCategoryPrivate::loadRecents()
 {
     Q_ASSERT(jumpList);
-    IApplicationDocumentLists *pDocList = 0;
-    HRESULT hresult = CoCreateInstance(qCLSID_ApplicationDocumentLists, 0, CLSCTX_INPROC_SERVER, qIID_IApplicationDocumentLists, reinterpret_cast<void **>(&pDocList));
+    IApplicationDocumentLists *pDocList = nullptr;
+    HRESULT hresult = CoCreateInstance(qCLSID_ApplicationDocumentLists, nullptr, CLSCTX_INPROC_SERVER, qIID_IApplicationDocumentLists, reinterpret_cast<void **>(&pDocList));
     if (SUCCEEDED(hresult)) {
         if (!jumpList->identifier().isEmpty()) {
             wchar_t *id = qt_qstringToNullTerminated(jumpList->identifier());
@@ -113,7 +113,7 @@ void QWinJumpListCategoryPrivate::loadRecents()
             delete[] id;
         }
         if (SUCCEEDED(hresult)) {
-            IObjectArray *array = 0;
+            IObjectArray *array = nullptr;
             hresult = pDocList->GetList(type == QWinJumpListCategory::Recent ? ADLT_RECENT : ADLT_FREQUENT,
                                         0, qIID_IObjectArray, reinterpret_cast<void **>(&array));
             if (SUCCEEDED(hresult)) {
@@ -130,7 +130,7 @@ void QWinJumpListCategoryPrivate::loadRecents()
 void QWinJumpListCategoryPrivate::addRecent(QWinJumpListItem *item)
 {
     Q_ASSERT(item->type() == QWinJumpListItem::Link);
-    wchar_t *id = 0;
+    wchar_t *id = nullptr;
     if (jumpList && !jumpList->identifier().isEmpty())
         id = qt_qstringToNullTerminated(jumpList->identifier());
 
@@ -146,8 +146,8 @@ void QWinJumpListCategoryPrivate::addRecent(QWinJumpListItem *item)
 
 void QWinJumpListCategoryPrivate::clearRecents()
 {
-    IApplicationDestinations *pDest = 0;
-    HRESULT hresult = CoCreateInstance(qCLSID_ApplicationDestinations, 0, CLSCTX_INPROC_SERVER, qIID_IApplicationDestinations, reinterpret_cast<void **>(&pDest));
+    IApplicationDestinations *pDest = nullptr;
+    HRESULT hresult = CoCreateInstance(qCLSID_ApplicationDestinations, nullptr, CLSCTX_INPROC_SERVER, qIID_IApplicationDestinations, reinterpret_cast<void **>(&pDest));
     if (SUCCEEDED(hresult)) {
         const QString identifier = jumpList ? jumpList->identifier() : QString();
         if (!identifier.isEmpty()) {

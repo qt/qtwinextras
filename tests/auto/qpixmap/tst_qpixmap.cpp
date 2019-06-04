@@ -87,7 +87,7 @@ void tst_QPixmap::toHBITMAP()
 
     const HBITMAP bitmap = QtWin::toHBITMAP(pm);
 
-    QVERIFY(bitmap != 0);
+    QVERIFY(bitmap != nullptr);
 
     // Verify size
     BITMAP bitmapInfo;
@@ -98,7 +98,7 @@ void tst_QPixmap::toHBITMAP()
     QCOMPARE(LONG(100), bitmapInfo.bmWidth);
     QCOMPARE(LONG(100), bitmapInfo.bmHeight);
 
-    const HDC displayDc = GetDC(0);
+    const HDC displayDc = GetDC(nullptr);
     const HDC bitmapDc = CreateCompatibleDC(displayDc);
 
     const HBITMAP nullBitmap = static_cast<HBITMAP>(SelectObject(bitmapDc, bitmap));
@@ -112,7 +112,7 @@ void tst_QPixmap::toHBITMAP()
     SelectObject(bitmapDc, nullBitmap);
     DeleteObject(bitmap);
     DeleteDC(bitmapDc);
-    ReleaseDC(0, displayDc);
+    ReleaseDC(nullptr, displayDc);
 }
 
 void tst_QPixmap::fromHBITMAP_data()
@@ -126,7 +126,7 @@ void tst_QPixmap::fromHBITMAP()
     QFETCH(int, green);
     QFETCH(int, blue);
 
-    const HDC displayDc = GetDC(0);
+    const HDC displayDc = GetDC(nullptr);
     const HDC bitmapDc = CreateCompatibleDC(displayDc);
     const HBITMAP bitmap = CreateCompatibleBitmap(displayDc, 100, 100);
     SelectObject(bitmapDc, bitmap);
@@ -148,7 +148,7 @@ void tst_QPixmap::fromHBITMAP()
     DeleteObject(SelectObject(bitmapDc, oldBrush));
     DeleteObject(SelectObject(bitmapDc, bitmap));
     DeleteDC(bitmapDc);
-    ReleaseDC(0, displayDc);
+    ReleaseDC(nullptr, displayDc);
 }
 
 static bool compareImages(const QImage &actual, const QImage &expected,
@@ -221,7 +221,7 @@ void tst_QPixmap::toHICON()
     QPixmap empty(width, height);
     empty.fill(Qt::transparent);
 
-    const HDC displayDc = GetDC(0);
+    const HDC displayDc = GetDC(nullptr);
     const HDC bitmapDc = CreateCompatibleDC(displayDc);
     const HBITMAP bitmap = QtWin::toHBITMAP(empty, QtWin::HBitmapAlpha);
     SelectObject(bitmapDc, bitmap);
@@ -234,7 +234,7 @@ void tst_QPixmap::toHICON()
 
     const HICON icon = QtWin::toHICON(QPixmap::fromImage(imageFromFile));
 
-    DrawIconEx(bitmapDc, 0, 0, icon, width, height, 0, 0, DI_NORMAL);
+    DrawIconEx(bitmapDc, 0, 0, icon, width, height, 0, nullptr, DI_NORMAL);
 
     DestroyIcon(icon);
     DeleteDC(bitmapDc);
@@ -242,7 +242,7 @@ void tst_QPixmap::toHICON()
     const QImage imageFromHICON = QtWin::fromHBITMAP(bitmap, QtWin::HBitmapAlpha).toImage();
     QVERIFY(!imageFromHICON.isNull());
 
-    ReleaseDC(0, displayDc);
+    ReleaseDC(nullptr, displayDc);
 
     // fuzzy comparison must be used, as the pixel values change slightly during conversion
     // between QImage::Format_ARGB32 and QImage::Format_ARGB32_Premultiplied, or elsewhere
@@ -265,7 +265,7 @@ void tst_QPixmap::fromHICON()
     QVERIFY2(QFileInfo(iconFileName).exists(), qPrintable(iconFileName));
 
     const HICON icon =
-        static_cast<HICON>(LoadImage(0, reinterpret_cast<const wchar_t *>(iconFileName.utf16()),
+        static_cast<HICON>(LoadImage(nullptr, reinterpret_cast<const wchar_t *>(iconFileName.utf16()),
                                      IMAGE_ICON, width, height, LR_LOADFROMFILE));
     const QImage imageFromHICON = QtWin::fromHICON(icon).toImage();
     DestroyIcon(icon);

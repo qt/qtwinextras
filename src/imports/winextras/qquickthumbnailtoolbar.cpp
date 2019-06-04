@@ -83,12 +83,12 @@ int QQuickThumbnailToolBar::count() const
 
 QQmlListProperty<QObject> QQuickThumbnailToolBar::data()
 {
-    return QQmlListProperty<QObject>(this, 0, &QQuickThumbnailToolBar::addData, 0, 0, 0);
+    return QQmlListProperty<QObject>(this, nullptr, &QQuickThumbnailToolBar::addData, nullptr, nullptr, nullptr);
 }
 
 QQmlListProperty<QQuickThumbnailToolButton> QQuickThumbnailToolBar::buttons()
 {
-    return QQmlListProperty<QQuickThumbnailToolButton>(this, 0, &QQuickThumbnailToolBar::buttonCount, &QQuickThumbnailToolBar::buttonAt);
+    return QQmlListProperty<QQuickThumbnailToolButton>(this, nullptr, &QQuickThumbnailToolBar::buttonCount, &QQuickThumbnailToolBar::buttonAt);
 }
 
 void QQuickThumbnailToolBar::addButton(QQuickThumbnailToolButton *button)

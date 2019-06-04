@@ -73,7 +73,7 @@ QQuickJumpListCategory::~QQuickJumpListCategory() = default;
  */
 QQmlListProperty<QObject> QQuickJumpListCategory::data()
 {
-    return QQmlListProperty<QObject>(this, this, &QQuickJumpListCategory::data_append, 0, 0, 0);
+    return QQmlListProperty<QObject>(this, this, &QQuickJumpListCategory::data_append, nullptr, nullptr, nullptr);
 }
 
 /*!

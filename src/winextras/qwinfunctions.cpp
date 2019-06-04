@@ -209,9 +209,9 @@ HRGN QtWin::toHRGN(const QRegion &region)
 {
     const int size = region.rectCount();
     if (size == 0)
-        return 0;
+        return nullptr;
 
-    HRGN resultRgn = 0;
+    HRGN resultRgn = nullptr;
     const auto rects = region.begin();
     resultRgn = qt_RectToHRGN(rects[0]);
     for (int i = 1; i < size; i++) {
@@ -231,7 +231,7 @@ HRGN QtWin::toHRGN(const QRegion &region)
  */
 QRegion QtWin::fromHRGN(HRGN hrgn)
 {
-    DWORD regionDataSize = GetRegionData(hrgn, 0, NULL);
+    DWORD regionDataSize = GetRegionData(hrgn, 0, nullptr);
     if (regionDataSize == 0)
         return QRegion();
 
@@ -1738,10 +1738,10 @@ void QtWin::enableBlurBehindWindow(QWindow *window, const QRegion &region)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
 
-    DWM_BLURBEHIND dwmbb = {0, 0, 0, 0};
+    DWM_BLURBEHIND dwmbb = {0, 0, nullptr, 0};
     dwmbb.dwFlags = DWM_BB_ENABLE;
     dwmbb.fEnable = TRUE;
-    HRGN rgn = 0;
+    HRGN rgn = nullptr;
     if (!region.isNull()) {
         rgn = toHRGN(region);
         if (rgn) {
@@ -1788,7 +1788,7 @@ void QtWin::enableBlurBehindWindow(QWindow *window)
 void QtWin::disableBlurBehindWindow(QWindow *window)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
-    DWM_BLURBEHIND dwmbb = {0, 0, 0, 0};
+    DWM_BLURBEHIND dwmbb = {0, 0, nullptr, 0};
     dwmbb.dwFlags = DWM_BB_ENABLE;
     DwmEnableBlurBehindWindow(reinterpret_cast<HWND>(window->winId()), &dwmbb);
 }
@@ -1859,12 +1859,12 @@ void QtWin::setCurrentProcessExplicitAppUserModelID(const QString &id)
  */
 ITaskbarList3 *qt_createITaskbarList3()
 {
-    ITaskbarList3 *pTbList = 0;
-    HRESULT result = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, qIID_ITaskbarList3, reinterpret_cast<void **>(&pTbList));
+    ITaskbarList3 *pTbList = nullptr;
+    HRESULT result = CoCreateInstance(CLSID_TaskbarList, nullptr, CLSCTX_INPROC_SERVER, qIID_ITaskbarList3, reinterpret_cast<void **>(&pTbList));
     if (SUCCEEDED(result)) {
         if (FAILED(pTbList->HrInit())) {
             pTbList->Release();
-            pTbList = 0;
+            pTbList = nullptr;
         }
     }
     return pTbList;
@@ -1875,12 +1875,12 @@ ITaskbarList3 *qt_createITaskbarList3()
  */
 ITaskbarList2 *qt_createITaskbarList2()
 {
-    ITaskbarList3 *pTbList = 0;
-    HRESULT result = CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER, qIID_ITaskbarList2, reinterpret_cast<void **>(&pTbList));
+    ITaskbarList3 *pTbList = nullptr;
+    HRESULT result = CoCreateInstance(CLSID_TaskbarList, nullptr, CLSCTX_INPROC_SERVER, qIID_ITaskbarList2, reinterpret_cast<void **>(&pTbList));
     if (SUCCEEDED(result)) {
         if (FAILED(pTbList->HrInit())) {
             pTbList->Release();
-            pTbList = 0;
+            pTbList = nullptr;
         }
     }
     return pTbList;

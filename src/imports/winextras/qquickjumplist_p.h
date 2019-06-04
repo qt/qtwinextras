@@ -72,7 +72,7 @@ class QQuickJumpList : public QObject, public QQmlParserStatus
     Q_INTERFACES(QQmlParserStatus)
 
 public:
-    explicit QQuickJumpList(QObject *parent = 0);
+    explicit QQuickJumpList(QObject *parent = nullptr);
     ~QQuickJumpList();
 
     QQuickJumpListCategory *recent() const;

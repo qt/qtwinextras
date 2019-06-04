@@ -139,7 +139,7 @@ void QQuickJumpList::setTasks(QQuickJumpListCategory *tasks)
  */
 QQmlListProperty<QObject> QQuickJumpList::data()
 {
-    return QQmlListProperty<QObject>(this, this, &QQuickJumpList::data_append, 0, 0, 0);
+    return QQmlListProperty<QObject>(this, this, &QQuickJumpList::data_append, nullptr, nullptr, nullptr);
 }
 
 /*!

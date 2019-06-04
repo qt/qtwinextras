@@ -51,7 +51,7 @@
 #   define WM_DWMCOMPOSITIONCHANGED       0x031E
 #endif
 
-QWinEventFilter *QWinEventFilter::instance = 0;
+QWinEventFilter *QWinEventFilter::instance = nullptr;
 
 QWinEventFilter::QWinEventFilter() :
     tbButtonCreatedMsgId(RegisterWindowMessageW(L"TaskbarButtonCreated"))
@@ -60,7 +60,7 @@ QWinEventFilter::QWinEventFilter() :
 
 QWinEventFilter::~QWinEventFilter()
 {
-    instance = 0;
+    instance = nullptr;
 }
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
@@ -72,8 +72,8 @@ bool QWinEventFilter::nativeEventFilter(const QByteArray &, void *message, long 
     MSG *msg = static_cast<MSG *>(message);
     bool filterOut = false;
 
-    QEvent *event = 0;
-    QWindow *window = 0;
+    QEvent *event = nullptr;
+    QWindow *window = nullptr;
     switch (msg->message) {
     case WM_DWMCOLORIZATIONCOLORCHANGED :
         event = new QWinColorizationChangeEvent(QRgb(msg->wParam), msg->lParam);

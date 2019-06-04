@@ -342,9 +342,6 @@ void QQuickDwmFeatures::itemChange(QQuickItem::ItemChange change, const QQuickIt
 
 
 QQuickDwmFeaturesPrivate::QQuickDwmFeaturesPrivate(QQuickDwmFeatures *parent) :
-    topMargin(0), rightMargin(0), bottomMargin(0), leftMargin(0),
-    blurBehindEnabled(false),
-    peekDisallowed(false), peekExcluded(false), flipPolicy(QQuickWin::FlipDefault),
     q_ptr(parent)
 {
 }

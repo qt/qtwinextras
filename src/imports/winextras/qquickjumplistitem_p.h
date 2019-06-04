@@ -70,7 +70,7 @@ public:
         ItemTypeSeparator = 3
     };
 
-    explicit QQuickJumpListItem(QObject *p = 0);
+    explicit QQuickJumpListItem(QObject *p = nullptr);
     ~QQuickJumpListItem();
 
     int type() const;

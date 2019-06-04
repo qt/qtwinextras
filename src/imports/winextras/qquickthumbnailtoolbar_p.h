@@ -74,7 +74,7 @@ class QQuickThumbnailToolBar : public QQuickItem
     Q_CLASSINFO("DefaultProperty", "data")
 
 public:
-    explicit QQuickThumbnailToolBar(QQuickItem *parent = 0);
+    explicit QQuickThumbnailToolBar(QQuickItem *parent = nullptr);
     ~QQuickThumbnailToolBar();
 
     int count() const;

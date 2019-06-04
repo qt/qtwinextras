@@ -71,7 +71,7 @@ class QQuickJumpListCategory : public QObject
     Q_CLASSINFO("DefaultProperty", "data")
 
 public:
-    explicit QQuickJumpListCategory(QObject *parent = 0);
+    explicit QQuickJumpListCategory(QObject *parent = nullptr);
     ~QQuickJumpListCategory();
 
     QString title() const;
