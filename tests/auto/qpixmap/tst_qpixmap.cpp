@@ -227,7 +227,7 @@ void tst_QPixmap::toHICON()
     SelectObject(bitmapDc, bitmap);
 
     const QString imageFileName = pngFileName(image, width, height);
-    QVERIFY2(QFileInfo(imageFileName).exists(), qPrintable(imageFileName));
+    QVERIFY2(QFileInfo::exists(imageFileName), qPrintable(imageFileName));
 
     const QImage imageFromFile = QImage(imageFileName).convertToFormat(QImage::Format_ARGB32_Premultiplied);
     QVERIFY(!imageFromFile.isNull());
@@ -262,7 +262,7 @@ void tst_QPixmap::fromHICON()
     QFETCH(QString, image);
 
     const QString iconFileName = image + QStringLiteral(".ico");
-    QVERIFY2(QFileInfo(iconFileName).exists(), qPrintable(iconFileName));
+    QVERIFY2(QFileInfo::exists(iconFileName), qPrintable(iconFileName));
 
     const HICON icon =
         static_cast<HICON>(LoadImage(nullptr, reinterpret_cast<const wchar_t *>(iconFileName.utf16()),
@@ -271,7 +271,7 @@ void tst_QPixmap::fromHICON()
     DestroyIcon(icon);
 
     const QString imageFileName = pngFileName(image, width, height);
-    QVERIFY2(QFileInfo(imageFileName).exists(), qPrintable(imageFileName));
+    QVERIFY2(QFileInfo::exists(imageFileName), qPrintable(imageFileName));
 
     const QImage imageFromFile = QImage(imageFileName).convertToFormat(QImage::Format_ARGB32_Premultiplied);
     QVERIFY(!imageFromFile.isNull());

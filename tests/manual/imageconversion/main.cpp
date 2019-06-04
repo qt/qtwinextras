@@ -243,9 +243,8 @@ void PaintWidget::saveBitmap()
         if (image.save(fileName)) {
             qDebug().noquote() << "saved" << QDir::toNativeSeparators(fileName);
             break;
-        } else {
-            qWarning().noquote() << "Could not save" << QDir::toNativeSeparators(fileName);
         }
+        qWarning().noquote() << "Could not save" << QDir::toNativeSeparators(fileName);
     }
 }
 

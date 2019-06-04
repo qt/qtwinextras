@@ -228,10 +228,7 @@ void QQuickDwmFeatures::setBlurBehindEnabled(bool enabled)
 bool QQuickDwmFeatures::isExcludedFromPeek() const
 {
     Q_D(const QQuickDwmFeatures);
-    if (window())
-        return QtWin::isWindowExcludedFromPeek(window());
-    else
-        return d->peekExcluded;
+    return window() ? QtWin::isWindowExcludedFromPeek(window()) : d->peekExcluded;
 }
 
 void QQuickDwmFeatures::setExcludedFromPeek(bool exclude)
@@ -255,10 +252,7 @@ void QQuickDwmFeatures::setExcludedFromPeek(bool exclude)
 bool QQuickDwmFeatures::isPeekDisallowed() const
 {
     Q_D(const QQuickDwmFeatures);
-    if (window())
-        return QtWin::isWindowPeekDisallowed(window());
-    else
-        return d->peekDisallowed;
+    return window() ? QtWin::isWindowPeekDisallowed(window()) : d->peekDisallowed;
 }
 
 void QQuickDwmFeatures::setPeekDisallowed(bool disallow)

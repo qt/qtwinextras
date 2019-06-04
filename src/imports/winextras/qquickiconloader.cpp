@@ -54,7 +54,7 @@ QT_BEGIN_NAMESPACE
 QVariant QQuickIconLoader::loadFromFile(const QUrl &url, QVariant::Type type)
 {
     const QString path = QQmlFile::urlToLocalFileOrQrc(url);
-    if (QFileInfo(path).exists()) {
+    if (QFileInfo::exists(path)) {
         switch (type) {
         case QMetaType::QIcon:
             return QVariant(QIcon(path));
