@@ -76,7 +76,7 @@ void TestWidget::changeEvent(QEvent *e)
 bool TestWidget::event(QEvent *e)
 {
     if (e->type() == QWinEvent::CompositionChange) {
-        QWinCompositionChangeEvent *event = static_cast<QWinCompositionChangeEvent *>(e);
+        auto *event = static_cast<QWinCompositionChangeEvent *>(e);
         qDebug() << "Composition state change: " << event->isCompositionEnabled();
     } else if (e->type() == QWinEvent::ThemeChange) {
         qDebug() << "Theme change.";

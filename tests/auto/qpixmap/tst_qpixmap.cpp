@@ -101,7 +101,7 @@ void tst_QPixmap::toHBITMAP()
     const HDC displayDc = GetDC(nullptr);
     const HDC bitmapDc = CreateCompatibleDC(displayDc);
 
-    const HBITMAP nullBitmap = static_cast<HBITMAP>(SelectObject(bitmapDc, bitmap));
+    const auto nullBitmap = static_cast<HBITMAP>(SelectObject(bitmapDc, bitmap));
 
     const COLORREF pixel = GetPixel(bitmapDc, 0, 0);
     QCOMPARE(int(GetRValue(pixel)), red);
@@ -264,7 +264,7 @@ void tst_QPixmap::fromHICON()
     const QString iconFileName = image + QStringLiteral(".ico");
     QVERIFY2(QFileInfo::exists(iconFileName), qPrintable(iconFileName));
 
-    const HICON icon =
+    const auto icon =
         static_cast<HICON>(LoadImage(nullptr, reinterpret_cast<const wchar_t *>(iconFileName.utf16()),
                                      IMAGE_ICON, width, height, LR_LOADFROMFILE));
     const QImage imageFromHICON = QtWin::fromHICON(icon).toImage();

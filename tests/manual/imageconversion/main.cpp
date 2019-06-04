@@ -153,9 +153,9 @@ PreviewDialog::PreviewDialog(const QImage &image, QWidget *parent) : QDialog(par
     QDebug(&description) << image.size() << ", format=" << image.format();
     QLabel *descriptionLabel = new QLabel(description, this);
     descriptionLabel->setWordWrap(true);
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    auto *layout = new QVBoxLayout(this);
     layout->addWidget(descriptionLabel);
-    QHBoxLayout *hLayout = new QHBoxLayout;
+    auto *hLayout = new QHBoxLayout;
     QLabel *label = new QLabel(this);
     label->setFrameShape(QFrame::Box);
     label->setPixmap(QPixmap::fromImage(image));
@@ -222,7 +222,7 @@ void PaintWidget::convertBack()
 {
     QImage image = QtWin::imageFromHBITMAP(m_hBitmap);
     formatImage(qDebug(), image);
-    PreviewDialog *dialog = new PreviewDialog(image, this);
+    auto *dialog = new PreviewDialog(image, this);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->setModal(false);
     dialog->setWindowTitle(QLatin1String("QImage - Qt ") + QLatin1String(QT_VERSION_STR));
@@ -371,14 +371,14 @@ int main(int argc, char *argv[])
     int exitCode = 0;
     {
         PaintWidget paintWidget(bitmap);
-        QShortcut *quitShortcut = new QShortcut(&paintWidget);
+        auto *quitShortcut = new QShortcut(&paintWidget);
         quitShortcut->setKey(Qt::CTRL + Qt::Key_Q);
         quitShortcut->setContext(Qt::ApplicationShortcut);
         QObject::connect(quitShortcut, &QShortcut::activated, qApp, &QCoreApplication::quit);
         paintWidget.setWindowTitle(QLatin1String("HBITMAP - Qt ") + QLatin1String(QT_VERSION_STR));
         paintWidget.show();
         if (preview) {
-            PreviewDialog *dialog = new PreviewDialog(image);
+            auto *dialog = new PreviewDialog(image);
             dialog->setModal(false);
             dialog->setWindowTitle(QLatin1String("QImage - Qt ") + QLatin1String(QT_VERSION_STR));
             dialog->move(paintWidget.frameGeometry().topRight() + QPoint(50, 0));

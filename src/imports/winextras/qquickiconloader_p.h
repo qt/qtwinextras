@@ -120,7 +120,7 @@ QQuickIconLoader::LoadResult
     const QString scheme = url.scheme();
     if (scheme.startsWith(QLatin1String("http"))) {
         if (QNetworkReply *reply = QQuickIconLoader::loadFromNetwork(url, engine)) {
-            QQuickIconLoaderNetworkReplyHandler *handler = new QQuickIconLoaderNetworkReplyHandler(reply, type);
+            auto *handler = new QQuickIconLoaderNetworkReplyHandler(reply, type);
             QObject::connect(handler, &QQuickIconLoaderNetworkReplyHandler::finished, receiver, function);
             return LoadNetworkRequestStarted;
         }

@@ -294,7 +294,7 @@ void QWinJumpListCategory::addItem(QWinJumpListItem *item)
  */
 QWinJumpListItem *QWinJumpListCategory::addDestination(const QString &filePath)
 {
-    QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Destination);
+    auto *item = new QWinJumpListItem(QWinJumpListItem::Destination);
     item->setFilePath(filePath);
     addItem(item);
     return item;
@@ -317,7 +317,7 @@ QWinJumpListItem *QWinJumpListCategory::addLink(const QString &title, const QStr
  */
 QWinJumpListItem *QWinJumpListCategory::addLink(const QIcon &icon, const QString &title, const QString &executablePath, const QStringList &arguments)
 {
-    QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Link);
+    auto *item = new QWinJumpListItem(QWinJumpListItem::Link);
     item->setFilePath(executablePath);
     item->setTitle(title);
     item->setArguments(arguments);
@@ -333,7 +333,7 @@ QWinJumpListItem *QWinJumpListCategory::addLink(const QIcon &icon, const QString
  */
 QWinJumpListItem *QWinJumpListCategory::addSeparator()
 {
-    QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Separator);
+    auto *item = new QWinJumpListItem(QWinJumpListItem::Separator);
     addItem(item);
     return item;
 }

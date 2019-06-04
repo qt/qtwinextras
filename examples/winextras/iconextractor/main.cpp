@@ -98,7 +98,7 @@ static QString formatSize(const QSize &size)
 static PixmapEntryList extractIcons(const QString &sourceFile, bool large)
 {
     const QString nativeName = QDir::toNativeSeparators(sourceFile);
-    const wchar_t *sourceFileC = reinterpret_cast<const wchar_t *>(nativeName.utf16());
+    const auto *sourceFileC = reinterpret_cast<const wchar_t *>(nativeName.utf16());
     const UINT iconCount = ExtractIconEx(sourceFileC, -1, nullptr, nullptr, 0);
     if (!iconCount) {
         std::wcerr << sourceFile << " does not appear to contain icons.\n";
@@ -180,7 +180,7 @@ static PixmapEntryList extractShellIcons(const QString &sourceFile, bool addOver
     };
 
     const QString nativeName = QDir::toNativeSeparators(sourceFile);
-    const wchar_t *sourceFileC = reinterpret_cast<const wchar_t *>(nativeName.utf16());
+    const auto *sourceFileC = reinterpret_cast<const wchar_t *>(nativeName.utf16());
 
     SHFILEINFO info;
     unsigned int baseFlags = SHGFI_ICON | SHGFI_SYSICONINDEX | SHGFI_ICONLOCATION;

@@ -281,7 +281,7 @@ IObjectCollection *QWinJumpListPrivate::toComCollection(const QList<QWinJumpList
 
 QWinJumpListItem *QWinJumpListPrivate::fromIShellLink(IShellLinkW *link)
 {
-    QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Link);
+    auto *item = new QWinJumpListItem(QWinJumpListItem::Link);
 
     IPropertyStore *linkProps;
     link->QueryInterface(qIID_IPropertyStore, reinterpret_cast<void **>(&linkProps));
@@ -309,7 +309,7 @@ QWinJumpListItem *QWinJumpListPrivate::fromIShellLink(IShellLinkW *link)
 
 QWinJumpListItem *QWinJumpListPrivate::fromIShellItem(IShellItem2 *shellitem)
 {
-    QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Destination);
+    auto *item = new QWinJumpListItem(QWinJumpListItem::Destination);
     wchar_t *strPtr;
     shellitem->GetDisplayName(SIGDN_FILESYSPATH, &strPtr);
     item->setFilePath(QDir::fromNativeSeparators(QString::fromWCharArray(strPtr)));
@@ -348,7 +348,7 @@ IShellLinkW *QWinJumpListPrivate::toIShellLink(const QWinJumpListItem *item)
                                      qMax(item->description().size(),
                                           qMax(item->title().size(),
                                                qMax(item->filePath().size(), iconPathSize))))) + 1;
-    wchar_t *buffer = new wchar_t[bufferSize];
+    auto *buffer = new wchar_t[bufferSize];
 
     if (!item->description().isEmpty()) {
         qt_qstringToNullTerminated(item->description(), buffer);
@@ -496,7 +496,7 @@ QWinJumpListCategory *QWinJumpList::recent() const
 {
     Q_D(const QWinJumpList);
     if (!d->recent) {
-        QWinJumpList *that = const_cast<QWinJumpList *>(this);
+        auto *that = const_cast<QWinJumpList *>(this);
         that->d_func()->recent = QWinJumpListCategoryPrivate::create(QWinJumpListCategory::Recent, that);
     }
     return d->recent;
@@ -509,7 +509,7 @@ QWinJumpListCategory *QWinJumpList::frequent() const
 {
     Q_D(const QWinJumpList);
     if (!d->frequent) {
-        QWinJumpList *that = const_cast<QWinJumpList *>(this);
+        auto *that = const_cast<QWinJumpList *>(this);
         that->d_func()->frequent = QWinJumpListCategoryPrivate::create(QWinJumpListCategory::Frequent, that);
     }
     return d->frequent;
@@ -522,7 +522,7 @@ QWinJumpListCategory *QWinJumpList::tasks() const
 {
     Q_D(const QWinJumpList);
     if (!d->tasks) {
-        QWinJumpList *that = const_cast<QWinJumpList *>(this);
+        auto *that = const_cast<QWinJumpList *>(this);
         that->d_func()->tasks = QWinJumpListCategoryPrivate::create(QWinJumpListCategory::Tasks, that);
     }
     return d->tasks;
@@ -558,7 +558,7 @@ void QWinJumpList::addCategory(QWinJumpListCategory *category)
  */
 QWinJumpListCategory *QWinJumpList::addCategory(const QString &title, const QList<QWinJumpListItem *> items)
 {
-    QWinJumpListCategory *category = new QWinJumpListCategory(title);
+    auto *category = new QWinJumpListCategory(title);
     for (QWinJumpListItem *item : items)
         category->addItem(item);
     addCategory(category);

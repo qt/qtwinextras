@@ -224,8 +224,8 @@ void QQuickThumbnailToolBar::itemChange(QQuickItem::ItemChange change, const QQu
 
 void QQuickThumbnailToolBar::addData(QQmlListProperty<QObject> *property, QObject *object)
 {
-    if (QQuickThumbnailToolButton *button = qobject_cast<QQuickThumbnailToolButton *>(object)) {
-        QQuickThumbnailToolBar *quickThumbbar = static_cast<QQuickThumbnailToolBar *>(property->object);
+    if (auto *button = qobject_cast<QQuickThumbnailToolButton *>(object)) {
+        auto *quickThumbbar = static_cast<QQuickThumbnailToolBar *>(property->object);
         quickThumbbar->m_toolbar.addButton(button->m_button);
         quickThumbbar->m_buttons.append(button);
         emit quickThumbbar->countChanged();

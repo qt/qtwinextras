@@ -62,7 +62,7 @@ void QQuickJumpListItem::setType(int type)
 
 QWinJumpListItem *QQuickJumpListItem::toJumpListItem() const
 {
-    QWinJumpListItem *item = new QWinJumpListItem(QWinJumpListItem::Separator);
+    auto *item = new QWinJumpListItem(QWinJumpListItem::Separator);
     switch (m_type) {
     case ItemTypeDestination:
         item->setType(QWinJumpListItem::Destination);

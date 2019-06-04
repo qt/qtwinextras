@@ -80,7 +80,7 @@ QQuickJumpList::~QQuickJumpList() = default;
 QQuickJumpListCategory *QQuickJumpList::recent() const
 {
     if (!m_recent) {
-        QQuickJumpList *that = const_cast<QQuickJumpList *>(this);
+        auto *that = const_cast<QQuickJumpList *>(this);
         that->m_recent = new QQuickJumpListCategory(that);
         connect(m_recent, &QQuickJumpListCategory::visibilityChanged, that, &QQuickJumpList::rebuild);
         m_recent->setVisible(false);
@@ -97,7 +97,7 @@ QQuickJumpListCategory *QQuickJumpList::recent() const
 QQuickJumpListCategory *QQuickJumpList::frequent() const
 {
     if (!m_frequent) {
-        QQuickJumpList *that = const_cast<QQuickJumpList *>(this);
+        auto *that = const_cast<QQuickJumpList *>(this);
         that->m_frequent = new QQuickJumpListCategory(that);
         connect(m_frequent, &QQuickJumpListCategory::visibilityChanged, that, &QQuickJumpList::rebuild);
         m_frequent->setVisible(false);
@@ -113,7 +113,7 @@ QQuickJumpListCategory *QQuickJumpList::frequent() const
 QQuickJumpListCategory *QQuickJumpList::tasks() const
 {
     if (!m_tasks) {
-        QQuickJumpList *that = const_cast<QQuickJumpList *>(this);
+        auto *that = const_cast<QQuickJumpList *>(this);
         that->m_tasks = new QQuickJumpListCategory(that);
         connect(m_tasks, &QQuickJumpListCategory::visibilityChanged, that, &QQuickJumpList::rebuild);
     }
@@ -180,8 +180,8 @@ void QQuickJumpList::rebuild()
 
 void QQuickJumpList::data_append(QQmlListProperty<QObject> *property, QObject *object)
 {
-    if (QQuickJumpListCategory *category = qobject_cast<QQuickJumpListCategory *>(object)) {
-        QQuickJumpList *jumpList = static_cast<QQuickJumpList *>(property->object);
+    if (auto *category = qobject_cast<QQuickJumpListCategory *>(object)) {
+        auto *jumpList = static_cast<QQuickJumpList *>(property->object);
         connect(category, &QQuickJumpListCategory::visibilityChanged, jumpList, &QQuickJumpList::rebuild);
         jumpList->m_categories.append(category);
         emit jumpList->categoriesChanged();

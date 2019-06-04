@@ -79,7 +79,7 @@ QVariant QQuickIconLoader::loadFromImageProvider(const QUrl &url, const QQmlEngi
     const QString providerId = url.host();
     const QString imageId = url.toString(QUrl::RemoveScheme | QUrl::RemoveAuthority).mid(1);
     QQuickImageProvider::ImageType imageType = QQuickImageProvider::Invalid;
-    QQuickImageProvider *provider = static_cast<QQuickImageProvider *>(engine->imageProvider(providerId));
+    auto *provider = static_cast<QQuickImageProvider *>(engine->imageProvider(providerId));
     QSize size;
     if (!requestedSize.isValid())
         requestedSize = QSize(GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
@@ -122,7 +122,7 @@ QQuickIconLoaderNetworkReplyHandler::QQuickIconLoaderNetworkReplyHandler(QNetwor
 
 void QQuickIconLoaderNetworkReplyHandler::onRequestFinished()
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+    auto *reply = qobject_cast<QNetworkReply *>(sender());
     Q_ASSERT(reply);
     if (reply->error() != QNetworkReply::NoError) {
         qWarning() << Q_FUNC_INFO << reply->url() << "failed:" << reply->errorString();

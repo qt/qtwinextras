@@ -235,13 +235,13 @@ QRegion QtWin::fromHRGN(HRGN hrgn)
     if (regionDataSize == 0)
         return QRegion();
 
-    LPRGNDATA regionData = reinterpret_cast<LPRGNDATA>(malloc(regionDataSize));
+    auto regionData = reinterpret_cast<LPRGNDATA>(malloc(regionDataSize));
     if (!regionData)
         return QRegion();
 
     QRegion region;
     if (GetRegionData(hrgn, regionDataSize, regionData) == regionDataSize) {
-        LPRECT pRect = reinterpret_cast<LPRECT>(regionData->Buffer);
+        auto pRect = reinterpret_cast<LPRECT>(regionData->Buffer);
         for (DWORD i = 0; i < regionData->rdh.nCount; ++i)
             region += QRect(pRect[i].left, pRect[i].top,
                             pRect[i].right - pRect[i].left,
@@ -1623,7 +1623,7 @@ QtWin::WindowFlip3DPolicy QtWin::windowFlip3DPolicy(QWindow *window)
 {
     Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
 
-    const DWORD value =
+    const auto value =
         QtDwmApiDll::windowAttribute<DWORD>(reinterpret_cast<HWND>(window->winId()),
                                             DWMWA_FLIP3D_POLICY, DWORD(DWMFLIP3D_DEFAULT));
     QtWin::WindowFlip3DPolicy policy = QtWin::FlipDefault;

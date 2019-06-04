@@ -313,8 +313,8 @@ bool QQuickDwmFeatures::eventFilter(QObject *object, QEvent *event)
 
 QQuickDwmFeatures *QQuickDwmFeatures::qmlAttachedProperties(QObject *parentObject)
 {
-    QQuickDwmFeatures *featuresObj = new QQuickDwmFeatures();
-    QQuickItem *parentItem = qobject_cast<QQuickItem *>(parentObject);
+    auto *featuresObj = new QQuickDwmFeatures();
+    auto *parentItem = qobject_cast<QQuickItem *>(parentObject);
     if (parentItem)
         featuresObj->setParentItem(parentItem);
     else
