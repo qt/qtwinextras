@@ -91,7 +91,7 @@ static void formatImage(QDebug d, const QImage &image)
     d << image;
     if (const int colorTableSize = image.colorCount()) {
         QVector<QRgb> colorTable = image.colorTable();
-        d << " Color table: " << colorTableSize << " (" << showbase << hex; // 256 by standard
+        d << " Color table: " << colorTableSize << " (" << Qt::showbase << Qt::hex; // 256 by standard
         int c = 0;
         for ( ; c < qMin(8, colorTableSize); ++c) {
             if (c)
@@ -100,7 +100,7 @@ static void formatImage(QDebug d, const QImage &image)
         }
         if (c < colorTableSize)
             d << "...";
-        d << ')' << noshowbase << dec;
+        d << ')' << Qt::noshowbase << Qt::dec;
     }
     formatData(d, image.constBits(), image.byteCount());
 }
@@ -347,7 +347,7 @@ int main(int argc, char *argv[])
 
     if (image.isNull()) {
         qDebug() << "Default image color=" << defaultColor
-            << showbase << hex << defaultColor.rgba() << noshowbase << dec
+            << Qt::showbase << Qt::hex << defaultColor.rgba() << Qt::noshowbase << Qt::dec
             << ", format=" << drawFormat;
         image = QImage(width, height, drawFormat);
         image.fill(defaultColor);
