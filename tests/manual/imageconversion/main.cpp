@@ -91,7 +91,7 @@ static void formatImage(QDebug d, const QImage &image)
     d << image;
     if (const int colorTableSize = image.colorCount()) {
         QVector<QRgb> colorTable = image.colorTable();
-        d << " Color table: " << colorTableSize << " (" << showbase << hex; // 256 by standard
+        d << " Color table: " << colorTableSize << " (" << Qt::showbase << Qt::hex; // 256 by standard
         int c = 0;
         for ( ; c < qMin(8, colorTableSize); ++c) {
             if (c)
@@ -100,7 +100,7 @@ static void formatImage(QDebug d, const QImage &image)
         }
         if (c < colorTableSize)
             d << "...";
-        d << ')' << noshowbase << dec;
+        d << ')' << Qt::noshowbase << Qt::dec;
     }
     formatData(d, image.constBits(), image.byteCount());
 }
@@ -175,7 +175,11 @@ class PaintWidget : public QWidget
 public:
     explicit PaintWidget(HBITMAP hBitmap, QWidget *p = nullptr) : QWidget(p), m_hBitmap(hBitmap) { }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result) override;
+#else
     bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
+#endif
 
 public slots:
     void saveBitmap();
@@ -188,7 +192,11 @@ private:
     const HBITMAP m_hBitmap;
 };
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+bool PaintWidget::nativeEvent(const QByteArray &eventType, void *messageIn, qintptr *result)
+#else
 bool PaintWidget::nativeEvent(const QByteArray &eventType, void *messageIn, long *result)
+#endif
 {
     MSG *message = reinterpret_cast<MSG *>(messageIn);
     if (message->message != WM_PAINT)
@@ -347,7 +355,7 @@ int main(int argc, char *argv[])
 
     if (image.isNull()) {
         qDebug() << "Default image color=" << defaultColor
-            << showbase << hex << defaultColor.rgba() << noshowbase << dec
+            << Qt::showbase << Qt::hex << defaultColor.rgba() << Qt::noshowbase << Qt::dec
             << ", format=" << drawFormat;
         image = QImage(width, height, drawFormat);
         image.fill(defaultColor);

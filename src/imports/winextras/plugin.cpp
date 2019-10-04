@@ -61,7 +61,9 @@ public:
     void registerTypes(const char *uri) Q_DECL_OVERRIDE
     {
         Q_ASSERT(uri == QLatin1String("QtWinExtras"));
-        qmlRegisterModule(uri, 1, QT_VERSION_MINOR);
+        // The minor version used to be the current Qt 5 minor. For compatibility it is the last
+        // Qt 5 release.
+        qmlRegisterModule(uri, 1, 15);
         qmlRegisterUncreatableType<QQuickWin>(uri, 1, 0, "QtWin", "Cannot create an instance of the QtWin namespace.");
         qmlRegisterType<QQuickDwmFeatures>(uri, 1, 0, "DwmFeatures");
         qmlRegisterType<QQuickTaskbarButton>(uri, 1, 0, "TaskbarButton");
