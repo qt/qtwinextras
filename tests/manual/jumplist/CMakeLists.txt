@@ -4,7 +4,7 @@
 ## jumplist Binary:
 #####################################################################
 
-add_qt_executable(jumplist
+qt_add_manual_test(jumplist
     GUI
     SOURCES
         main.cpp

@@ -4,7 +4,7 @@
 ## tst_qwinmime Test:
 #####################################################################
 
-add_qt_test(tst_qwinmime
+qt_add_test(tst_qwinmime
     SOURCES
         tst_qwinmime.cpp
     PUBLIC_LIBRARIES

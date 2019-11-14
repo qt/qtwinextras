@@ -4,7 +4,7 @@
 ## WinExtras Module:
 #####################################################################
 
-add_qt_module(WinExtras
+qt_add_module(WinExtras
     SOURCES
         qwinevent.cpp qwinevent.h
         qwineventfilter.cpp qwineventfilter_p.h
@@ -35,16 +35,15 @@ add_qt_module(WinExtras
 
 #### Keys ignored in scope 1:.:.:winextras.pro:<TRUE>:
 # OTHER_FILES = "doc/qtwinextras.qdocconf" "doc/src/qtwinextras-index.qdoc" "doc/src/qtwinextras-module-cpp.qdoc" "doc/src/qtwinextras-module-qml.qdoc" "doc/snippets/code/use-qtwinextras.pro" "doc/snippets/code/jumplist.cpp" "doc/snippets/code/use-qtwinextras.cpp" "doc/snippets/code/thumbbar.cpp" "doc/snippets/code/thumbbar.qml"
-# _LOADED = "qt_module"
 
 ## Scopes:
 #####################################################################
 
-extend_target(WinExtras CONDITION QT_FEATURE_dynamicgl OR (WIN32 AND NOT TARGET Qt::OpenGL)
+qt_extend_target(WinExtras CONDITION QT_FEATURE_dynamicgl OR (WIN32 AND NOT TARGET Qt::OpenGL)
     LIBRARIES
         gdi32
 )
-add_qt_docs(WinExtras
+qt_add_docs(WinExtras
     doc/qtwinextras.qdocconf
 )
 

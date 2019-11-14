@@ -4,7 +4,7 @@
 ## qml_winextras Plugin:
 #####################################################################
 
-add_qml_module(qml_winextras
+qt_add_qml_module(qml_winextras
     URI "QtWinExtras"
     VERSION "1.${CMAKE_PROJECT_VERSION_MINOR}"
     CLASSNAME QWinExtrasQmlPlugin
@@ -36,12 +36,11 @@ add_qml_module(qml_winextras
 # OTHER_FILES = "qmldir" "JumpListLink.qml" "JumpListDestination.qml" "JumpListSeparator.qml"
 # QML_FILES = "JumpListLink.qml" "JumpListDestination.qml" "JumpListSeparator.qml"
 # TARGETPATH = "QtWinExtras"
-# _LOADED = "qml_plugin"
 
 ## Scopes:
 #####################################################################
 
-extend_target(qml_winextras CONDITION QT_FEATURE_dynamicgl OR NOT TARGET Qt::OpenGL
+qt_extend_target(qml_winextras CONDITION QT_FEATURE_dynamicgl OR NOT TARGET Qt::OpenGL
     LIBRARIES
         user32
 )
@@ -53,15 +52,12 @@ set(qml_files
 )
 set_source_files_properties(JumpListLink.qml PROPERTIES
     QT_QML_SOURCE_VERSION "1.0"
-    QT_QML_SOURCE_INSTALL TRUE
 )
 set_source_files_properties(JumpListDestination.qml PROPERTIES
     QT_QML_SOURCE_VERSION "1.0"
-    QT_QML_SOURCE_INSTALL TRUE
 )
 set_source_files_properties(JumpListSeparator.qml PROPERTIES
     QT_QML_SOURCE_VERSION "1.0"
-    QT_QML_SOURCE_INSTALL TRUE
 )
 
 qt6_target_qml_files(qml_winextras

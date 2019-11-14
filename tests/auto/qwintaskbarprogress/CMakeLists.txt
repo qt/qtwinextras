@@ -4,7 +4,7 @@
 ## tst_qwintaskbarprogress Test:
 #####################################################################
 
-add_qt_test(tst_qwintaskbarprogress
+qt_add_test(tst_qwintaskbarprogress
     SOURCES
         tst_qwintaskbarprogress.cpp
     PUBLIC_LIBRARIES

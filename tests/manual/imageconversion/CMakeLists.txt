@@ -4,7 +4,7 @@
 ## imageconversion Binary:
 #####################################################################
 
-add_qt_executable(imageconversion
+qt_add_manual_test(imageconversion
     SOURCES
         main.cpp
     PUBLIC_LIBRARIES

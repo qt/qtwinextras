@@ -4,7 +4,7 @@
 ## src Binary:
 #####################################################################
 
-add_qt_executable(src
+qt_add_executable(src
     GUI
     PUBLIC_LIBRARIES
         Qt::Gui
