@@ -77,7 +77,7 @@ struct PixmapEntry {
     QPixmap pixmap;
 };
 
-using PixmapEntryList = QList<PixmapEntry>;
+using PixmapEntryList = QVector<PixmapEntry>;
 
 static std::wostream &operator<<(std::wostream &str, const QString &s)
 {
