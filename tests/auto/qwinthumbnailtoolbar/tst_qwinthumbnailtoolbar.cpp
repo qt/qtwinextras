@@ -82,7 +82,7 @@ void tst_QWinThumbnailToolBar::testButtons()
     QCOMPARE(tbar.count(), 0);
     QVERIFY(tbar.buttons().isEmpty());
 
-    QList<QWinThumbnailToolButton *> buttons;
+    QVector<QWinThumbnailToolButton *> buttons;
     for (int i = 0; i < 3; ++i)
         buttons << new QWinThumbnailToolButton;
 

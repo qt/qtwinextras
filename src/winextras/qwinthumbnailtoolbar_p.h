@@ -107,7 +107,7 @@ public:
     static QString msgComFailed(const char *function, HRESULT hresult);
 
     bool updateScheduled = false;
-    QList<QWinThumbnailToolButton *> buttonList;
+    QVector<QWinThumbnailToolButton *> buttonList;
     QWindow *window = nullptr;
     ITaskbarList4 * const pTbList;
 

@@ -84,7 +84,7 @@ public:
     QQmlListProperty<QObject> data();
     QQmlListProperty<QQuickJumpListItem> items();
 
-    QList<QWinJumpListItem *> toItemList() const;
+    QVector<QWinJumpListItem *> toItemList() const;
 
 Q_SIGNALS:
     void itemsChanged();

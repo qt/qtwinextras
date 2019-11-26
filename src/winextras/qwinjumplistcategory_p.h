@@ -77,7 +77,7 @@ public:
     QString title;
     QWinJumpList *jumpList = nullptr;
     QWinJumpListCategory::Type type = QWinJumpListCategory::Custom;
-    QList<QWinJumpListItem *> items;
+    QVector<QWinJumpListItem *> items;
 };
 
 QT_END_NAMESPACE

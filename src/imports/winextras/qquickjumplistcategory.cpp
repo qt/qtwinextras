@@ -122,9 +122,9 @@ void QQuickJumpListCategory::setVisible(bool visible)
     }
 }
 
-QList<QWinJumpListItem *> QQuickJumpListCategory::toItemList() const
+QVector<QWinJumpListItem *> QQuickJumpListCategory::toItemList() const
 {
-    QList<QWinJumpListItem *> items;
+    QVector<QWinJumpListItem *> items;
     for (QQuickJumpListItem *item : m_items)
         items.append(item->toJumpListItem());
     return items;

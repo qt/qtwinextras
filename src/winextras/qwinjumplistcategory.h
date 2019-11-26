@@ -74,7 +74,7 @@ public:
 
     int count() const;
     bool isEmpty() const;
-    QList<QWinJumpListItem *> items() const;
+    QVector<QWinJumpListItem *> items() const;
 
     void addItem(QWinJumpListItem *item);
     QWinJumpListItem *addDestination(const QString &filePath);

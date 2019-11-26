@@ -68,9 +68,9 @@ public:
     QWinJumpListCategory *frequent() const;
     QWinJumpListCategory *tasks() const;
 
-    QList<QWinJumpListCategory *> categories() const;
+    QVector<QWinJumpListCategory *> categories() const;
     void addCategory(QWinJumpListCategory *category);
-    QWinJumpListCategory *addCategory(const QString &title, const QList<QWinJumpListItem *> items = QList<QWinJumpListItem *>());
+    QWinJumpListCategory *addCategory(const QString &title, const QVector<QWinJumpListItem *> items = QVector<QWinJumpListItem *>());
 
 public Q_SLOTS:
     void clear();
