@@ -60,6 +60,7 @@ private slots:
     void onDisallowPeekClicked();
     void onExcludeFromPeekClicked();
     void onFlip3DPolicyChanged();
+    void onNonClientAreaRenderingPolicyChanged();
     void onGlassMarginsChanged();
     void onResetGlassFrameClicked();
 };

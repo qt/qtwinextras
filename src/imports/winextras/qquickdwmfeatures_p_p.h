@@ -70,6 +70,7 @@ public:
     bool peekDisallowed = false;
     bool peekExcluded = false;
     QQuickWin::WindowFlip3DPolicy flipPolicy = QQuickWin::FlipDefault;
+    QQuickWin::WindowNonClientRenderingPolicy nonClientRenderingPolicy = QQuickWin::NonClientRenderingUseWindowStyle;
     QColor originalSurfaceColor;
 
     void updateAll();

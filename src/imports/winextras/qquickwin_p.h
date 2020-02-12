@@ -77,6 +77,14 @@ public:
         FlipExcludeAbove = QtWin::FlipExcludeAbove
     };
     Q_ENUM(WindowFlip3DPolicy)
+
+    enum WindowNonClientRenderingPolicy
+    {
+        NonClientRenderingUseWindowStyle = QtWin::NonClientRenderingUseWindowStyle,
+        NonClientRenderingDisabled = QtWin::NonClientRenderingDisabled,
+        NonClientRenderingEnabled = QtWin::NonClientRenderingEnabled
+    };
+    Q_ENUM(WindowNonClientRenderingPolicy)
 };
 
 QT_END_NAMESPACE

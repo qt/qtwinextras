@@ -77,6 +77,13 @@ namespace QtWin
         FlipExcludeAbove
     };
 
+    enum WindowNonClientRenderingPolicy
+    {
+        NonClientRenderingUseWindowStyle,
+        NonClientRenderingDisabled,
+        NonClientRenderingEnabled
+    };
+
     Q_WINEXTRAS_EXPORT HBITMAP createMask(const QBitmap &bitmap);
     Q_WINEXTRAS_EXPORT HBITMAP toHBITMAP(const QPixmap &p, HBitmapFormat format = HBitmapNoAlpha);
     Q_WINEXTRAS_EXPORT QPixmap fromHBITMAP(HBITMAP bitmap, HBitmapFormat format = HBitmapNoAlpha);
@@ -100,6 +107,8 @@ namespace QtWin
     Q_WINEXTRAS_EXPORT bool isWindowPeekDisallowed(QWindow *window);
     Q_WINEXTRAS_EXPORT void setWindowFlip3DPolicy(QWindow *window, WindowFlip3DPolicy policy);
     Q_WINEXTRAS_EXPORT WindowFlip3DPolicy windowFlip3DPolicy(QWindow *);
+    Q_WINEXTRAS_EXPORT void setWindowNonClientAreaRenderingPolicy(QWindow *window, WindowNonClientRenderingPolicy policy);
+    Q_WINEXTRAS_EXPORT WindowNonClientRenderingPolicy windowNonClientAreaRenderingPolicy(QWindow *);
 
     Q_WINEXTRAS_EXPORT void extendFrameIntoClientArea(QWindow *window, int left, int top, int right, int bottom);
     Q_WINEXTRAS_EXPORT void extendFrameIntoClientArea(QWindow *window, const QMargins &margins);
@@ -155,10 +164,20 @@ namespace QtWin
 
     inline WindowFlip3DPolicy windowFlip3DPolicy(QWidget *window)
     {
-        if (!window->windowHandle())
-            return FlipDefault;
-        else
-            return windowFlip3DPolicy(window->windowHandle());
+        auto handle = window->windowHandle();
+        return handle ? windowFlip3DPolicy(handle) : FlipDefault;
+    }
+
+    inline void setWindowNonClientAreaRenderingPolicy(QWidget *window, WindowNonClientRenderingPolicy policy)
+    {
+        window->createWinId();
+        setWindowNonClientAreaRenderingPolicy(window->windowHandle(), policy);
+    }
+
+    inline WindowNonClientRenderingPolicy windowNonClientAreaRenderingPolicy(QWidget *window)
+    {
+        auto handle = window->windowHandle();
+        return handle ? windowNonClientAreaRenderingPolicy(handle) : NonClientRenderingUseWindowStyle;
     }
 
     inline void extendFrameIntoClientArea(QWidget *window, const QMargins &margins)

@@ -293,6 +293,32 @@ void QQuickDwmFeatures::setFlip3DPolicy(QQuickWin::WindowFlip3DPolicy policy)
     emit flip3DPolicyChanged();
 }
 
+/*!
+    \qmlproperty QtWin::WindowNonClientRenderingPolicy DwmFeatures::nonClientAreaRenderingPolicy
+
+    The current non-client area rendering policy for the window.
+ */
+QQuickWin::WindowNonClientRenderingPolicy QQuickDwmFeatures::nonClientAreaRenderingPolicy() const
+{
+    Q_D(const QQuickDwmFeatures);
+    if (window())
+        return static_cast<QQuickWin::WindowNonClientRenderingPolicy>(QtWin::windowNonClientAreaRenderingPolicy(window()));
+    else
+        return d->nonClientRenderingPolicy;
+}
+
+void QQuickDwmFeatures::setNonClientAreaRenderingPolicy(QQuickWin::WindowNonClientRenderingPolicy policy)
+{
+    Q_D(QQuickDwmFeatures);
+    if (d->nonClientRenderingPolicy == policy)
+        return;
+
+    d->nonClientRenderingPolicy = policy;
+    if (window())
+        QtWin::setWindowNonClientAreaRenderingPolicy(window(), static_cast<QtWin::WindowNonClientRenderingPolicy>(d->nonClientRenderingPolicy));
+    emit nonClientAreaRenderingPolicyChanged();
+}
+
 bool QQuickDwmFeatures::eventFilter(QObject *object, QEvent *event)
 {
     Q_D(QQuickDwmFeatures);
@@ -349,6 +375,7 @@ void QQuickDwmFeaturesPrivate::updateAll()
         QtWin::setWindowExcludedFromPeek(w, peekExcluded);
         QtWin::setWindowDisallowPeek(w, peekDisallowed);
         QtWin::setWindowFlip3DPolicy(w, static_cast<QtWin::WindowFlip3DPolicy>(flipPolicy));
+        QtWin::setWindowNonClientAreaRenderingPolicy(w, static_cast<QtWin::WindowNonClientRenderingPolicy>(nonClientRenderingPolicy));
         if (blurBehindEnabled)
             QtWin::enableBlurBehindWindow(w);
         else

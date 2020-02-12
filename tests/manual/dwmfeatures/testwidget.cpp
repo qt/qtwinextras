@@ -40,11 +40,14 @@ TestWidget::TestWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->btnPeekDisallow,  &QAbstractButton::clicked, this, &TestWidget::onDisallowPeekClicked);
-    connect(ui->btnPeekExclude,   &QAbstractButton::clicked, this, &TestWidget::onExcludeFromPeekClicked);
-    connect(ui->radioFlipDefault, &QAbstractButton::clicked, this, &TestWidget::onFlip3DPolicyChanged);
-    connect(ui->radioFlipAbove,   &QAbstractButton::clicked, this, &TestWidget::onFlip3DPolicyChanged);
-    connect(ui->radioFlipBelow,   &QAbstractButton::clicked, this, &TestWidget::onFlip3DPolicyChanged);
+    connect(ui->btnPeekDisallow,         &QAbstractButton::clicked, this, &TestWidget::onDisallowPeekClicked);
+    connect(ui->btnPeekExclude,          &QAbstractButton::clicked, this, &TestWidget::onExcludeFromPeekClicked);
+    connect(ui->radioFlipDefault,        &QAbstractButton::clicked, this, &TestWidget::onFlip3DPolicyChanged);
+    connect(ui->radioFlipAbove,          &QAbstractButton::clicked, this, &TestWidget::onFlip3DPolicyChanged);
+    connect(ui->radioFlipBelow,          &QAbstractButton::clicked, this, &TestWidget::onFlip3DPolicyChanged);
+    connect(ui->radioNcrpUseWindowStyle, &QAbstractButton::clicked, this, &TestWidget::onNonClientAreaRenderingPolicyChanged);
+    connect(ui->radioNcrpDisable,        &QAbstractButton::clicked, this, &TestWidget::onNonClientAreaRenderingPolicyChanged);
+    connect(ui->radioNcrpEnable,         &QAbstractButton::clicked, this, &TestWidget::onNonClientAreaRenderingPolicyChanged);
     connect(ui->btnFrameReset,    &QAbstractButton::clicked, this, &TestWidget::onResetGlassFrameClicked);
     connect(ui->frameTop, QOverload<int>::of(&QSpinBox::valueChanged),
             this, &TestWidget::onGlassMarginsChanged);
@@ -104,6 +107,18 @@ void TestWidget::onFlip3DPolicyChanged()
     else
         policy = QtWin::FlipDefault;
     QtWin::setWindowFlip3DPolicy(this, policy);
+}
+
+void TestWidget::onNonClientAreaRenderingPolicyChanged()
+{
+    QtWin::WindowNonClientRenderingPolicy policy;
+    if (ui->radioNcrpDisable->isChecked())
+        policy = QtWin::NonClientRenderingDisabled;
+    else if (ui->radioNcrpEnable->isChecked())
+        policy = QtWin::NonClientRenderingEnabled;
+    else
+        policy = QtWin::NonClientRenderingUseWindowStyle;
+    QtWin::setWindowNonClientAreaRenderingPolicy(this, policy);
 }
 
 void TestWidget::onGlassMarginsChanged()

@@ -26,6 +26,7 @@ Module {
         Property { name: "excludedFromPeek"; type: "bool" }
         Property { name: "peekDisallowed"; type: "bool" }
         Property { name: "flip3DPolicy"; type: "QQuickWin::WindowFlip3DPolicy" }
+        Property { name: "nonClientAreaRenderingPolicy"; type: "QQuickWin::WindowNonClientRenderingPolicy" }
     }
     Component {
         name: "QQuickJumpList"
@@ -142,6 +143,14 @@ Module {
                 "FlipDefault": 0,
                 "FlipExcludeBelow": 1,
                 "FlipExcludeAbove": 2
+            }
+        }
+        Enum {
+            name: "WindowNonClientRenderingPolicy"
+            values: {
+                "NonClientRenderingUseWindowStyle": 0,
+                "NonClientRenderingDisabled": 1,
+                "NonClientRenderingEnabled": 2
             }
         }
     }

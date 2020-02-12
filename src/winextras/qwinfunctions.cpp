@@ -1640,6 +1640,69 @@ QtWin::WindowFlip3DPolicy QtWin::windowFlip3DPolicy(QWindow *window)
     return policy;
 }
 
+/*!
+    \since 6.0
+
+    Sets the non-client area rendering policy \a policy for the specified \a window.
+
+    \note Disabling non-client area rendering will cause any previous calls to
+    QtWin::enableBlurBehindWindow() or to QtWin::extendFrameIntoClientArea() to be disabled.
+ */
+void QtWin::setWindowNonClientAreaRenderingPolicy(QWindow *window, QtWin::WindowNonClientRenderingPolicy policy)
+{
+    Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
+
+    HWND handle = reinterpret_cast<HWND>(window->winId());
+
+    DWORD value = DWMNCRP_USEWINDOWSTYLE;
+
+    switch (policy) {
+    default :
+    case NonClientRenderingUseWindowStyle :
+        break;
+    case NonClientRenderingDisabled :
+        value = DWMNCRP_DISABLED;
+        break;
+    case NonClientRenderingEnabled :
+        value = DWMNCRP_ENABLED;
+        break;
+    }
+
+    QtDwmApiDll::setWindowAttribute(handle, DWMWA_NCRENDERING_POLICY, value);
+}
+
+/*!
+    \fn QtWin::WindowNonClientRenderingPolicy QtWin::windowNonClientAreaRenderingPolicy(QWidget *window)
+    \since 6.0
+    \overload QtWin::windowNonClientAreaRenderingPolicy()
+ */
+
+/*!
+    \since 6.0
+
+    Returns the current non-client area rendering policy for the specified \a window.
+ */
+QtWin::WindowNonClientRenderingPolicy QtWin::windowNonClientAreaRenderingPolicy(QWindow *window)
+{
+    Q_ASSERT_X(window, Q_FUNC_INFO, "window is null");
+
+    const auto value =
+        QtDwmApiDll::windowAttribute<DWORD>(reinterpret_cast<HWND>(window->winId()),
+                                            DWMWA_NCRENDERING_POLICY, DWORD(DWMNCRP_USEWINDOWSTYLE));
+    WindowNonClientRenderingPolicy policy = NonClientRenderingUseWindowStyle;
+    switch (value) {
+    case DWMNCRP_DISABLED :
+        policy = NonClientRenderingDisabled;
+        break;
+    case DWMNCRP_ENABLED :
+        policy = NonClientRenderingEnabled;
+        break;
+    default :
+        break;
+    }
+    return policy;
+}
+
 void qt_ExtendFrameIntoClientArea(QWindow *window, int left, int top, int right, int bottom)
 {
     QWinEventFilter::setup();
@@ -1659,7 +1722,9 @@ void qt_ExtendFrameIntoClientArea(QWindow *window, int left, int top, int right,
     using the \a left, \a top, \a right, and \a bottom margin values.
 
     Pass -1 as values for any of the four margins to fully extend the frame,
-    creating a \e {sheet of glass} effect.
+    creating a \e {sheet of glass} effect. If it doesn't work, change
+    non-client area rendering policy to QtWin::NonClientRenderingEnabled and
+    try again.
 
     If you want the extended frame to act like a standard window border, you
     should handle that yourself.
@@ -1667,7 +1732,7 @@ void qt_ExtendFrameIntoClientArea(QWindow *window, int left, int top, int right,
     \note Qt::WA_NoSystemBackground must not be set on widgets for
     extendFrameIntoClientArea() to work.
 
-    \sa resetExtendedFrame()
+    \sa resetExtendedFrame(), setWindowNonClientAreaRenderingPolicy()
  */
 void QtWin::extendFrameIntoClientArea(QWindow *window, int left, int top, int right, int bottom)
 {
@@ -2039,6 +2104,34 @@ void QtWin::taskbarDeleteTab(QWindow *window)
             rendering.
 
     \sa setWindowFlip3DPolicy()
+ */
+
+/*!
+    \enum QtWin::WindowNonClientRenderingPolicy
+
+    \since 6.0
+
+    This enum type specifies the non-client area rendering policy.
+
+    \value  NonClientRenderingUseWindowStyle
+            The non-client rendering area is rendered based on the window
+            style.
+
+    \value  NonClientRenderingDisabled
+            The non-client area rendering is disabled and the window style
+            is ignored.
+            Note that disabling non-client area rendering will cause any
+            previous calls to QtWin::enableBlurBehindWindow() or to
+            QtWin::extendFrameIntoClientArea() to be disabled.
+
+    \value  NonClientRenderingEnabled
+            The non-client area rendering is enabled and the window style
+            is ignored.
+            If you want to bring frame shadow back to a frameless window,
+            enable this policy and call QtWin::extendFrameIntoClientArea()
+            with a negative height.
+
+    \sa setWindowNonClientAreaRenderingPolicy()
  */
 
 QT_END_NAMESPACE

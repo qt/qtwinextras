@@ -77,6 +77,7 @@ class QQuickDwmFeatures : public QQuickItem
     Q_PROPERTY(bool excludedFromPeek READ isExcludedFromPeek WRITE setExcludedFromPeek NOTIFY excludedFromPeekChanged)
     Q_PROPERTY(bool peekDisallowed READ isPeekDisallowed WRITE setPeekDisallowed NOTIFY peekDisallowedChanged)
     Q_PROPERTY(QQuickWin::WindowFlip3DPolicy flip3DPolicy READ flip3DPolicy WRITE setFlip3DPolicy NOTIFY flip3DPolicyChanged)
+    Q_PROPERTY(QQuickWin::WindowNonClientRenderingPolicy nonClientAreaRenderingPolicy READ nonClientAreaRenderingPolicy WRITE setNonClientAreaRenderingPolicy NOTIFY nonClientAreaRenderingPolicyChanged)
 
 public:
     explicit QQuickDwmFeatures(QQuickItem *parent = nullptr);
@@ -105,6 +106,8 @@ public:
     void setPeekDisallowed(bool disallow);
     QQuickWin::WindowFlip3DPolicy flip3DPolicy() const;
     void setFlip3DPolicy(QQuickWin::WindowFlip3DPolicy policy);
+    QQuickWin::WindowNonClientRenderingPolicy nonClientAreaRenderingPolicy() const;
+    void setNonClientAreaRenderingPolicy(QQuickWin::WindowNonClientRenderingPolicy policy);
 
     bool eventFilter(QObject *, QEvent *) Q_DECL_OVERRIDE;
 
@@ -123,6 +126,7 @@ Q_SIGNALS:
     void excludedFromPeekChanged();
     void peekDisallowedChanged();
     void flip3DPolicyChanged();
+    void nonClientAreaRenderingPolicyChanged();
 
 protected:
     void itemChange(ItemChange, const ItemChangeData &) Q_DECL_OVERRIDE;
