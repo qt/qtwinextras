@@ -124,7 +124,7 @@ void QQuickIconLoaderNetworkReplyHandler::onRequestFinished()
 {
     auto *reply = qobject_cast<QNetworkReply *>(sender());
     Q_ASSERT(reply);
-    if (reply->networkError() != QNetworkReply::NoError) {
+    if (reply->error() != QNetworkReply::NoError) {
         qWarning() << Q_FUNC_INFO << reply->url() << "failed:" << reply->errorString();
         return;
     }
