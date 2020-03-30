@@ -28,7 +28,8 @@
 
 #include <QtWinExtras/QtWin>
 
-#include <QtWidgets/QAction>
+#include <QtGui/QAction>
+#include <QtGui/QShortcut>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
@@ -37,7 +38,6 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QShortcut>
 #include <QtWidgets/QVBoxLayout>
 
 #include <QtGui/QImage>
@@ -50,13 +50,14 @@
 #include <QtCore/QTimer>
 #include <QtCore/qt_windows.h>
 
-static void formatData(QDebug d, const void *data, int size)
+static void formatData(QDebug d, const void *data, qsizetype size)
 {
     QDebugStateSaver saver(d);
     d.noquote();
     d.nospace();
-    d << "\nData: " << QByteArray(reinterpret_cast<const char *>(data), qMin(20, size)).toHex();
-    if (size > 20)
+    const qsizetype minSize = 20;
+    d << "\nData: " << QByteArray(reinterpret_cast<const char *>(data), qMin(minSize, size)).toHex();
+    if (size > minSize)
         d << "...";
     d << "\n      0000000011111111222222223333333344444444";
 }
@@ -102,7 +103,7 @@ static void formatImage(QDebug d, const QImage &image)
             d << "...";
         d << ')' << Qt::noshowbase << Qt::dec;
     }
-    formatData(d, image.constBits(), image.byteCount());
+    formatData(d, image.constBits(), image.sizeInBytes());
 }
 
 enum ParseOptionResult {

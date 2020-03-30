@@ -52,6 +52,8 @@
 // We mean it.
 //
 
+#include "qquickjumplistcategory_p.h"
+
 #include <QObject>
 #include <QQmlParserStatus>
 #include <QQmlListProperty>

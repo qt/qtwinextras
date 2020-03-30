@@ -149,6 +149,6 @@ void TestWidget::showInExplorer()
 void TestWidget::runJumpListView()
 {
     const char binary[] = "JumpListsView";
-    if (!QProcess::startDetached(binary))
+    if (!QProcess::startDetached(binary, QStringList()))
         statusBar()->showMessage(QLatin1String("Unable to run ") + binary);
 }
