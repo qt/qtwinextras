@@ -1664,8 +1664,8 @@ void qt_ExtendFrameIntoClientArea(QWindow *window, int left, int top, int right,
     If you want the extended frame to act like a standard window border, you
     should handle that yourself.
 
-    \note If \a window is a QWidget handle, set the
-    Qt::WA_NoSystemBackground attribute for your widget.
+    \note Qt::WA_NoSystemBackground must not be set on widgets for
+    extendFrameIntoClientArea() to work.
 
     \sa resetExtendedFrame()
  */
@@ -1709,7 +1709,7 @@ void QtWin::extendFrameIntoClientArea(QWindow *window, const QMargins &margins)
     This convenience function calls extendFrameIntoClientArea() with margins set
     to 0.
 
-    \note You must unset the Qt::WA_NoSystemBackground attribute for
+    \note Qt::WA_NoSystemBackground must not be set on widgets for
     extendFrameIntoClientArea() to work.
 
     \sa extendFrameIntoClientArea()
