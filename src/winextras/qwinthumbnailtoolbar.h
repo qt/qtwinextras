@@ -69,8 +69,8 @@ public:
 
     void addButton(QWinThumbnailToolButton *button);
     void removeButton(QWinThumbnailToolButton *button);
-    void setButtons(const QVector<QWinThumbnailToolButton *> &buttons);
-    QVector<QWinThumbnailToolButton *> buttons() const;
+    void setButtons(const QList<QWinThumbnailToolButton *> &buttons);
+    QList<QWinThumbnailToolButton *> buttons() const;
     int count() const;
 
     bool iconicPixmapNotificationsEnabled() const;

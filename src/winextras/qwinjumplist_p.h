@@ -79,10 +79,10 @@ public:
 
     void appendKnownCategory(KNOWNDESTCATEGORY category);
     void appendCustomCategory(QWinJumpListCategory *category);
-    void appendTasks(const QVector<QWinJumpListItem *> &items);
+    void appendTasks(const QList<QWinJumpListItem *> &items);
 
-    static QVector<QWinJumpListItem *> fromComCollection(IObjectArray *array);
-    static IObjectCollection *toComCollection(const QVector<QWinJumpListItem *> &list);
+    static QList<QWinJumpListItem *> fromComCollection(IObjectArray *array);
+    static IObjectCollection *toComCollection(const QList<QWinJumpListItem *> &list);
     static QWinJumpListItem *fromIShellLink(IShellLinkW *link);
     static QWinJumpListItem *fromIShellItem(IShellItem2 *shellitem);
     static IUnknown *toICustomDestinationListItem(const QWinJumpListItem *item);
@@ -95,7 +95,7 @@ public:
     QWinJumpListCategory *recent = nullptr;
     QWinJumpListCategory *frequent = nullptr;
     QWinJumpListCategory *tasks = nullptr;
-    QVector<QWinJumpListCategory *> categories;
+    QList<QWinJumpListCategory *> categories;
     QString identifier;
     bool dirty = false;
 };

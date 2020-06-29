@@ -91,7 +91,7 @@ static void formatImage(QDebug d, const QImage &image)
     d.nospace();
     d << image;
     if (const int colorTableSize = image.colorCount()) {
-        QVector<QRgb> colorTable = image.colorTable();
+        QList<QRgb> colorTable = image.colorTable();
         d << " Color table: " << colorTableSize << " (" << Qt::showbase << Qt::hex; // 256 by standard
         int c = 0;
         for ( ; c < qMin(8, colorTableSize); ++c) {

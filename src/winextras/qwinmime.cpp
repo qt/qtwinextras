@@ -156,9 +156,9 @@ int QWinMime::registerMimeType(const QString &mime)
 */
 
 /*!
-    \fn QVector<FORMATETC> QWinMime::formatsForMime(const QString &mimeType, const QMimeData *mimeData) const
+    \fn QList<FORMATETC> QWinMime::formatsForMime(const QString &mimeType, const QMimeData *mimeData) const
 
-    Returns a QVector of FORMATETC structures representing the different windows clipboard
+    Returns a QList of FORMATETC structures representing the different windows clipboard
     formats that can be provided for the \a mimeType from the \a mimeData.
 
     All subclasses must reimplement this pure virtual function.

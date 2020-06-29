@@ -199,7 +199,7 @@ void QWinThumbnailToolBar::removeButton(QWinThumbnailToolButton *button)
 
     \note Any existing buttons are replaced.
  */
-void QWinThumbnailToolBar::setButtons(const QVector<QWinThumbnailToolButton *> &buttons)
+void QWinThumbnailToolBar::setButtons(const QList<QWinThumbnailToolButton *> &buttons)
 {
     Q_D(QWinThumbnailToolBar);
     d->buttonList.clear();
@@ -211,7 +211,7 @@ void QWinThumbnailToolBar::setButtons(const QVector<QWinThumbnailToolButton *> &
 /*!
     Returns the list of buttons in the thumbnail toolbar.
  */
-QVector<QWinThumbnailToolButton *> QWinThumbnailToolBar::buttons() const
+QList<QWinThumbnailToolButton *> QWinThumbnailToolBar::buttons() const
 {
     Q_D(const QWinThumbnailToolBar);
     return d->buttonList;
@@ -416,7 +416,7 @@ inline void QWinThumbnailToolBarPrivate::updateIconicLivePreview(const MSG *mess
  */
 void QWinThumbnailToolBar::clear()
 {
-    setButtons(QVector<QWinThumbnailToolButton *>());
+    setButtons(QList<QWinThumbnailToolButton *>());
 }
 
 static inline ITaskbarList4 *createTaskbarList()
@@ -492,7 +492,7 @@ void QWinThumbnailToolBarPrivate::_q_updateToolbar()
     if (!pTbList || !window)
         return;
     THUMBBUTTON buttons[windowsLimitedThumbbarSize];
-    QVector<HICON> createdIcons;
+    QList<HICON> createdIcons;
     initButtons(buttons);
     const int thumbbarSize = qMin(buttonList.size(), windowsLimitedThumbbarSize);
     // filling from the right fixes some strange bug which makes last button bg look like first btn bg

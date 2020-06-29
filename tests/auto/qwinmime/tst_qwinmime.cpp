@@ -52,12 +52,12 @@ public:
         return false;
     }
 
-    QVector<FORMATETC> formatsForMime(const QString &mimeType, const QMimeData *mimeData) const Q_DECL_OVERRIDE
+    QList<FORMATETC> formatsForMime(const QString &mimeType, const QMimeData *mimeData) const Q_DECL_OVERRIDE
     {
         formatsForMimeCalled = true;
         if (m_verbose)
             qDebug() << Q_FUNC_INFO << mimeType << mimeData->formats();
-        return QVector<FORMATETC>();
+        return QList<FORMATETC>();
     }
 
     bool canConvertToMime(const QString &mimeType, IDataObject *) const Q_DECL_OVERRIDE

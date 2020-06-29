@@ -172,7 +172,7 @@ void tst_QWinJumpList::testTasks()
     QCOMPARE(link1->title(), QStringLiteral("tst_QWinJumpList"));
     QCOMPARE(link1->filePath(), QCoreApplication::applicationFilePath());
     QCOMPARE(tasks->count(), 1);
-    QCOMPARE(tasks->items(), QVector<QWinJumpListItem *>() << link1);
+    QCOMPARE(tasks->items(), QList<QWinJumpListItem *>() << link1);
 
     QWinJumpListItem* link2 = tasks->addLink(QStringLiteral("tst_QWinJumpList"), QCoreApplication::applicationFilePath(), QStringList(QStringLiteral("-test")));
     QCOMPARE(link2->type(), QWinJumpListItem::Link);
@@ -180,18 +180,18 @@ void tst_QWinJumpList::testTasks()
     QCOMPARE(link2->filePath(), QCoreApplication::applicationFilePath());
     QCOMPARE(link2->arguments(), QStringList(QStringLiteral("-test")));
     QCOMPARE(tasks->count(), 2);
-    QCOMPARE(tasks->items(), QVector<QWinJumpListItem *>() << link1 << link2);
+    QCOMPARE(tasks->items(), QList<QWinJumpListItem *>() << link1 << link2);
 
     QWinJumpListItem* separator = tasks->addSeparator();
     QCOMPARE(separator->type(), QWinJumpListItem::Separator);
     QCOMPARE(tasks->count(), 3);
-    QCOMPARE(tasks->items(), QVector<QWinJumpListItem *>() << link1 << link2 << separator);
+    QCOMPARE(tasks->items(), QList<QWinJumpListItem *>() << link1 << link2 << separator);
 
     QWinJumpListItem* destination = tasks->addDestination(QCoreApplication::applicationDirPath());
     QCOMPARE(destination->type(), QWinJumpListItem::Destination);
     QCOMPARE(destination->filePath(), QCoreApplication::applicationDirPath());
     QCOMPARE(tasks->count(), 4);
-    QCOMPARE(tasks->items(), QVector<QWinJumpListItem *>() << link1 << link2 << separator << destination);
+    QCOMPARE(tasks->items(), QList<QWinJumpListItem *>() << link1 << link2 << separator << destination);
 
     tasks->clear();
     QVERIFY(tasks->isEmpty());

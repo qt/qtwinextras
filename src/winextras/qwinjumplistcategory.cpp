@@ -253,7 +253,7 @@ bool QWinJumpListCategory::isEmpty() const
 /*!
     Returns the list of items in the category.
  */
-QVector<QWinJumpListItem *> QWinJumpListCategory::items() const
+QList<QWinJumpListItem *> QWinJumpListCategory::items() const
 {
     Q_D(const QWinJumpListCategory);
     return d->items;

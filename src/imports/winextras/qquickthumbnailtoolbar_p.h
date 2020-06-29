@@ -55,7 +55,7 @@
 #include <QQuickItem>
 #include <QWinThumbnailToolBar>
 #include <QUrl>
-#include <QVector>
+#include <QList>
 
 QT_BEGIN_NAMESPACE
 
@@ -118,7 +118,7 @@ private:
     static QQuickThumbnailToolButton *buttonAt(QQmlListProperty<QQuickThumbnailToolButton> *property, int index);
 
     QWinThumbnailToolBar m_toolbar;
-    QVector<QQuickThumbnailToolButton *> m_buttons;
+    QList<QQuickThumbnailToolButton *> m_buttons;
     QUrl m_iconicThumbnailSource;
     QUrl m_iconicLivePreviewSource;
 };

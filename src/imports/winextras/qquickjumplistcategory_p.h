@@ -55,7 +55,7 @@
 #include "qquickjumplistitem_p.h"
 
 #include <QObject>
-#include <QVector>
+#include <QList>
 #include <QQmlListProperty>
 #include <QWinJumpListCategory>
 #include <QWinJumpListItem>
@@ -84,7 +84,7 @@ public:
     QQmlListProperty<QObject> data();
     QQmlListProperty<QQuickJumpListItem> items();
 
-    QVector<QWinJumpListItem *> toItemList() const;
+    QList<QWinJumpListItem *> toItemList() const;
 
 Q_SIGNALS:
     void itemsChanged();
@@ -98,7 +98,7 @@ private:
 
     bool m_visible = true;
     QString m_title;
-    QVector<QQuickJumpListItem *> m_items;
+    QList<QQuickJumpListItem *> m_items;
 };
 
 QT_END_NAMESPACE

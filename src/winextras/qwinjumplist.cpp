@@ -217,7 +217,7 @@ void QWinJumpListPrivate::appendCustomCategory(QWinJumpListCategory *category)
     }
 }
 
-void QWinJumpListPrivate::appendTasks(const QVector<QWinJumpListItem *> &items)
+void QWinJumpListPrivate::appendTasks(const QList<QWinJumpListItem *> &items)
 {
     IObjectCollection *collection = toComCollection(items);
     if (collection) {
@@ -228,9 +228,9 @@ void QWinJumpListPrivate::appendTasks(const QVector<QWinJumpListItem *> &items)
     }
 }
 
-QVector<QWinJumpListItem *> QWinJumpListPrivate::fromComCollection(IObjectArray *array)
+QList<QWinJumpListItem *> QWinJumpListPrivate::fromComCollection(IObjectArray *array)
 {
-    QVector<QWinJumpListItem *> list;
+    QList<QWinJumpListItem *> list;
     UINT count = 0;
     array->GetCount(&count);
     for (UINT i = 0; i < count; ++i) {
@@ -259,7 +259,7 @@ QVector<QWinJumpListItem *> QWinJumpListPrivate::fromComCollection(IObjectArray 
     return list;
 }
 
-IObjectCollection *QWinJumpListPrivate::toComCollection(const QVector<QWinJumpListItem *> &list)
+IObjectCollection *QWinJumpListPrivate::toComCollection(const QList<QWinJumpListItem *> &list)
 {
     if (list.isEmpty())
         return nullptr;
@@ -531,7 +531,7 @@ QWinJumpListCategory *QWinJumpList::tasks() const
 /*!
     Returns the custom categories in the jump list.
  */
-QVector<QWinJumpListCategory *> QWinJumpList::categories() const
+QList<QWinJumpListCategory *> QWinJumpList::categories() const
 {
     Q_D(const QWinJumpList);
     return d->categories;
@@ -556,7 +556,7 @@ void QWinJumpList::addCategory(QWinJumpListCategory *category)
     Creates a custom category with provided \a title and optional \a items,
     and adds it to the jump list.
  */
-QWinJumpListCategory *QWinJumpList::addCategory(const QString &title, const QVector<QWinJumpListItem *> items)
+QWinJumpListCategory *QWinJumpList::addCategory(const QString &title, const QList<QWinJumpListItem *> items)
 {
     auto *category = new QWinJumpListCategory(title);
     for (QWinJumpListItem *item : items)
