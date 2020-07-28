@@ -20,14 +20,13 @@ qt_add_qml_module(qml_winextras
         qquickthumbnailtoolbar.cpp qquickthumbnailtoolbar_p.h
         qquickthumbnailtoolbutton.cpp qquickthumbnailtoolbutton_p.h
         qquickwin_p.h
-    LIBRARIES
-        Qt::WinExtrasPrivate
     PUBLIC_LIBRARIES
         Qt::Core
         Qt::Gui
         Qt::Qml
         Qt::Quick
         Qt::WinExtras
+        Qt::WinExtrasPrivate
 )
 
 #### Keys ignored in scope 1:.:.:winextras.pro:<TRUE>:

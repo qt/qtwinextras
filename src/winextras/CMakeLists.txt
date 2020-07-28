@@ -31,6 +31,9 @@ qt_add_module(WinExtras
     PUBLIC_LIBRARIES
         Qt::Core
         Qt::Gui
+    PRIVATE_MODULE_INTERFACE
+        Qt::CorePrivate
+        Qt::GuiPrivate
 )
 
 #### Keys ignored in scope 1:.:.:winextras.pro:<TRUE>:

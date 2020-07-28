@@ -4,7 +4,7 @@
 ## dwmfeatures Binary:
 #####################################################################
 
-qt_add_manual_test(dwmfeatures
+qt_add_executable(dwmfeatures
     GUI
     SOURCES
         main.cpp

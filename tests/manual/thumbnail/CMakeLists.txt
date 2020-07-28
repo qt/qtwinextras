@@ -4,7 +4,7 @@
 ## thumbnail Binary:
 #####################################################################
 
-qt_add_manual_test(thumbnail
+qt_add_executable(thumbnail
     SOURCES
         main.cpp
     PUBLIC_LIBRARIES
