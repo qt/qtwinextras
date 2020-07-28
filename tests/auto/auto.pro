@@ -5,5 +5,4 @@ SUBDIRS += \
     qpixmap \
     qwintaskbarbutton \
     qwintaskbarprogress \
-    qwinjumplist \
-    qwinmime
+    qwinjumplist

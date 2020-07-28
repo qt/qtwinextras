@@ -13,8 +13,7 @@ SOURCES += \
     qwineventfilter.cpp \
     qwinthumbnailtoolbar.cpp \
     qwinthumbnailtoolbutton.cpp \
-    qwinevent.cpp \
-    qwinmime.cpp
+    qwinevent.cpp
 
 HEADERS += \
     qwinfunctions.h \
@@ -37,8 +36,7 @@ HEADERS += \
     qwinthumbnailtoolbutton.h \
     qwinthumbnailtoolbutton_p.h \
     qwinevent.h \
-    windowsguidsdefs_p.h \
-    qwinmime.h
+    windowsguidsdefs_p.h
 
 QMAKE_DOCS = $$PWD/doc/qtwinextras.qdocconf
 

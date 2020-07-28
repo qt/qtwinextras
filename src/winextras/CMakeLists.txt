@@ -13,7 +13,6 @@ qt_add_module(WinExtras
         qwinjumplist.cpp qwinjumplist.h qwinjumplist_p.h
         qwinjumplistcategory.cpp qwinjumplistcategory.h qwinjumplistcategory_p.h
         qwinjumplistitem.cpp qwinjumplistitem.h qwinjumplistitem_p.h
-        qwinmime.cpp qwinmime.h
         qwintaskbarbutton.cpp qwintaskbarbutton.h qwintaskbarbutton_p.h
         qwintaskbarprogress.cpp qwintaskbarprogress.h
         qwinthumbnailtoolbar.cpp qwinthumbnailtoolbar.h qwinthumbnailtoolbar_p.h
