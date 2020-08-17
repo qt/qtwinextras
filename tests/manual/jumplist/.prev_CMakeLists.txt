@@ -1,17 +1,21 @@
-# Generated from thumbnail.pro.
+# Generated from jumplist.pro.
 
 #####################################################################
-## thumbnail Binary:
+## jumplist Binary:
 #####################################################################
 
-qt_add_manual_test(thumbnail # special case
+qt_add_executable(jumplist
+    GUI
     SOURCES
         main.cpp
+        testwidget.cpp testwidget.h testwidget.ui
     PUBLIC_LIBRARIES
         Qt::Gui
         Qt::Widgets
         Qt::WinExtras
+    ENABLE_AUTOGEN_TOOLS
+        uic
 )
 
-#### Keys ignored in scope 1:.:.:thumbnail.pro:<TRUE>:
+#### Keys ignored in scope 1:.:.:jumplist.pro:<TRUE>:
 # TEMPLATE = "app"

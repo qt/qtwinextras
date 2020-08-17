@@ -1,17 +1,19 @@
-# Generated from thumbnail.pro.
+# Generated from imageconversion.pro.
 
 #####################################################################
-## thumbnail Binary:
+## imageconversion Binary:
 #####################################################################
 
-qt_add_manual_test(thumbnail # special case
+qt_add_executable(imageconversion
     SOURCES
         main.cpp
     PUBLIC_LIBRARIES
         Qt::Gui
         Qt::Widgets
         Qt::WinExtras
+        gdi32
+        user32
 )
 
-#### Keys ignored in scope 1:.:.:thumbnail.pro:<TRUE>:
+#### Keys ignored in scope 1:.:.:imageconversion.pro:<TRUE>:
 # TEMPLATE = "app"
