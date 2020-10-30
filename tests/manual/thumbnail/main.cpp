@@ -96,7 +96,7 @@ MainWindow::MainWindow()
     fileMenu->addAction(m_enableIconicPixmapAction);
     fileMenu->addAction(m_enableIconicLivePreviewAction);
     QAction *quitAction = fileMenu->addAction("&Quit");
-    quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
+    quitAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
     connect(quitAction, &QAction::triggered, QCoreApplication::quit);
     setCentralWidget(m_logEdit);
 }

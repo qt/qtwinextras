@@ -262,7 +262,7 @@ void PaintWidget::contextMenuEvent(QContextMenuEvent *e)
     QMenu contextMenu;
     contextMenu.addAction(QStringLiteral("Convert into QImage"), this, &PaintWidget::convertBack);
     QAction *saveAction = contextMenu.addAction(QStringLiteral("Save"), this, &PaintWidget::saveBitmap);
-    saveAction->setShortcut(Qt::CTRL + Qt::Key_S);
+    saveAction->setShortcut(Qt::CTRL | Qt::Key_S);
     contextMenu.exec(e->globalPos());
 }
 
@@ -381,7 +381,7 @@ int main(int argc, char *argv[])
     {
         PaintWidget paintWidget(bitmap);
         auto *quitShortcut = new QShortcut(&paintWidget);
-        quitShortcut->setKey(Qt::CTRL + Qt::Key_Q);
+        quitShortcut->setKey(Qt::CTRL | Qt::Key_Q);
         quitShortcut->setContext(Qt::ApplicationShortcut);
         QObject::connect(quitShortcut, &QShortcut::activated, qApp, &QCoreApplication::quit);
         paintWidget.setWindowTitle(QLatin1String("HBITMAP - Qt ") + QLatin1String(QT_VERSION_STR));
