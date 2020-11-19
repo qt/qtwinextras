@@ -99,8 +99,9 @@ private Q_SLOTS:
 
 private:
     static void data_append(QQmlListProperty<QObject> *property, QObject *object);
-    static int categories_count(QQmlListProperty<QQuickJumpListCategory> *property);
-    static QQuickJumpListCategory *categories_at(QQmlListProperty<QQuickJumpListCategory> *property, int index);
+    static qsizetype categories_count(QQmlListProperty<QQuickJumpListCategory> *property);
+    static QQuickJumpListCategory *categories_at(QQmlListProperty<QQuickJumpListCategory> *property,
+                                                 qsizetype index);
 
     QQuickJumpListCategory *m_recent = nullptr;
     QQuickJumpListCategory *m_frequent = nullptr;

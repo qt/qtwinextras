@@ -233,12 +233,13 @@ void QQuickThumbnailToolBar::addData(QQmlListProperty<QObject> *property, QObjec
     }
 }
 
-int QQuickThumbnailToolBar::buttonCount(QQmlListProperty<QQuickThumbnailToolButton> *property)
+qsizetype QQuickThumbnailToolBar::buttonCount(QQmlListProperty<QQuickThumbnailToolButton> *property)
 {
     return static_cast<QQuickThumbnailToolBar *>(property->object)->count();
 }
 
-QQuickThumbnailToolButton *QQuickThumbnailToolBar::buttonAt(QQmlListProperty<QQuickThumbnailToolButton> *property, int index)
+QQuickThumbnailToolButton *QQuickThumbnailToolBar::buttonAt(QQmlListProperty<QQuickThumbnailToolButton> *property,
+                                                            qsizetype index)
 {
     return static_cast<QQuickThumbnailToolBar *>(property->object)->m_buttons.value(index);
 }

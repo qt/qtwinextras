@@ -188,12 +188,13 @@ void QQuickJumpList::data_append(QQmlListProperty<QObject> *property, QObject *o
     }
 }
 
-int QQuickJumpList::categories_count(QQmlListProperty<QQuickJumpListCategory> *property)
+qsizetype QQuickJumpList::categories_count(QQmlListProperty<QQuickJumpListCategory> *property)
 {
     return static_cast<QQuickJumpList *>(property->object)->m_categories.count();
 }
 
-QQuickJumpListCategory *QQuickJumpList::categories_at(QQmlListProperty<QQuickJumpListCategory> *property, int index)
+QQuickJumpListCategory *QQuickJumpList::categories_at(QQmlListProperty<QQuickJumpListCategory> *property,
+                                                      qsizetype index)
 {
     return static_cast<QQuickJumpList *>(property->object)->m_categories.value(index);
 }

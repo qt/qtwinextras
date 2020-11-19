@@ -93,8 +93,9 @@ Q_SIGNALS:
 
 private:
     static void data_append(QQmlListProperty<QObject> *property, QObject *object);
-    static int items_count(QQmlListProperty<QQuickJumpListItem> *property);
-    static QQuickJumpListItem *items_at(QQmlListProperty<QQuickJumpListItem> *property, int index);
+    static qsizetype items_count(QQmlListProperty<QQuickJumpListItem> *property);
+    static QQuickJumpListItem *items_at(QQmlListProperty<QQuickJumpListItem> *property,
+                                        qsizetype index);
 
     bool m_visible = true;
     QString m_title;

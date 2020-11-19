@@ -114,8 +114,9 @@ protected:
 
 private:
     static void addData(QQmlListProperty<QObject> *property, QObject *button);
-    static int buttonCount(QQmlListProperty<QQuickThumbnailToolButton> *property);
-    static QQuickThumbnailToolButton *buttonAt(QQmlListProperty<QQuickThumbnailToolButton> *property, int index);
+    static qsizetype buttonCount(QQmlListProperty<QQuickThumbnailToolButton> *property);
+    static QQuickThumbnailToolButton *buttonAt(QQmlListProperty<QQuickThumbnailToolButton> *property,
+                                               qsizetype index);
 
     QWinThumbnailToolBar m_toolbar;
     QList<QQuickThumbnailToolButton *> m_buttons;
