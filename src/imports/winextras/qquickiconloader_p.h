@@ -83,14 +83,14 @@ public:
     // connected to an object handling the network reply and invoked once it finishes.
     template <typename Object>
     static LoadResult load(const QUrl &url, const QQmlEngine *engine,
-                           QVariant::Type type, const QSize &requestedSize,
+                           int metaTypeId, const QSize &requestedSize,
                            Object *receiver, void (Object::*function)(const QVariant &));
 
 private:
     QQuickIconLoader() = default;
-    static QVariant loadFromFile(const QUrl &url, QVariant::Type type);
+    static QVariant loadFromFile(const QUrl &url, int metaTypeId);
     static QVariant loadFromImageProvider(const QUrl &url, const QQmlEngine *engine,
-                                          QVariant::Type type, QSize requestedSize);
+                                          int metaTypeId, QSize requestedSize);
 #if QT_CONFIG(qml_network)
     static QNetworkReply *loadFromNetwork(const QUrl &url, const QQmlEngine *engine);
 #endif
@@ -103,7 +103,7 @@ class QQuickIconLoaderNetworkReplyHandler : public QObject
     Q_OBJECT
 
 public:
-    explicit QQuickIconLoaderNetworkReplyHandler(QNetworkReply *reply, QVariant::Type);
+    explicit QQuickIconLoaderNetworkReplyHandler(QNetworkReply *reply, int);
 
 Q_SIGNALS:
     void finished(const QVariant &);
@@ -112,21 +112,21 @@ private Q_SLOTS:
     void onRequestFinished();
 
 private:
-    const QVariant::Type m_type;
+    const int m_metaTypeId;
 };
 #endif // qml_network
 
 template <typename Object>
 QQuickIconLoader::LoadResult
     QQuickIconLoader::load(const QUrl &url, const QQmlEngine *engine,
-                           QVariant::Type type, const QSize &requestedSize,
+                           int metaTypeId, const QSize &requestedSize,
                            Object *receiver, void (Object::*function)(const QVariant &))
 {
     const QString scheme = url.scheme();
     if (scheme.startsWith(u"http")) {
 #if QT_CONFIG(qml_network)
         if (QNetworkReply *reply = QQuickIconLoader::loadFromNetwork(url, engine)) {
-            auto *handler = new QQuickIconLoaderNetworkReplyHandler(reply, type);
+            auto *handler = new QQuickIconLoaderNetworkReplyHandler(reply, metaTypeId);
             QObject::connect(handler, &QQuickIconLoaderNetworkReplyHandler::finished, receiver, function);
             return LoadNetworkRequestStarted;
         }
@@ -134,8 +134,8 @@ QQuickIconLoader::LoadResult
         return LoadError;
     }
     const QVariant resource = scheme == u"image"
-        ? QQuickIconLoader::loadFromImageProvider(url, engine, type, requestedSize)
-        : QQuickIconLoader::loadFromFile(url, type); // qrc, file
+        ? QQuickIconLoader::loadFromImageProvider(url, engine, metaTypeId, requestedSize)
+        : QQuickIconLoader::loadFromFile(url, metaTypeId); // qrc, file
     if (resource.isValid()) {
         (receiver->*function)(resource);
         return LoadOk;

@@ -53,17 +53,17 @@
 
 QT_BEGIN_NAMESPACE
 
-QVariant QQuickIconLoader::loadFromFile(const QUrl &url, QVariant::Type type)
+QVariant QQuickIconLoader::loadFromFile(const QUrl &url, int metaTypeId)
 {
     const QString path = QQmlFile::urlToLocalFileOrQrc(url);
     if (QFileInfo::exists(path)) {
-        switch (type) {
+        switch (metaTypeId) {
         case QMetaType::QIcon:
             return QVariant(QIcon(path));
         case QMetaType::QPixmap:
             return QVariant(QPixmap(path));
         default:
-            qWarning("%s: Unsupported type: %d", Q_FUNC_INFO, int(type));
+            qWarning("%s: Unsupported type: %d", Q_FUNC_INFO, metaTypeId);
             break;
         }
     }
@@ -78,7 +78,7 @@ QNetworkReply *QQuickIconLoader::loadFromNetwork(const QUrl &url, const QQmlEngi
 #endif // qml_network
 
 QVariant QQuickIconLoader::loadFromImageProvider(const QUrl &url, const QQmlEngine *engine,
-                                                  QVariant::Type type, QSize requestedSize)
+                                                 int metaTypeId, QSize requestedSize)
 {
     const QString providerId = url.host();
     const QString imageId = url.toString(QUrl::RemoveScheme | QUrl::RemoveAuthority).mid(1);
@@ -104,13 +104,13 @@ QVariant QQuickIconLoader::loadFromImageProvider(const QUrl &url, const QQmlEngi
         break;
     }
     if (!pixmap.isNull()) {
-        switch (type) {
+        switch (metaTypeId) {
         case QMetaType::QIcon:
             return QVariant(QIcon(pixmap));
         case QMetaType::QPixmap:
             return QVariant(pixmap);
         default:
-            qWarning("%s: Unsupported type: %d", Q_FUNC_INFO, int(type));
+            qWarning("%s: Unsupported type: %d", Q_FUNC_INFO, metaTypeId);
             break;
         }
     }
@@ -118,9 +118,10 @@ QVariant QQuickIconLoader::loadFromImageProvider(const QUrl &url, const QQmlEngi
 }
 
 #if QT_CONFIG(qml_network)
-QQuickIconLoaderNetworkReplyHandler::QQuickIconLoaderNetworkReplyHandler(QNetworkReply *reply, QVariant::Type type)
+QQuickIconLoaderNetworkReplyHandler::QQuickIconLoaderNetworkReplyHandler(QNetworkReply *reply,
+                                                                         int metaTypeId)
     : QObject(reply)
-    , m_type(type)
+    , m_metaTypeId(metaTypeId)
 {
     connect(reply, &QNetworkReply::finished, this, &QQuickIconLoaderNetworkReplyHandler::onRequestFinished);
 }
@@ -136,7 +137,7 @@ void QQuickIconLoaderNetworkReplyHandler::onRequestFinished()
     const QByteArray data = reply->readAll();
     QPixmap pixmap;
     if (pixmap.loadFromData(data)) {
-        switch (m_type) {
+        switch (m_metaTypeId) {
         case QMetaType::QIcon:
             emit finished(QVariant(QIcon(pixmap)));
             break;
@@ -144,7 +145,7 @@ void QQuickIconLoaderNetworkReplyHandler::onRequestFinished()
             emit finished(QVariant(pixmap));
             break;
         default:
-            qWarning("%s: Unsupported type: %d", Q_FUNC_INFO, int(m_type));
+            qWarning("%s: Unsupported type: %d", Q_FUNC_INFO, m_metaTypeId);
             break;
         }
     }
