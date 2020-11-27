@@ -79,8 +79,7 @@ void TestWidget::changeEvent(QEvent *e)
 bool TestWidget::event(QEvent *e)
 {
     if (e->type() == QWinEvent::CompositionChange) {
-        auto *event = static_cast<QWinCompositionChangeEvent *>(e);
-        qDebug() << "Composition state change: " << event->isCompositionEnabled();
+        qDebug() << "Composition state change.";
     } else if (e->type() == QWinEvent::ThemeChange) {
         qDebug() << "Theme change.";
     }
@@ -123,9 +122,6 @@ void TestWidget::onNonClientAreaRenderingPolicyChanged()
 
 void TestWidget::onGlassMarginsChanged()
 {
-    if (!QtWin::isCompositionEnabled())
-        return;
-
     // what you see here is the only way to force widget to redraw itself
     // so it actually redraws itself without caching and without any glitch
     // but causes flickering :(

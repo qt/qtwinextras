@@ -118,8 +118,6 @@ namespace QtWin
     Q_WINEXTRAS_EXPORT void enableBlurBehindWindow(QWindow *window);
     Q_WINEXTRAS_EXPORT void disableBlurBehindWindow(QWindow *window);
 
-    Q_WINEXTRAS_EXPORT bool isCompositionEnabled();
-    Q_WINEXTRAS_EXPORT void setCompositionEnabled(bool enabled);
     Q_WINEXTRAS_EXPORT bool isCompositionOpaque();
 
     Q_WINEXTRAS_EXPORT void setCurrentProcessExplicitAppUserModelID(const QString &id);

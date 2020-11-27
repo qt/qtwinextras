@@ -1835,40 +1835,6 @@ void QtWin::disableBlurBehindWindow(QWindow *window)
 /*!
     \since 5.2
 
-    Returns the DWM composition state.
- */
-bool QtWin::isCompositionEnabled()
-{
-    QWinEventFilter::setup();
-
-    BOOL enabled = FALSE;
-    DwmIsCompositionEnabled(&enabled);
-    return enabled;
-}
-
-/*!
-    \since 5.2
-
-    Sets whether the Windows Desktop composition is \a enabled.
-
-    \note The underlying function was declared deprecated as of Windows 8 and
-    takes no effect.
- */
-
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_MSVC(4995)
-void QtWin::setCompositionEnabled(bool enabled)
-{
-    QWinEventFilter::setup();
-
-    UINT compositionEnabled = enabled;
-    DwmEnableComposition(compositionEnabled);
-}
-QT_WARNING_POP
-
-/*!
-    \since 5.2
-
     Returns whether the colorization color is an opaque blend.
  */
 bool QtWin::isCompositionOpaque()

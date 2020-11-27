@@ -14,7 +14,6 @@ Module {
         prototype: "QQuickItem"
         exports: ["QtWinExtras/DwmFeatures 1.0"]
         exportMetaObjectRevisions: [0]
-        Property { name: "compositionEnabled"; type: "bool" }
         Property { name: "colorizationColor"; type: "QColor"; isReadonly: true }
         Property { name: "realColorizationColor"; type: "QColor"; isReadonly: true }
         Property { name: "colorizationOpaqueBlend"; type: "bool"; isReadonly: true }

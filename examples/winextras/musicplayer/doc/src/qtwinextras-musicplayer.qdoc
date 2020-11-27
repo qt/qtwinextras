@@ -47,38 +47,6 @@
     integrate the window content to the window frame and to make the main window
     and the volume popup translucent and blurred.
 
-    The example applies a different look based on whether composition is enabled
-    or not. When composition is enabled, the main window is made translucent and
-    the window frame is extended to the client area to make the window content
-    integrate seamlessly to the window frame as shown above. When composition
-    is disabled, the colorization color is used as a background color. The
-    following screenshot illustrates how the Music Player example looks when
-    composition is disabled.
-
-    \image qtwinextras-musicplayer-non-composited.png Screenshot of the Music Player example
-
-    The respective code is a combination of extending or resetting the system
-    frame, adjusting the necessary QWidget attributes, and setting an appropriate
-    style sheet to achieve the desired look.
-
-    \snippet musicplayer/musicplayer.cpp 1
-
-    The volume popup does not have a window frame so it is enough to make the
-    popup blurred when composition is enabled. Additionally, a style sheet is
-    applied to get a border that follows the colorization color. Just like for
-    the main window, when composition is disabled, the colorization color is
-    used as a background color.
-
-    \snippet musicplayer/volumebutton.cpp 0
-
-    The example application respects the user's composition settings, reacts
-    to dynamic composition changes, and looks solid regardless of whether
-    composition is enabled or not. It accomplishes this by catching
-    QWinEvent::CompositionChange and QWinEvent::ColorizationChange events
-    and adjusting its looks accordingly.
-
-    \snippet musicplayer/musicplayer.cpp 0
-
     \section1 Jump List
 
     The example creates a custom jump list to provide the user with fast

@@ -65,7 +65,6 @@ class QQuickDwmFeaturesPrivate;
 class QQuickDwmFeatures : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(bool compositionEnabled READ isCompositionEnabled WRITE setCompositionEnabled NOTIFY compositionEnabledChanged)
     Q_PROPERTY(QColor colorizationColor READ colorizationColor NOTIFY colorizationColorChanged)
     Q_PROPERTY(QColor realColorizationColor READ realColorizationColor NOTIFY realColorizationColorChanged)
     Q_PROPERTY(bool colorizationOpaqueBlend READ colorizationOpaqueBlend NOTIFY colorizationOpaqueBlendChanged)
@@ -83,8 +82,6 @@ public:
     explicit QQuickDwmFeatures(QQuickItem *parent = nullptr);
     ~QQuickDwmFeatures();
 
-    void setCompositionEnabled(bool enabled);
-    bool isCompositionEnabled() const;
     QColor colorizationColor() const;
     QColor realColorizationColor() const;
     bool colorizationOpaqueBlend() const;
@@ -116,7 +113,6 @@ public:
 Q_SIGNALS:
     void colorizationColorChanged();
     void realColorizationColorChanged();
-    void compositionEnabledChanged();
     void colorizationOpaqueBlendChanged();
     void topGlassMarginChanged();
     void rightGlassMarginChanged();

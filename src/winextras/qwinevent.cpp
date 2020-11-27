@@ -58,8 +58,8 @@ QWinColorizationChangeEvent::QWinColorizationChangeEvent(QRgb color, bool opaque
 
 QWinColorizationChangeEvent::~QWinColorizationChangeEvent() = default;
 
-QWinCompositionChangeEvent::QWinCompositionChangeEvent(bool enabled)
-    : QWinEvent(CompositionChange), enabled(enabled)
+QWinCompositionChangeEvent::QWinCompositionChangeEvent()
+    : QWinEvent(CompositionChange)
 {
 }
 

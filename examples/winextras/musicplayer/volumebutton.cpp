@@ -83,8 +83,6 @@ VolumeButton::VolumeButton(QWidget *parent) :
     menu = new QMenu(this);
     menu->addAction(action);
     setMenu(menu);
-
-    stylize();
 }
 
 void VolumeButton::increaseVolume()
@@ -106,21 +104,3 @@ void VolumeButton::setVolume(int volume)
 {
     slider->setValue(volume);
 }
-
-//! [0]
-void VolumeButton::stylize()
-{
-    if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows8) {
-        // Set styling options relevant only to Windows 7.
-        if (QtWin::isCompositionEnabled()) {
-            QtWin::enableBlurBehindWindow(menu);
-            QString css("QMenu { border: 1px solid %1; border-radius: 2px; background: transparent; }");
-            menu->setStyleSheet(css.arg(QtWin::realColorizationColor().name()));
-        } else {
-            QtWin::disableBlurBehindWindow(menu);
-            QString css("QMenu { border: 1px solid black; background: %1; }");
-            menu->setStyleSheet(css.arg(QtWin::realColorizationColor().name()));
-        }
-    }
-}
-//! [0]

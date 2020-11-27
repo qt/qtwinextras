@@ -48,21 +48,16 @@ Window {
 
         excludedFromPeek: cbExcludedFromPeek.checked
         peekDisallowed: cbPeekDisallowed.checked
-
-        Component.onCompleted: {
-            cbCompositionEnabled.checked = compositionEnabled
-            compositionEnabled = Qt.binding(function () { return cbCompositionEnabled.checked })
-        }
     }
 
     Rectangle {
         anchors.fill: parent
-        anchors.leftMargin: dwm.compositionEnabled ? dwm.leftGlassMargin : 0
-        anchors.rightMargin: dwm.compositionEnabled ? dwm.rightGlassMargin : 0
-        anchors.topMargin: dwm.compositionEnabled ? dwm.topGlassMargin : 0
-        anchors.bottomMargin: dwm.compositionEnabled ? dwm.bottomGlassMargin : 0
+        anchors.leftMargin: dwm.leftGlassMargin
+        anchors.rightMargin: dwm.rightGlassMargin
+        anchors.topMargin: dwm.topGlassMargin
+        anchors.bottomMargin: dwm.bottomGlassMargin
 
-        visible: !dwm.compositionEnabled || dwm.topGlassMargin > -1 && dwm.leftGlassMargin > -1 && dwm.rightGlassMargin > -1 && dwm.bottomGlassMargin > -1 && !cbBlurBehind.checked
+        visible: dwm.topGlassMargin > -1 && dwm.leftGlassMargin > -1 && dwm.rightGlassMargin > -1 && dwm.bottomGlassMargin > -1 && !cbBlurBehind.checked
     }
 
     GridLayout {
@@ -71,39 +66,30 @@ Window {
         columns: 2
 
         CheckBox {
-            id: cbCompositionEnabled
-            text: "Composition enabled"
-            Layout.columnSpan: 2
-        }
-
-        CheckBox {
             id: cbBlurBehind
             text: "Blur behind enabled"
             Layout.columnSpan: 2
-            enabled: cbCompositionEnabled.checked
         }
 
         Label { text: "Top glass frame margin" }
-        SpinBox { id: sboxTop; minimumValue: -1; maximumValue: 40; value: 0; Layout.alignment: Qt.AlignRight; enabled: cbCompositionEnabled.checked }
+        SpinBox { id: sboxTop; minimumValue: -1; maximumValue: 40; value: 0; Layout.alignment: Qt.AlignRight }
         Label { text: "Right glass frame margin" }
-        SpinBox { id: sboxRight; minimumValue: -1; maximumValue: 40; value: 0; Layout.alignment: Qt.AlignRight; enabled: cbCompositionEnabled.checked }
+        SpinBox { id: sboxRight; minimumValue: -1; maximumValue: 40; value: 0; Layout.alignment: Qt.AlignRight }
         Label { text: "Bottom glass frame margin" }
-        SpinBox { id: sboxBottom; minimumValue: -1; maximumValue: 40; value: 0; Layout.alignment: Qt.AlignRight; enabled: cbCompositionEnabled.checked }
+        SpinBox { id: sboxBottom; minimumValue: -1; maximumValue: 40; value: 0; Layout.alignment: Qt.AlignRight }
         Label { text: "Left glass frame margin" }
-        SpinBox { id: sboxLeft; minimumValue: -1; maximumValue: 40; value: 0; Layout.alignment: Qt.AlignRight; enabled: cbCompositionEnabled.checked }
+        SpinBox { id: sboxLeft; minimumValue: -1; maximumValue: 40; value: 0; Layout.alignment: Qt.AlignRight }
 
         CheckBox {
             id: cbExcludedFromPeek
             text: "Excluded from peek"
             Layout.columnSpan: 2
-            enabled: cbCompositionEnabled.checked
         }
 
         CheckBox {
             id: cbPeekDisallowed
             text: "Peek disallowed"
             Layout.columnSpan: 2
-            enabled: cbCompositionEnabled.checked
         }
 
         Rectangle {

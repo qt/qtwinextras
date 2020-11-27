@@ -71,7 +71,6 @@ MusicPlayer::MusicPlayer(QWidget *parent) : QWidget(parent)
     connect(&mediaPlayer, &QMediaPlayer::stateChanged,
             this, &MusicPlayer::updateState);
 
-    stylize();
     setAcceptDrops(true);
 }
 
@@ -131,15 +130,6 @@ void MusicPlayer::seekBackward()
     positionSlider->triggerAction(QSlider::SliderPageStepSub);
 }
 
-//! [0]
-bool MusicPlayer::event(QEvent *event)
-{
-    if (event->type() == QWinEvent::CompositionChange || event->type() == QWinEvent::ColorizationChange)
-        stylize();
-    return QWidget::event(event);
-}
-//! [0]
-
 //! [7]
 void MusicPlayer::showEvent(QShowEvent *event)
 {
@@ -190,26 +180,6 @@ void MusicPlayer::mouseReleaseEvent(QMouseEvent *event)
     offset = QPoint();
     event->accept();
 }
-
-//! [1]
-void MusicPlayer::stylize()
-{
-    if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows8) {
-        // Set styling options relevant only to Windows 7.
-        if (QtWin::isCompositionEnabled()) {
-            QtWin::extendFrameIntoClientArea(this, -1, -1, -1, -1);
-            setAttribute(Qt::WA_TranslucentBackground, true);
-            setAttribute(Qt::WA_NoSystemBackground, false);
-            setStyleSheet(QStringLiteral("MusicPlayer { background: transparent; }"));
-        } else {
-            QtWin::resetExtendedFrame(this);
-            setAttribute(Qt::WA_TranslucentBackground, false);
-            setStyleSheet(QStringLiteral("MusicPlayer { background: %1; }").arg(QtWin::realColorizationColor().name()));
-        }
-        volumeButton->stylize();
-    }
-}
-//! [1]
 
 void MusicPlayer::updateState(QMediaPlayer::State state)
 {

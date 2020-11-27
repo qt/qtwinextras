@@ -79,7 +79,7 @@ bool QWinEventFilter::nativeEventFilter(const QByteArray &, void *message, long 
         event = new QWinColorizationChangeEvent(QRgb(msg->wParam), msg->lParam);
         break;
     case WM_DWMCOMPOSITIONCHANGED :
-        event = new QWinCompositionChangeEvent(QtWin::isCompositionEnabled());
+        event = new QWinCompositionChangeEvent();
         break;
     case WM_THEMECHANGED :
         event = new QWinEvent(QWinEvent::ThemeChange);

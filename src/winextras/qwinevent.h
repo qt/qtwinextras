@@ -76,13 +76,8 @@ private:
 class Q_WINEXTRAS_EXPORT QWinCompositionChangeEvent : public QWinEvent
 {
 public:
-    explicit QWinCompositionChangeEvent(bool enabled);
+    explicit QWinCompositionChangeEvent();
     ~QWinCompositionChangeEvent();
-
-    inline bool isCompositionEnabled() const { return enabled; }
-
-private:
-    bool enabled;
 };
 
 QT_END_NAMESPACE

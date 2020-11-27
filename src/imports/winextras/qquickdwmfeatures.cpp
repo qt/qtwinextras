@@ -73,16 +73,6 @@ QQuickDwmFeatures::QQuickDwmFeatures(QQuickItem *parent) :
 
 QQuickDwmFeatures::~QQuickDwmFeatures() = default;
 
-void QQuickDwmFeatures::setCompositionEnabled(bool enabled)
-{
-    QtWin::setCompositionEnabled(enabled);
-}
-
-bool QQuickDwmFeatures::isCompositionEnabled() const
-{
-    return QtWin::isCompositionEnabled();
-}
-
 QColor QQuickDwmFeatures::colorizationColor() const
 {
     return QtWin::colorizationColor();
@@ -325,9 +315,7 @@ bool QQuickDwmFeatures::eventFilter(QObject *object, QEvent *event)
     if (object == window()) {
         if (event->type() == QWinEvent::CompositionChange) {
             d->updateSurfaceFormat();
-            if (static_cast<QWinCompositionChangeEvent *>(event)->isCompositionEnabled())
-                d->updateAll();
-            emit compositionEnabledChanged();
+            d->updateAll();
         } else if (event->type() == QWinEvent::ColorizationChange) {
             emit colorizationColorChanged();
             emit realColorizationColorChanged();
@@ -388,11 +376,10 @@ void QQuickDwmFeaturesPrivate::updateSurfaceFormat()
 {
     Q_Q(QQuickDwmFeatures);
     if (q->window()) {
-        const bool compositionEnabled = q->isCompositionEnabled();
         QSurfaceFormat format = q->window()->format();
-        format.setAlphaBufferSize(compositionEnabled ? 8 : 0);
+        format.setAlphaBufferSize(8);
         q->window()->setFormat(format);
-        q->window()->setColor(compositionEnabled ? QColor(Qt::transparent) : originalSurfaceColor);
+        q->window()->setColor(Qt::transparent);
     }
 }
 

@@ -44,22 +44,7 @@
     integrate the window content to the window frame and to make the window
     translucent and blurred.
 
-    The example applies a different look based on whether composition is enabled
-    or not. When composition is enabled, the window is made translucent and
-    the window frame is extended to the client area to make the window content
-    integrate seamlessly to the window frame as shown above.
-
     \snippet quickplayer/qml/main.qml dwm
-
-    When composition is disabled, the colorization color is used as a background
-    color for the window.
-
-    \snippet quickplayer/qml/main.qml color
-
-    The following screenshot illustrates how the Quick Player example looks when
-    composition is disabled.
-
-    \image qtwinextras-quickplayer-non-composited.png Screenshot of the Quick Player example
 
     \section1 Taskbar Overlay and Progress
 

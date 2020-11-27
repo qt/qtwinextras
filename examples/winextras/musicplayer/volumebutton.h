@@ -71,7 +71,6 @@ public slots:
     void increaseVolume();
     void descreaseVolume();
     void setVolume(int volume);
-    void stylize();
 
 signals:
     void volumeChanged(int volume);

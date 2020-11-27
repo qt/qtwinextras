@@ -81,7 +81,6 @@ public slots:
     void seekBackward();
 
 protected:
-    bool event(QEvent *event) override;
     void showEvent(QShowEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dropEvent(QDropEvent *event) override;
@@ -90,7 +89,6 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 private slots:
-    void stylize();
     void updateState(QMediaPlayer::State state);
     void updatePosition(qint64 position);
     void updateDuration(qint64 duration);

@@ -67,7 +67,7 @@ Window {
     minimumHeight: column.implicitHeight + 18
 
     //! [color]
-    color: dwm.compositionEnabled ? "transparent" : dwm.realColorizationColor
+    color: "transparent"
     //! [color]
 
     //! [dwm]
