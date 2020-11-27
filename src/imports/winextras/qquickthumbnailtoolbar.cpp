@@ -179,7 +179,7 @@ void QQuickThumbnailToolBar::setIconicThumbnailSource(const QUrl &source)
          emit iconicThumbnailSourceChanged();
     }
 
-    if (QQuickIconLoader::load(source, qmlEngine(this), QVariant::Pixmap, QSize(),
+    if (QQuickIconLoader::load(source, qmlEngine(this), QMetaType::QPixmap, QSize(),
                                this, &QQuickThumbnailToolBar::iconicThumbnailLoaded) != QQuickIconLoader::LoadError) {
         m_iconicThumbnailSource = source;
         emit iconicThumbnailSourceChanged();
@@ -208,7 +208,7 @@ void QQuickThumbnailToolBar::setIconicLivePreviewSource(const QUrl &source)
          emit iconicLivePreviewSourceChanged();
     }
 
-    if (QQuickIconLoader::load(source, qmlEngine(this), QVariant::Pixmap, QSize(),
+    if (QQuickIconLoader::load(source, qmlEngine(this), QMetaType::QPixmap, QSize(),
                                this, &QQuickThumbnailToolBar::iconicLivePreviewLoaded) != QQuickIconLoader::LoadError) {
         m_iconicLivePreviewSource = source;
         emit iconicLivePreviewSourceChanged();

@@ -93,7 +93,7 @@ void QQuickTaskbarOverlay::setIconSource(const QUrl &iconSource)
         return;
     }
 
-    if (QQuickIconLoader::load(iconSource, qmlEngine(parent()), QVariant::Icon, QSize(),
+    if (QQuickIconLoader::load(iconSource, qmlEngine(parent()), QMetaType::QIcon, QSize(),
                                this, &QQuickTaskbarOverlay::iconLoaded) != QQuickIconLoader::LoadError) {
         m_iconSource = iconSource;
         emit iconSourceChanged();

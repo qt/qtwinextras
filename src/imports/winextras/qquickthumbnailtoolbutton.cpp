@@ -85,7 +85,7 @@ void QQuickThumbnailToolButton::setIconSource(const QUrl &iconSource)
         emit iconSourceChanged();
     }
 
-    if (QQuickIconLoader::load(iconSource, qmlEngine(this), QVariant::Icon, QSize(),
+    if (QQuickIconLoader::load(iconSource, qmlEngine(this), QMetaType::QIcon, QSize(),
                                this, &QQuickThumbnailToolButton::iconLoaded) != QQuickIconLoader::LoadError) {
         m_iconSource = iconSource;
         emit iconSourceChanged();
