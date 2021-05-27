@@ -1,8 +1,0 @@
-# Generated from auto.pro.
-
-add_subdirectory(cmake)
-add_subdirectory(qwinthumbnailtoolbar)
-add_subdirectory(qpixmap)
-add_subdirectory(qwintaskbarbutton)
-add_subdirectory(qwintaskbarprogress)
-add_subdirectory(qwinjumplist)
