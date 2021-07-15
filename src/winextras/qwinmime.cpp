@@ -51,6 +51,7 @@ QT_BEGIN_NAMESPACE
     \class QWinMime
     \inmodule QtWinExtras
     \brief The QWinMime class maps open-standard MIME to Window Clipboard formats.
+    \obsolete
 
     Qt's drag-and-drop and clipboard facilities use the MIME standard.
     On X11, this maps trivially to the Xdnd protocol, but on Windows

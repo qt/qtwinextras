@@ -48,6 +48,7 @@ QT_BEGIN_NAMESPACE
     \inmodule QtWinExtras
     \since 5.2
     \brief The QWinThumbnailToolButton class represents a button in a thumbnail toolbar.
+    \obsolete
 
     Buttons in a QWinThumbnailToolBar are instances of QWinThumbnailToolButton.
     It provides a set of properties for specifying the attributes of a thumbnail

@@ -77,6 +77,7 @@ QT_BEGIN_NAMESPACE
     \inmodule QtWinExtras
     \brief The QWinJumpList class represents a transparent wrapper around Windows
     Jump Lists.
+    \obsolete
 
     \since 5.2
 

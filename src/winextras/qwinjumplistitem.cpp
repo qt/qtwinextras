@@ -52,6 +52,7 @@ QT_BEGIN_NAMESPACE
     \inmodule QtWinExtras
     \since 5.2
     \brief The QWinJumpListItem class represents a jump list item.
+    \obsolete
  */
 
 /*!

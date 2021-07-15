@@ -68,6 +68,7 @@ QT_BEGIN_NAMESPACE
     \inmodule QtWinExtras
     \since 5.2
     \brief The QWinJumpListCategory class represents a jump list category.
+    \obsolete
  */
 
 /*!

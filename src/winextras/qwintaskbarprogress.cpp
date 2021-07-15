@@ -45,6 +45,7 @@ QT_BEGIN_NAMESPACE
     \class QWinTaskbarProgress
     \inmodule QtWinExtras
     \brief The QWinTaskbarProgress class represents a progress indicator in the Windows taskbar.
+    \obsolete
 
     \since 5.2
 

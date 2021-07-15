@@ -89,6 +89,10 @@ Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON(HICON icon);
 
     It is the caller's responsibility to free the \c HBITMAP data after use.
 
+    \obsolete
+
+    Use image.convertToFormat(QImage::Format_Mono).invertPixels().toHBITMAP() instead.
+
     \sa toHBITMAP()
 */
 HBITMAP QtWin::createMask(const QBitmap &bitmap)
@@ -105,6 +109,8 @@ HBITMAP QtWin::createMask(const QBitmap &bitmap)
     It is the caller's responsibility to free the \c HBITMAP data
     after use.
 
+    \obsolete Use QImage::toHBITMAP() instead.
+
     \sa fromHBITMAP()
 */
 HBITMAP QtWin::toHBITMAP(const QPixmap &p, QtWin::HBitmapFormat format)
@@ -117,6 +123,8 @@ HBITMAP QtWin::toHBITMAP(const QPixmap &p, QtWin::HBitmapFormat format)
 
     Returns a QPixmap that is equivalent to the
     given \a bitmap. The conversion is based on the specified \a format.
+
+    \obsolete Use QImage::fromHBITMAP() instead.
 
     \sa toHBITMAP()
 */
@@ -132,6 +140,8 @@ QPixmap QtWin::fromHBITMAP(HBITMAP bitmap, QtWin::HBitmapFormat format)
     Returns the \c HICON handle.
 
     It is the caller's responsibility to free the \c HICON data after use.
+
+    \obsolete Use QImage::toHICON() instead.
 
     \sa fromHICON()
 */
@@ -149,6 +159,8 @@ HICON QtWin::toHICON(const QPixmap &p)
     It is the caller's responsibility to free the \c HBITMAP data
     after use.
 
+    \obsolete Use QImage::toHBITMAP() instead.
+
     \sa imageFromHBITMAP()
 */
 HBITMAP QtWin::imageToHBITMAP(const QImage &image, QtWin::HBitmapFormat format)
@@ -163,6 +175,8 @@ HBITMAP QtWin::imageToHBITMAP(const QImage &image, QtWin::HBitmapFormat format)
     given \a bitmap. The conversion is based on the specified \c HDC context \a hdc
     using the specified \a width and \a height.
 
+    \obsolete Use QImage::fromHBITMAP() instead.
+
     \sa toHBITMAP()
 */
 QImage QtWin::imageFromHBITMAP(HDC hdc, HBITMAP bitmap, int width, int height)
@@ -176,6 +190,8 @@ QImage QtWin::imageFromHBITMAP(HDC hdc, HBITMAP bitmap, int width, int height)
     Returns a QImage that is equivalent to the
     given \a bitmap.  The conversion is based on the specified \a format.
 
+    \obsolete Use QImage::fromHBITMAP() instead.
+
     \sa imageToHBITMAP()
 */
 QImage QtWin::imageFromHBITMAP(HBITMAP bitmap, QtWin::HBitmapFormat format)
@@ -187,6 +203,8 @@ QImage QtWin::imageFromHBITMAP(HBITMAP bitmap, QtWin::HBitmapFormat format)
     \since 5.2
 
     Returns a QPixmap that is equivalent to the given \a icon.
+
+    \obsolete Use QImage::fromHICON() instead.
 
     \sa toHICON()
 */
@@ -204,6 +222,8 @@ HRGN qt_RectToHRGN(const QRect &rc)
     \since 5.2
 
     Returns a HRGN that is equivalent to the given \a region.
+
+    \obsolete Use QRegion::toHRGN() instead.
  */
 HRGN QtWin::toHRGN(const QRegion &region)
 {
@@ -228,6 +248,8 @@ HRGN QtWin::toHRGN(const QRegion &region)
     \since 5.2
 
     Returns a QRegion that is equivalent to the given \a hrgn.
+
+    \obsolete Use QRegion::fromHRGN() instead.
  */
 QRegion QtWin::fromHRGN(HRGN hrgn)
 {
@@ -257,6 +279,8 @@ QRegion QtWin::fromHRGN(HRGN hrgn)
 
     Returns a message string that explains the \a hresult error id specified or
     an empty string if the explanation cannot be found.
+
+    \obsolete Use \c qt_error_string() instead.
  */
 QString QtWin::stringFromHresult(HRESULT hresult)
 {
@@ -269,6 +293,8 @@ QString QtWin::stringFromHresult(HRESULT hresult)
 
     Returns the code name of the \a hresult error id specified (usually the name
     of the WinAPI macro) or an empty string if the message is unknown.
+
+    \obsolete
  */
 QString QtWin::errorStringFromHresult(HRESULT hresult)
 {
@@ -1461,6 +1487,8 @@ QString QtWin::errorStringFromHresult(HRESULT hresult)
     Returns the DWM colorization color. After the function returns, the optional
     \a opaqueBlend will contain true if the color is an opaque blend and false
     otherwise.
+
+    \obsolete
  */
 QColor QtWin::colorizationColor(bool *opaqueBlend)
 {
@@ -1482,6 +1510,8 @@ QColor QtWin::colorizationColor(bool *opaqueBlend)
     alpha-blended color which often turns out a semitransparent gray rather
     than something similar to what is chosen by the user.
 
+    \obsolete
+
     \sa colorizationColor()
  */
 QColor QtWin::realColorizationColor()
@@ -1501,12 +1531,16 @@ QColor QtWin::realColorizationColor()
     \fn QtWin::setWindowExcludedFromPeek(QWidget *window, bool exclude)
     \since 5.2
     \overload QtWin::setWindowExcludedFromPeek()
+
+    \obsolete
 */
 
 /*!
     \since 5.2
 
     Excludes the specified \a window from Aero Peek if \a exclude is true.
+
+    \obsolete Use DwmSetWindowAttribute with DWMWA_EXCLUDED_FROM_PEEK instead.
  */
 void QtWin::setWindowExcludedFromPeek(QWindow *window, bool exclude)
 {
@@ -1518,12 +1552,16 @@ void QtWin::setWindowExcludedFromPeek(QWindow *window, bool exclude)
     \fn bool QtWin::isWindowExcludedFromPeek(QWidget *window)
     \since 5.2
     \overload QtWin::isWindowExcludedFromPeek()
+
+    \obsolete
 */
 
 /*!
     \since 5.2
 
     Returns true if the specified \a window is excluded from Aero Peek.
+
+    \obsolete Check DwmGetWindowAttribute with DWMWA_EXCLUDED_FROM_PEEK instead.
  */
 bool QtWin::isWindowExcludedFromPeek(QWindow *window)
 {
@@ -1535,6 +1573,8 @@ bool QtWin::isWindowExcludedFromPeek(QWindow *window)
     \fn void QtWin::setWindowDisallowPeek(QWidget *window, bool disallow)
     \since 5.2
     \overload QtWin::setWindowDisallowPeek()
+
+    \obsolete
 */
 
 /*!
@@ -1545,6 +1585,8 @@ bool QtWin::isWindowExcludedFromPeek(QWindow *window)
     true; otherwise allows it.
 
     The default is false.
+
+    \obsolete Use DwmSetWindowAttribute with DWMWA_DISALLOW_PEEK instead.
  */
 void QtWin::setWindowDisallowPeek(QWindow *window, bool disallow)
 {
@@ -1556,6 +1598,8 @@ void QtWin::setWindowDisallowPeek(QWindow *window, bool disallow)
     \fn bool QtWin::isWindowPeekDisallowed(QWidget *window)
     \since 5.2
     \overload QtWin::isWindowPeekDisallowed()
+
+    \obsolete
 */
 
 /*!
@@ -1563,6 +1607,8 @@ void QtWin::setWindowDisallowPeek(QWindow *window, bool disallow)
 
     Returns true if Aero Peek is disallowed on the thumbnail of the specified
     \a window.
+
+    \obsolete Check DwmGetWindowAttribute with DWMWA_DISALLOW_PEEK instead.
  */
 bool QtWin::isWindowPeekDisallowed(QWindow *window)
 {
@@ -1580,6 +1626,8 @@ bool QtWin::isWindowPeekDisallowed(QWindow *window)
     \since 5.2
 
     Sets the Flip3D policy \a policy for the specified \a window.
+
+    \obsolete
  */
 void QtWin::setWindowFlip3DPolicy(QWindow *window, QtWin::WindowFlip3DPolicy policy)
 {
@@ -1612,12 +1660,16 @@ void QtWin::setWindowFlip3DPolicy(QWindow *window, QtWin::WindowFlip3DPolicy pol
     \fn QtWin::WindowFlip3DPolicy QtWin::windowFlip3DPolicy(QWidget *window)
     \since 5.2
     \overload QtWin::windowFlip3DPolicy()
+
+    \obsolete
  */
 
 /*!
     \since 5.2
 
     Returns the current Flip3D policy for the specified \a window.
+
+    \obsolete
  */
 QtWin::WindowFlip3DPolicy QtWin::windowFlip3DPolicy(QWindow *window)
 {
@@ -1650,6 +1702,7 @@ void qt_ExtendFrameIntoClientArea(QWindow *window, int left, int top, int right,
 /*! \fn void QtWin::extendFrameIntoClientArea(QWidget *window, int left, int top, int right, int bottom)
     \since 5.2
     \overload QtWin::extendFrameIntoClientArea()
+    \obsolete
  */
 
 /*!
@@ -1667,6 +1720,8 @@ void qt_ExtendFrameIntoClientArea(QWindow *window, int left, int top, int right,
     \note Qt::WA_NoSystemBackground must not be set on widgets for
     extendFrameIntoClientArea() to work.
 
+    \obsolete
+
     \sa resetExtendedFrame()
  */
 void QtWin::extendFrameIntoClientArea(QWindow *window, int left, int top, int right, int bottom)
@@ -1681,6 +1736,8 @@ void QtWin::extendFrameIntoClientArea(QWindow *window, int left, int top, int ri
 
     Convenience overload that allows passing frame sizes in a \a margins
     structure.
+
+    \obsolete
  */
 
 /*!
@@ -1689,6 +1746,8 @@ void QtWin::extendFrameIntoClientArea(QWindow *window, int left, int top, int ri
 
     Extends the glass frame into the client area of the specified \a window
     using the specified \a margins.
+
+    \obsolete
  */
 void QtWin::extendFrameIntoClientArea(QWindow *window, const QMargins &margins)
 {
@@ -1699,6 +1758,8 @@ void QtWin::extendFrameIntoClientArea(QWindow *window, const QMargins &margins)
     \fn void QtWin::resetExtendedFrame(QWidget *window)
     \since 5.2
     \overload QtWin::resetExtendedFrame()
+
+    \obsolete
  */
 
 /*!
@@ -1712,6 +1773,8 @@ void QtWin::extendFrameIntoClientArea(QWindow *window, const QMargins &margins)
     \note Qt::WA_NoSystemBackground must not be set on widgets for
     extendFrameIntoClientArea() to work.
 
+    \obsolete
+
     \sa extendFrameIntoClientArea()
  */
 void QtWin::resetExtendedFrame(QWindow *window)
@@ -1724,6 +1787,8 @@ void QtWin::resetExtendedFrame(QWindow *window)
     \fn void QtWin::enableBlurBehindWindow(QWidget *window, const QRegion &region)
     \since 5.2
     \overload QtWin::enableBlurBehindWindow()
+
+    \obsolete
  */
 
 /*!
@@ -1731,6 +1796,8 @@ void QtWin::resetExtendedFrame(QWindow *window)
 
     Enables the blur effect for the specified \a region of the specified
     \a window.
+
+    \obsolete
 
     \sa disableBlurBehindWindow()
  */
@@ -1758,12 +1825,16 @@ void QtWin::enableBlurBehindWindow(QWindow *window, const QRegion &region)
     \fn void QtWin::enableBlurBehindWindow(QWidget *window)
     \since 5.2
     \overload QtWin::enableBlurBehindWindow()
+
+    \obsolete
  */
 
 /*!
     \since 5.2
 
     Enables the blur effect for the specified \a window.
+
+    \obsolete
 
     \sa disableBlurBehindWindow()
  */
@@ -1776,12 +1847,16 @@ void QtWin::enableBlurBehindWindow(QWindow *window)
     \fn void QtWin::disableBlurBehindWindow(QWidget *window)
     \since 5.2
     \overload QtWin::disableBlurBehindWindow()
+
+    \obsolete
  */
 
 /*!
     \since 5.2
 
     Disables the previously enabled blur effect for the specified \a window.
+
+    \obsolete
 
     \sa enableBlurBehindWindow()
  */
@@ -1795,6 +1870,8 @@ void QtWin::disableBlurBehindWindow(QWindow *window)
 
 /*!
     \since 5.2
+
+    \obsolete
 
     Returns the DWM composition state.
  */
@@ -1814,6 +1891,8 @@ bool QtWin::isCompositionEnabled()
 
     \note The underlying function was declared deprecated as of Windows 8 and
     takes no effect.
+
+    \obsolete
  */
 
 QT_WARNING_PUSH
@@ -1831,6 +1910,8 @@ QT_WARNING_POP
     \since 5.2
 
     Returns whether the colorization color is an opaque blend.
+
+    \obsolete
  */
 bool QtWin::isCompositionOpaque()
 {
@@ -1847,6 +1928,8 @@ bool QtWin::isCompositionOpaque()
     For more information, see
     \l{http://msdn.microsoft.com/en-us/library/windows/desktop/dd378459.aspx}
     {Application User Model IDs}.
+
+    \obsolete Use SetCurrentProcessExplicitAppUserModelID(id.toStdWString().c_str()) instead.
  */
 void QtWin::setCurrentProcessExplicitAppUserModelID(const QString &id)
 {
@@ -1890,6 +1973,8 @@ ITaskbarList2 *qt_createITaskbarList2()
     \fn void QtWin::markFullscreenWindow(QWidget *window, bool fullscreen)
     \since 5.2
     \overload QtWin::markFullscreenWindow()
+
+    \obsolete Use QWidget::showFullScreen() instead.
  */
 
 /*!
@@ -1902,6 +1987,8 @@ ITaskbarList2 *qt_createITaskbarList2()
     \note You do not usually need to call this function, because the Windows
     taskbar always tries to determine whether a window is running in the
     full-screen mode.
+
+    \obsolete Use QWidget::showFullScreen() instead.
  */
 void QtWin::markFullscreenWindow(QWindow *window, bool fullscreen)
 {
@@ -1916,12 +2003,16 @@ void QtWin::markFullscreenWindow(QWindow *window, bool fullscreen)
     \fn void QtWin::taskbarActivateTab(QWidget *window)
     \since 5.2
     \overload QtWin::taskbarActivateTab()
+
+    \obsolete
  */
 
 /*!
     \since 5.2
 
     Activates an item on the taskbar without activating the \a window itself.
+
+    \obsolete
  */
 void QtWin::taskbarActivateTab(QWindow *window)
 {
@@ -1936,6 +2027,8 @@ void QtWin::taskbarActivateTab(QWindow *window)
     \fn void QtWin::taskbarActivateTabAlt(QWidget *window)
     \since 5.2
     \overload QtWin::taskbarActivateTabAlt()
+
+    \obsolete
  */
 
 /*!
@@ -1943,6 +2036,8 @@ void QtWin::taskbarActivateTab(QWindow *window)
 
     Marks the item that represents the specified \a window on the taskbar
     as active, but does not activate it visually.
+
+    \obsolete
  */
 void QtWin::taskbarActivateTabAlt(QWindow *window)
 {
@@ -1957,12 +2052,16 @@ void QtWin::taskbarActivateTabAlt(QWindow *window)
     \fn void QtWin::taskbarAddTab(QWidget *window)
     \since 5.2
     \overload QtWin::taskbarAddTab()
+
+    \obsolete
  */
 
 /*!
     \since 5.2
 
     Adds an item for the specified \a window to the taskbar.
+
+    \obsolete
  */
 void QtWin::taskbarAddTab(QWindow *window)
 {
@@ -1977,12 +2076,16 @@ void QtWin::taskbarAddTab(QWindow *window)
     \fn void QtWin::taskbarDeleteTab(QWidget *window)
     \since 5.2
     \overload QtWin::taskbarDeleteTab()
+
+    \obsolete
  */
 
 /*!
     \since 5.2
 
     Removes the specified \a window from the taskbar.
+
+    \obsolete
  */
 void QtWin::taskbarDeleteTab(QWindow *window)
 {
