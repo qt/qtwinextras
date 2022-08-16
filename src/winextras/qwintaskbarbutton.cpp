@@ -61,6 +61,7 @@ QT_BEGIN_NAMESPACE
     \inmodule QtWinExtras
     \brief The QWinTaskbarButton class represents the Windows taskbar button for
     a top-level window (Windows 7 and newer).
+    \obsolete
 
     \since 5.2
 
